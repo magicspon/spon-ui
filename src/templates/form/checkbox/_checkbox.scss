@@ -1,0 +1,18 @@
+.c-checkbox {
+	&:checked + .c-checkbox__box {
+		&::before {
+			background: svg-load('tick.svg', fill=#4bb543) no-repeat 50%;
+			background-size: rem(10px);
+		}
+	}
+}
+
+.c-checkbox__box {
+	&::before {
+		width: rem(20px);
+		height: rem(20px);
+		border: 1px solid #ccc;
+		content: ' ';
+		margin-right: rem(10px);
+	}
+}

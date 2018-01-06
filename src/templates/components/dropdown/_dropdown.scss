@@ -1,0 +1,23 @@
+.c-dropdown {
+}
+
+.c-dropdown__btn {
+	&::after {
+		border: 1px solid #3273dc;
+		border-right: 0;
+		border-top: 0;
+		content: ' ';
+		display: block;
+		margin-top: rem(-5px);
+		height: rem(10px);
+		width: rem(10px);
+		pointer-events: none;
+		transform: rotate(-45deg);
+		transform-origin: center;
+		z-index: 4;
+	}
+}
+
+.c-dropdown__menu {
+	top: 100%;
+}

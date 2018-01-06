@@ -1,0 +1,19 @@
+.c-select {
+	&::after {
+		border: 1px solid #3273dc;
+		border-right: 0;
+		border-top: 0;
+		content: ' ';
+		display: block;
+		height: 0.5em;
+		pointer-events: none;
+		position: absolute;
+		transform: rotate(-45deg);
+		transform-origin: center;
+		width: 0.5em;
+		margin-top: -0.375em;
+		right: 1.125em;
+		top: 50%;
+		z-index: 4;
+	}
+}
