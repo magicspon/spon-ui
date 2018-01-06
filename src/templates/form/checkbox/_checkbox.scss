@@ -9,10 +9,10 @@
 
 .c-checkbox__box {
 	&::before {
+		@apply .border .mr-1;
+
 		width: rem(20px);
 		height: rem(20px);
-		border: 1px solid #ccc;
 		content: ' ';
-		margin-right: rem(10px);
 	}
 }

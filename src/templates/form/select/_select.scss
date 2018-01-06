@@ -1,19 +1,14 @@
 .c-select {
 	&::after {
-		border: 1px solid #3273dc;
-		border-right: 0;
-		border-top: 0;
-		content: ' ';
-		display: block;
-		height: 0.5em;
-		pointer-events: none;
-		position: absolute;
+		@apply .border-b .border-l .border-blue .block .absolute .z-10 .pointer-events-none;
+
 		transform: rotate(-45deg);
 		transform-origin: center;
-		width: 0.5em;
-		margin-top: -0.375em;
-		right: 1.125em;
+		height: rem(8px);
+		width: rem(8px);
+		margin-top: rem(-6px);
+		right: rem(15px);
 		top: 50%;
-		z-index: 4;
+		content: ' ';
 	}
 }

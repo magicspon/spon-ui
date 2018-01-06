@@ -34,6 +34,12 @@ $current-rootsize: 16px !default;
   Third party dependencies
 */
 
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
 @tailwind preflight;
 @tailwind utilities;
 

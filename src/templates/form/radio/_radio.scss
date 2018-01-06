@@ -1,22 +1,18 @@
-.c-radio {
-	&:checked + .c-radio__box {
-		&::before {
-			box-shadow: 0 0 0 rem(4px) black inset;
-			background-color: white;
-		}
-	}
-}
-
 .c-radio__box {
 	&::before {
-		border-radius: 100%;
-		border: 2px solid currentColor;
-		box-shadow: 0 0 0 0 black inset;
-		transition: color 300ms ease, background-color 300ms ease,
-			box-shadow 300ms ease;
+		@apply .border-2 .rounded-full .shadow-none .mr-2;
+
+		transition: background-color 300ms ease;
 		width: rem(20px);
 		height: rem(20px);
 		content: ' ';
-		margin-right: rem(10px);
+	}
+}
+
+.c-radio {
+	&:checked + .c-radio__box {
+		&::before {
+			@apply .bg-blue;
+		}
 	}
 }
