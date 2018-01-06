@@ -13,7 +13,7 @@
 	"fractal": {
 		"src": "templates",
 		"tmp": "./tmp/public",
-		"build": "./deploy/library",
+		"build": "./public",
 		"base": "./deploy/templates/",
 		"output": "_partials",
 		"map": "_partials/components-map.json"

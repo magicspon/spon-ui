@@ -21,7 +21,7 @@
 	"homepage": "https://github.com/magicspon/spon-ui#readme",
 	"scripts": {
 		"start": "gulp",
-		"build": "gulp build --env production"
+		"build": "gulp build --env production --env fractal"
 	},
 	"dependencies": {
 		"axios": "^0.17.1",
