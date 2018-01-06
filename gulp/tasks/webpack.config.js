@@ -28,10 +28,7 @@ module.exports = env => {
 			path: path.normalize(dest),
 			publicPath: '/dist/js/',
 			pathinfo: env !== 'production' && true,
-			filename:
-				env === 'production'
-					? `[name].${filename}.${TASK_CONFIG.stamp}.js`
-					: `[name].${filename}.js`
+			filename: `[name].${filename}.js`
 			//chunkFilename: '[name].[chunkhash].js'
 		},
 		resolve: {
