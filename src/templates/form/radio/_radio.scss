@@ -1,10 +1,10 @@
 .c-radio__box {
 	&::before {
-		@apply .border-2 .rounded-full .shadow-none .mr-2;
+		@apply .border-2 .rounded-full .shadow-none .mr-1;
 
 		transition: background-color 300ms ease;
-		width: rem(20px);
-		height: rem(20px);
+		width: rem(15px);
+		height: rem(15px);
 		content: ' ';
 	}
 }

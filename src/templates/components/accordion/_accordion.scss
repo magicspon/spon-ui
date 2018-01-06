@@ -1,0 +1,9 @@
+[data-accordion-content] {
+	&[aria-hidden='false'] {
+		@apply .block;
+	}
+
+	&[aria-hidden='true'] {
+		@apply .hidden;
+	}
+}

@@ -1,0 +1,8 @@
+
+<ul class="list-reset">
+  {% for i in range(0, 6) %}
+    <li class="mb-1 border-b">
+      <a class="block text-blue hover:text-blue-darker no-underline p-2" href="#">Item number {{ loop.index }}</a>
+    </li>
+  {% endfor %}
+</ul>

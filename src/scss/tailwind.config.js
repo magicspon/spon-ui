@@ -1,4 +1,4 @@
-import { gutter, px2rem, ms2rem } from './config/utils'
+import { gutter, px2rem, ms2rem, rgba, rgbaRange } from './helpers/utils'
 
 /*
 |-------------------------------------------------------------------------------
@@ -17,8 +17,9 @@ import { gutter, px2rem, ms2rem } from './config/utils'
 */
 
 let colors = {
-	transparent: 'transparent',
+	...rgbaRange('#22292f', 'black'),
 
+	transparent: 'transparent',
 	black: '#22292f',
 	'grey-darkest': '#3d4852',
 	'grey-darker': '#606f7b',
@@ -106,10 +107,10 @@ module.exports = {
   */
 
 	screens: {
-		sm: '576px',
-		md: '768px',
-		lg: '992px',
-		xl: '1200px'
+		sm: px2rem('576px'),
+		md: px2rem('768px'),
+		lg: px2rem('992px'),
+		xl: px2rem('1200px')
 	},
 
 	/*
@@ -433,7 +434,7 @@ module.exports = {
 
 	maxWidth: {
 		xs: px2rem('100px'),
-		sm: px2rem('200px'),
+		sm: px2rem('300px'),
 		md: px2rem('500px'),
 		lg: px2rem('760px'),
 		xl: px2rem('1000px'),
@@ -481,12 +482,13 @@ module.exports = {
 		'2': gutter(0.5),
 		'3': gutter(1),
 		'4': gutter(1.5),
-		'6': gutter(2),
-		'8': gutter(2.5),
-		'9': gutter(3),
+		'5': gutter(2),
+		'6': gutter(2.5),
+		'8': gutter(3),
+		'9': gutter(3.5),
 		'10': gutter(4),
-		'11': gutter(5),
-		'12': gutter(6)
+		'11': gutter(4.5),
+		'12': gutter(5)
 	},
 
 	/*
@@ -671,10 +673,10 @@ module.exports = {
 		backgroundPosition: [],
 		backgroundRepeat: [],
 		backgroundSize: [],
-		borderColors: [],
-		borderRadius: [],
-		borderStyle: [],
-		borderWidths: [],
+		borderColors: ['responsive'],
+		borderRadius: ['responsive'],
+		borderStyle: ['responsive'],
+		borderWidths: ['responsive'],
 		cursor: [],
 		display: ['responsive'],
 		flexbox: ['responsive'],
@@ -690,7 +692,7 @@ module.exports = {
 		minHeight: ['responsive'],
 		minWidth: ['responsive'],
 		negativeMargin: [],
-		opacity: [],
+		opacity: ['responsive'],
 		overflow: [],
 		padding: ['responsive'],
 		pointerEvents: [],

@@ -1,0 +1,17 @@
+{% import '@helpers' as h %}
+<div class="relative overflow-hidden" data-ui-slide>
+  <ul class="list-reset relative">
+    {% for i in range(0, 5) %}
+      <li class="c-slide__item {% if loop.index0 == 0 %}c-slide__item--current{% endif %} absolute pin-t pin-l w-full h-full invisible">
+				{{ loop.index }}
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="#0" class="c-slide__btn c-slide__btn--prev block absolute z-10 u-center-vert">
+    {{ h.symbol('ui-prev') }}
+  </a>
+  <a href="#0" class="c-slide__btn c-slide__btn--next block absolute z-10 u-center-vert">
+    {{ h.symbol('ui-next') }}
+  </a>
+</div>
+

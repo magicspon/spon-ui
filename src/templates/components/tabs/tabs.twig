@@ -1,0 +1,21 @@
+<div class="c-tabs">
+  <ul class="list-reset border-b-2 flex items-stretch">
+    {% for i in range(0, 4) %}
+      <li>
+        <a href="#tab-{{ loop.index }}" class="no-underline block p-2 bg-grey-lighter hover:bg-grey text-black hover:text-grey-darkest">Tab {{ i }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% for i in range(0, 4) %}
+    <div id="tab-{{ loop.index }}" class="{{ loop.index == 1 ? 'block' : 'hidden' }}">
+      <div class="p-3">
+        <header class="mb-3">
+          <h2>Tab Content Heading</h2>
+        </header>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ducimus, animi fuga ipsum, exercitationem commodi totam earum voluptatum aliquid ipsam a iste blanditiis veritatis! Quaerat repellendus, reiciendis, iste corporis minima magnam, deleniti officiis culpa odio nisi laboriosam harum in sequi necessitatibus! Hic assumenda fugiat ullam ab ipsa adipisci iure, quidem, sed, ratione animi ex consectetur a. Consectetur architecto totam rerum aperiam natus consequatur unde ipsam libero molestiae. Atque, consequuntur reiciendis tenetur sequi neque ad delectus perferendis! Odio quasi, ducimus laborum praesentium vel minima aspernatur dolores doloribus ipsa, facilis, ex voluptatum rem expedita vitae harum officiis ab suscipit. Dolore ex vero iure molestias dolorum, corrupti voluptatem expedita qui hic quod tempora eum voluptates! Voluptatum, quos mollitia. Fugit quia necessitatibus impedit ipsum consequatur culpa veritatis nemo iusto, rem officiis harum laborum id itaque cum, illum voluptatem quam. Obcaecati blanditiis necessitatibus praesentium omnis aut consequatur, reprehenderit quibusdam, eos exercitationem maiores deserunt consectetur sint.
+        </p>
+      </div>
+    </div>
+  {% endfor %}
+</div>

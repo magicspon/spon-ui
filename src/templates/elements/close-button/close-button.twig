@@ -1,0 +1,7 @@
+{% import '@helpers' as h %}
+
+<button {{ attributes }} class="o-close {{ position ? 'o-close--' ~ position : 'o-close--right' }} absolute flex items-center justify-center">
+  <span class="block relative">
+    {{ h.symbol('ui-close') }}
+  </span>
+</button>

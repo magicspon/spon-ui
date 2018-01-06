@@ -33,3 +33,26 @@ export function msRange(
 }
 
 export const gutter = (n = 1, size = 20) => px2rem(n * size)
+
+export function rgba(hex, opacity = 1) {
+	const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+		hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b)
+	)
+
+	return result
+		? `rgba(${result
+			.splice(1)
+			.map(n => parseInt(n, 16))
+			.join(',')}, ${opacity})`
+		: null
+}
+
+export function rgbaRange(hex, name = 'black', prefix = 'pc') {
+	return Array.from({ length: 9 })
+		.map((_, i) => rgba(hex, (i + 1) / 10))
+		.reduce((a, c, i) => {
+			a[`${name}-${(i + 1) * 10}${prefix}`] = c
+			return a
+		}, {})
+}

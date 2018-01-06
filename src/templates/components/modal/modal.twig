@@ -1,25 +1,17 @@
-<!-- [1] -->
-<div id="modal-1" aria-hidden="true">
+{% import '@helpers' as h %}
 
-  <!-- [2] -->
-  <div tabindex="-1" data-micromodal-close>
-
-    <!-- [3] -->
-    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" >
-
-
-      <header>
-        <h2 id="modal-1-title">
-          Modal Title
-        </h2>
-
-        <button aria-label="Close modal" data-micromodal-close></button>
+{% include '@button' with { text: 'Open Modal', attributes: 'data-micromodal-trigger="modal-1"' } %}
+<div class="c-modal" id="modal-1" aria-hidden="true">
+  <div tabindex="-1" data-micromodal-close class="fixed pin flex items-center justify-center bg-black-60pc">
+    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" class="relative bg-white overflow-y-scroll max-h-screen w-full max-w-md p-5">
+      <header class="mb-3"> 
+        <h2>Modal Title</h2>
+        {% include '@close-button' with { attributes: 'aria-label="Close modal" data-micromodal-close' } %}
       </header>
-
-      <div id="modal-1-content">
+      <div class="mb-3">
         Modal Content
       </div>
-
+      {% include '@button' with { text: 'Close', attributes: 'data-micromodal-close aria-label="Close this dialog window"' } %}
     </div>
   </div>
 </div>

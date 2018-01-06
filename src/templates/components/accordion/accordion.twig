@@ -1,0 +1,17 @@
+<div className="c-accordion" aria-multiselectable="true">
+  {% for i in range(0, 5) %}
+    <div data-accordion class="relative overflow-hidden" class="mb-4">
+      <button data-accordion-button class="appearance-none w-full py-2 text-left font-bold">
+        Panel {{ loop.index }}
+      </button>
+      <div data-accordion-content>
+        <div class="py-2">
+          <h2 class="mb-2">Title {{ loop.index }}</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus natus quia numquam fugit dolore, non distinctio deserunt dignissimos minus! Et.
+          </p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

@@ -22,12 +22,6 @@
   }
 }
 
-.icon--ui-chevron {
-  width: rem(172.4px);
-  &:after {
-    padding-bottom: 59.883720930232556%;
-  }
-}
 .icon--ui-close {
   width: rem(22.4px);
   &:after {
@@ -73,10 +67,6 @@
 
 
 
-
-$icon--ui-chevron-width: 172px;
-$icon--ui-chevron-height: 103px;
-$icon--ui-chevron-ratio: 0.5988372093023255;
 
 $icon--ui-close-width: 22px;
 $icon--ui-close-height: 22px;
