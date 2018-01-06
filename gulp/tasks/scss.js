@@ -81,59 +81,63 @@ function scss() {
 	// 	)
 	// }
 
-	return gulp
-		.src([paths.src, paths.components])
-		.pipe(
-			styleLint({
-				debug: true,
-				failAfterError: false,
-				syntax: 'scss',
-				reporters: [
-					{
-						formatter: 'string',
-						console: true
-					}
-				]
-			})
-		)
-		.on('error', handleErrors)
-		.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
-		.pipe(sassGlob())
-		.pipe(
-			sassVariables({
-				$env: PRODUCTION ? 'production' : util.env.test ? 'test' : 'development'
-			})
-		)
-		.pipe(
-			sass({
-				...TASK_CONFIG.scss.options,
-				includePaths: [
-					path.resolve(process.env.PWD, 'node_modules/normalize-scss/sass'),
-					path.resolve(process.env.PWD, 'node_modules/susy/sass')
-				]
-			})
-		)
-		.on('error', handleErrors)
-		.pipe(
-			gulpif(
-				!PRODUCTION,
-				sourcemaps.init({
-					loadMaps: true
+	return (
+		gulp
+			.src([paths.src, paths.components])
+			.pipe(
+				styleLint({
+					debug: true,
+					failAfterError: false,
+					syntax: 'scss',
+					reporters: [
+						{
+							formatter: 'string',
+							console: true
+						}
+					]
 				})
 			)
-		)
-		.pipe(postcss(plugins))
-		.on('error', handleErrors)
-		.pipe(gulpif(PRODUCTION, cssnano(TASK_CONFIG.scss.cssnanoOptions)))
-		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-		.pipe(
-			gulpif(
-				PRODUCTION,
-				rename({
-					suffix: `.${TASK_CONFIG.stamp}`
+			.on('error', handleErrors)
+			.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
+			.pipe(sassGlob())
+			.pipe(
+				sassVariables({
+					$env: PRODUCTION
+						? 'production'
+						: util.env.test ? 'test' : 'development'
 				})
 			)
-		)
-		.pipe(gulp.dest(paths.dest))
-		.pipe(browserSync.stream())
+			.pipe(
+				sass({
+					...TASK_CONFIG.scss.options,
+					includePaths: [
+						path.resolve(process.env.PWD, 'node_modules/normalize-scss/sass'),
+						path.resolve(process.env.PWD, 'node_modules/susy/sass')
+					]
+				})
+			)
+			.on('error', handleErrors)
+			.pipe(
+				gulpif(
+					!PRODUCTION,
+					sourcemaps.init({
+						loadMaps: true
+					})
+				)
+			)
+			.pipe(postcss(plugins))
+			.on('error', handleErrors)
+			.pipe(gulpif(PRODUCTION, cssnano(TASK_CONFIG.scss.cssnanoOptions)))
+			.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+			// .pipe(
+			// 	gulpif(
+			// 		PRODUCTION,
+			// 		rename({
+			// 			suffix: `.${TASK_CONFIG.stamp}`
+			// 		})
+			// 	)
+			// )
+			.pipe(gulp.dest(paths.dest))
+			.pipe(browserSync.stream())
+	)
 }
