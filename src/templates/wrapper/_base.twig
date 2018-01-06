@@ -5,7 +5,7 @@
 <html lang="en-gb" dir="ltr" class="no-js">
   <head>
 	  <meta charset="utf-8">
-    <title>{{ siteTitle|length ? siteTitle : 'Mud/Fractal' }}</title>
+    <title>{{ siteTitle|length ? siteTitle : 'SponUi' }}</title>
 	  <meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1" viewport-fit="cover">
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -19,7 +19,6 @@
   <body class="font-sans">
     {{ yield }}
 		{% include 'wrapper/_symbols.twig' %}
-    <script src="/dist/js/common.bundle{{ stamp }}.js"></script>
     <script async defer src="/dist/js/app.bundle{{ stamp }}.js"></script>
   </body>
 </html>
