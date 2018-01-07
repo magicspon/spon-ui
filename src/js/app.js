@@ -6,3 +6,5 @@ if (module.hot) {
 }
 
 WebFontLoader()
+
+import '~/dropdown/dropdown'

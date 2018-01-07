@@ -21,7 +21,9 @@
 	"homepage": "https://github.com/magicspon/spon-ui#readme",
 	"scripts": {
 		"start": "gulp",
-		"build": "gulp build --env production"
+		"build": "gulp build --env production",
+		"predeploy": "npm run build",
+		"deploy": "netlify deploy"
 	},
 	"dependencies": {
 		"axios": "^0.17.1",
@@ -29,7 +31,8 @@
 		"concert": "^2.1.0",
 		"debug": "^3.1.0",
 		"dom-delegate": "^2.0.3",
-		"domtastic": "0.15.4",
+		"domtastic": "^0.15.5",
+		"flipping": "^0.8.0",
 		"lodash.once": "^4.1.1",
 		"path-to-regexp": "^2.1.0",
 		"plyr": "^2.0.18",
@@ -83,8 +86,8 @@
 		"gulp-inject": "^4.2.0",
 		"gulp-notify": "^3.0.0",
 		"gulp-postcss": "^7.0.0",
-		"gulp-rename": "^1.2.2",
 		"gulp-purgecss": "^0.16.0",
+		"gulp-rename": "^1.2.2",
 		"gulp-sass": "^3.1.0",
 		"gulp-sass-glob": "^1.0.8",
 		"gulp-sass-variables": "^1.1.1",
