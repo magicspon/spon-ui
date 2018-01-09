@@ -8,3 +8,5 @@ if (module.hot) {
 WebFontLoader()
 
 import '~/dropdown/dropdown'
+
+import '~/slide/slide'

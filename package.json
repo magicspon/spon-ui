@@ -22,7 +22,6 @@
 	"scripts": {
 		"start": "gulp",
 		"build": "gulp build --env production",
-		"predeploy": "npm run build",
 		"deploy": "netlify deploy"
 	},
 	"dependencies": {
@@ -34,6 +33,7 @@
 		"domtastic": "^0.15.5",
 		"flipping": "^0.8.0",
 		"lodash.once": "^4.1.1",
+		"mitt": "^1.1.3",
 		"path-to-regexp": "^2.1.0",
 		"plyr": "^2.0.18",
 		"redux": "^3.7.2",

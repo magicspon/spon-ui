@@ -13,7 +13,7 @@ export const ms2rem = (
 	n,
 	settings = {
 		base: 16,
-		ratio: 1.125
+		ratio: 1.13
 	}
 ) => px2rem(ms(n, settings))
 
@@ -22,7 +22,7 @@ export function msRange(
 	end,
 	settings = {
 		base: 16,
-		ratio: 1.125
+		ratio: 1.13
 	}
 ) {
 	const length = end + 1 - start

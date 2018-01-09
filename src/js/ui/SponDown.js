@@ -1,8 +1,25 @@
+import Flip from 'flipping/dist/flipping.web'
+
 class DropDown {
 	constructor($node) {
 		this.$node = $node
 		this.$button = this.$node.querySelector('[data-dropdown-button]')
 		this.$content = this.$node.querySelector('[data-dropdown-menu]')
+
+		this.flip = new Flip({
+			parentElement: this.$node,
+			duration: 1000,
+			activeSelector: () => {
+				return this.$content
+			}
+		})
+
+		this.machine = {
+			add: { CLICK: 'remove' },
+			remove: { CLICK: 'add' }
+		}
+
+		this.state = this.$content.classList.contains('hidden') ? 'add' : 'remove'
 	}
 
 	init = () => {
@@ -14,13 +31,14 @@ class DropDown {
 	}
 
 	onClick = () => {
-		this.$button.classList.toggle('is-open')
-		this.$content.classList.toggle('hidden')
+		this.state = this.machine[this.state].CLICK
+		this.$button.classList[this.state]('is-open')
+		this.$content.classList[this.state]('hidden')
 	}
 }
 
 export default class {
-	constructor(el = '[data-dropdown]') {
+	constructor(el = '[data-ui="dropdown"]') {
 		this.DropDowns = [...document.querySelectorAll(el)]
 			.map($node => new DropDown($node))
 			.forEach(DropDown => DropDown.init())
