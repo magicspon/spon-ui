@@ -2,7 +2,7 @@
 <div class="relative overflow-hidden h-screen" data-ui="slide">
   <ul class="list-reset relative h-full">
     {% for i in range(0, 5) %}
-      <li data-slide-item class="c-slide__item {% if loop.index0 > 0 %} invisible  {% else %} is-current {% endif %} absolute pin-t pin-l w-full h-full  flex items-center justify-center text-5xl">
+      <li data-slide-item class=" invisible absolute pin-t pin-l w-full h-full  flex items-center justify-center text-5xl">
 				{{ loop.index }}
       </li>
     {% endfor %}
@@ -14,4 +14,5 @@
     {{ h.symbol('ui-next') }}
   </a>
 </div>
+
 

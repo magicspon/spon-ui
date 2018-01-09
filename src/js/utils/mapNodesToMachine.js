@@ -1,11 +1,6 @@
 export default ($Elements, wrap = true) => {
 	return $Elements.map(($node, i, a) => {
 		return {
-			CURRENT: {
-				$el: $node,
-				index: i
-			},
-
 			PREV: a[i - 1]
 				? {
 					$el: a[i - 1],

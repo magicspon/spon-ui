@@ -36,6 +36,7 @@ function build(cb) {
 					if (TASK_CONFIG.critical) return critialCss()
 					return
 				})
+				.then(sizeReport)
 		}
 	} else {
 		return buildCode(cb)
