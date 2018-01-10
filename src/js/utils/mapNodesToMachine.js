@@ -1,4 +1,4 @@
-export default ($Elements, wrap = true) => {
+export const mapNodesToMachine = ($Elements, wrap = true) => {
 	return $Elements.map(($node, i, a) => {
 		return {
 			PREV: a[i - 1]

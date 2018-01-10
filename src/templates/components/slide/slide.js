@@ -1,5 +1,8 @@
 import SponSlide from '@/ui/SponSlide'
+const node = document.querySelector('[data-ui="slide"]')
 
-const x = new SponSlide(document.querySelector('[data-ui="slide"]'))
+if (node) {
+	const slide = new SponSlide(document.querySelector('[data-ui="slide"]'))
 
-x.init()
+	slide.init()
+}

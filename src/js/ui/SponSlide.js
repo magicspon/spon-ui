@@ -2,7 +2,7 @@ import mitt from 'mitt'
 import Hammer from 'hammerjs'
 import domify from 'domify'
 
-import mapNodesToMachine from '@/utils/mapNodesToMachine'
+import { mapNodesToMachine } from '@/utils/mapNodesToMachine'
 import eventPromise from '@/utils/eventPromise'
 import animationEnd from '@/utils/animationEnd'
 

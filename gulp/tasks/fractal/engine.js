@@ -51,6 +51,20 @@ function templateEngine(stamp) {
 				if (str) return str
 				return faker.lorem.sentence(num)
 			},
+			paragraph(str, num = 2) {
+				if (str) return str
+				return faker.lorem.paragraph(num)
+			},
+			paragraphs(str, num = 2) {
+				if (str) return str
+				return faker.lorem
+					.paragraphs(num)
+					.split('\n')
+					.map(text => text.trim())
+					.filter(text => text.length !== 0)
+					.map(text => `<p>${text}</p>`)
+					.join('')
+			},
 			para(str, num = 2) {
 				if (str) return str
 				return faker.lorem.paragraphs(num, '\n\n')

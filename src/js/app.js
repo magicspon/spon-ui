@@ -10,3 +10,5 @@ WebFontLoader()
 import '~/dropdown/dropdown'
 
 import '~/slide/slide'
+
+import '~/tabs/tabs'
