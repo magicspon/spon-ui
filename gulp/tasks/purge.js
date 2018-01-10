@@ -24,6 +24,7 @@ function purge() {
 	)
 
 	return new Promise((resolve, reject) => {
+		log('PURGE')
 		gulp
 			.src(path.resolve(build, `css/style.${TASK_CONFIG.stamp}.css`))
 			.pipe(
