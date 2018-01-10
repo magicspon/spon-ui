@@ -25,19 +25,12 @@
 		"deploy": "netlify deploy"
 	},
 	"dependencies": {
-		"axios": "^0.17.1",
-		"barba.js": "^1.0.0",
-		"concert": "^2.1.0",
 		"debug": "^3.1.0",
-		"dom-delegate": "^2.0.3",
 		"domify": "^1.4.0",
-		"domtastic": "^0.15.5",
-		"flipping": "^0.8.0",
+		"hammerjs": "^2.0.8",
 		"lodash.once": "^4.1.1",
 		"mitt": "^1.1.3",
-		"path-to-regexp": "^2.1.0",
 		"plyr": "^2.0.18",
-		"redux": "^3.7.2",
 		"webfontloader": "^1.6.28"
 	},
 	"devDependencies": {
