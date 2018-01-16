@@ -21,7 +21,6 @@ import mitt from 'mitt'
 	HTML:
 
 <div class="c-tabs" data-ui="tabs">
-        
   <div>
     <a data-tab-button href="#tab-1" class="no-underline block p-2 bg-grey-lighter hover:bg-grey text-black hover:text-grey-darkest">Tab {{ i }}</a>
     <a data-tab-button href="#tab-2" class="no-underline block p-2 bg-grey-lighter hover:bg-grey text-black hover:text-grey-darkest">Tab {{ i }}</a>

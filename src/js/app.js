@@ -7,8 +7,18 @@ if (module.hot) {
 
 WebFontLoader()
 
-import '~/dropdown/dropdown'
+// import '~/dropdown/dropdown'
 
-import '~/slide/slide'
+// import '~/slide/slide'
 
-import '~/tabs/tabs'
+// import '~/tabs/tabs'
+
+import viewport from '@/utils/viewport'
+
+const v = viewport()
+log(v)
+
+v.start()
+v.on('resize', () => {
+	log('hello')
+})
