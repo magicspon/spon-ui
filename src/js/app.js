@@ -19,6 +19,5 @@ const v = viewport()
 log(v)
 
 v.start()
-v.on('resize', () => {
-	log('hello')
-})
+
+v.at('(min-width: 400px)', () => log('match'), () => log('fail'))
