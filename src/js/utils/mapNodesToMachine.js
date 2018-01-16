@@ -12,7 +12,8 @@ export const mapNodesToMachine = ($Elements, wrap = true) => {
 						index: a.length - 1
 					}
 					: {
-						$el: $node
+						$el: $node,
+						index: i
 					},
 
 			NEXT: a[i + 1]

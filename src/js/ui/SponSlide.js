@@ -81,8 +81,6 @@ export default class {
 		this.options = { ...this.defaults, ...options }
 		this.emitter = mitt()
 		this.$el = $el
-
-		log(this)
 	}
 
 	/**

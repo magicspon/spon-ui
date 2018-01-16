@@ -9,7 +9,7 @@ WebFontLoader()
 
 // import '~/dropdown/dropdown'
 
-// import '~/slide/slide'
+import '~/slide/slide'
 
 // import '~/tabs/tabs'
 
@@ -21,3 +21,7 @@ log(v)
 v.start()
 
 v.at('(min-width: 400px)', () => log('match'), () => log('fail'))
+
+v.on('view:change', ({ query }) => {
+	log('change', query)
+})
