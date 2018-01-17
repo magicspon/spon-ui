@@ -10970,6 +10970,21 @@ split@0.3:
   dependencies:
     through "2"
 
+spon-resize@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/spon-resize/-/spon-resize-0.1.1.tgz#b32c69b8eb9892491f2fe10ee9e50d23ee010be0"
+  dependencies:
+    mitt "^1.1.3"
+    raf-throttle "^2.0.3"
+
+spon-slide@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/spon-slide/-/spon-slide-0.0.1.tgz#4fe76d14e0adefd48cd1fb5f299aed391b16b194"
+  dependencies:
+    domify "^1.4.0"
+    lodash.once "^4.1.1"
+    mitt "^1.1.3"
+
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"

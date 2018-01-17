@@ -13,15 +13,5 @@ import '~/slide/slide'
 
 // import '~/tabs/tabs'
 
-import viewport from '@/utils/viewport'
+import viewport from 'spon-resize'
 
-const v = viewport()
-log(v)
-
-v.start()
-
-v.at('(min-width: 400px)', () => log('match'), () => log('fail'))
-
-v.on('view:change', ({ query }) => {
-	log('change', query)
-})

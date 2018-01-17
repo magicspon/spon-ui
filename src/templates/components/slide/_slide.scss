@@ -33,6 +33,10 @@
 	top: 50%;
 	transform: translate3d(0, -50%, 0);
 	color: #000;
+
+	&[disabled] {
+		opacity: 0.5;
+	}
 }
 
 .c-slide__btn--prev {

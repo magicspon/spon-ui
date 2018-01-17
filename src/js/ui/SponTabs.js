@@ -10,7 +10,7 @@ import mitt from 'mitt'
 	Called in order
 	const $n = new Slide($HTML, {})
 
-	$n.emitter('spon:change') - on change
+	$n.on('spon:change') - on change
 
 	API:
 
@@ -49,8 +49,9 @@ export default class {
 
 	constructor($el, options = {}) {
 		this.options = { ...this.defaults, ...options }
-		this.emitter = mitt()
 		this.$el = $el
+
+		Object.assign(this, mitt())
 	}
 
 	init = () => {
@@ -74,9 +75,9 @@ export default class {
 	}
 
 	destroy = () => {
-		this.$tabs.forEach(({ $button }, index) => {
+		this.$tabs.forEach(({ $button }, index) =>
 			$button.removeAttribute('click', this._onClick.bind(this, index))
-		})
+		)
 	}
 
 	_onClick = (index, event) => {
@@ -97,7 +98,7 @@ export default class {
 		$nextTab.classList.add(activeClass)
 		$nextButton.classList.add(activeClass)
 
-		this.emitter.emit('spon:change')
+		this.emit('spon:change')
 
 		this.currentIndex = index
 	}

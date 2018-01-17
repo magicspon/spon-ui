@@ -1,4 +1,4 @@
-import SponSlide from '@/ui/SponSlide'
+import SponSlide from 'spon-slide'
 const node = document.querySelector('[data-ui="slide"]')
 
 if (node) {
