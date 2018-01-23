@@ -9,9 +9,8 @@ WebFontLoader()
 
 // import '~/dropdown/dropdown'
 
-import '~/slide/slide'
+import '~/navigation/FancyNav'
 
 // import '~/tabs/tabs'
 
 import viewport from 'spon-resize'
-

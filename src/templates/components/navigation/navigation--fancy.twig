@@ -1,0 +1,26 @@
+{% import '@helpers' as h %}
+
+<nav id="fny" class="c-nav c-nav--fancy relative" role="navigation" aria-label="Main menu">
+	<div data-menu-mask></div>
+	
+  <ul class="list-reset lg:flex justify-center relative">
+    {% for i in range(0, 6) %}
+      <li role="menuitem" data-menu-item class="flex flex-wrap items-center justify-between c-nav__parent mb-1 border-b lg:border-0 ">
+        <a tabindex="0" aria-haspopup="true" aria-owns="item-{{ loop.index }}" class="block text-blue hover:text-blue-darker no-underline p-2" href="#">Item number {{ loop.index }}</a>
+        <a href="#menu-item-{{ loop.index }}" class="c-nav__item-btn flex lg:hidden items-center justify-center">
+          {{ h.symbol('ui-chevron') }}
+        </a>
+        <div data-drop-down id="menu-item-{{ loop.index }}" class="ml-auto mr-auto c-nav__dropdown max-w-xl hidden pointer-events-none w-full lg:block lg:w-auto lg:absolute lg:opacity-0 pin-l pin-r" role="group" aria-expanded="false" aria-labelledby="item-{{ loop.index }}" aria-hidden="true">
+          <ul class="flex flex-wrap list-reset">
+            {% for i in range(0, random(40)) %}
+              <li class="mb-1 mr-1 px-3 lg:px-0 lg:border-b">
+                <a class="block p-1 text-blue hover:text-blue-darker no-underline whitespace-no-wrap lg:p-2" href="#0" tabindex="-1">Item number {{ loop.index }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+
