@@ -32,7 +32,7 @@ export default (() => {
 						try {
 							options = R.compose(
 								R.reduce((acc, [key, value]) => {
-									acc[camelify(key)] = value
+									acc[key] = value
 
 									return acc
 								}, {}),

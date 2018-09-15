@@ -14,7 +14,7 @@ deploy/vendor
 deploy/.env
 deploy/.env.php
 deploy/storage
-
+deploy
 deploy/public/assets
 deploy/public/resources
 docs

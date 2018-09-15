@@ -1,6 +1,6 @@
 {% import '@helpers' as h %}
 
-<div class="relative overflow-hidden" data-ui="slide" data-ui-options='{{ options|json_encode }}'>
+<div class="relative overflow-hidden" data-ui="Slide" data-ui-options='{{ options|json_encode|raw }}'>
   <ul class="list-reset relative">
 
     {% block slideContent %}

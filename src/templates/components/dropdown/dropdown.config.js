@@ -7,7 +7,9 @@ module.exports = {
 		{
 			name: 'update',
 			context: {
-				options: {}
+				options: {
+					updateText: true
+				}
 			}
 		}
 	]

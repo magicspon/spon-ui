@@ -1,13 +1,20 @@
 module.exports = {
 	context: {
-		options: {}
+		key: 'default',
+		options: {
+			closeOthers: true
+		}
 	},
 
 	variants: [
 		{
 			name: 'multiple',
+			key: 'multiple',
 			context: {
-				options: {}
+				options: {
+					closeOthers: false,
+					activeIndex: 1
+				}
 			}
 		}
 	]

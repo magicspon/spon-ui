@@ -91,10 +91,48 @@
 
 @import 'print';
 
-// .is-current-root {
-// 	color: rgba(28, 84, 158, 0.8);
-// }
+.Frame {
+	.Header,
+	.Frame-panel--sidebar {
+		@apply .bg-black;
+	}
 
-// .is-current-parent {
-// 	color: rgba(57, 143, 36, 0.8);
-// }
+	.Tree-title {
+	}
+
+	.Tree-collectionLabel {
+		color: #a5a5b7;
+	}
+
+	//
+
+	.Tree-entityLink {
+		@apply .text-white;
+	}
+
+	.Tree-collectionLabel {
+		span {
+			&::before {
+				@apply pin-y my-auto;
+
+				opacity: 1;
+			}
+		}
+	}
+
+	.Browser-tab {
+		@apply bg-black;
+
+		a {
+			@apply text-white;
+		}
+	}
+
+	.Pen {
+		@apply bg-grey-darkest;
+	}
+
+	.Pen-previewLink {
+		@apply text-white;
+	}
+}

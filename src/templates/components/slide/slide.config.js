@@ -7,7 +7,9 @@ module.exports = {
 		{
 			name: 'pager',
 			context: {
-				options: {}
+				options: {
+					dots: true
+				}
 			}
 		}
 	]

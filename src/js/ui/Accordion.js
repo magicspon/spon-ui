@@ -48,8 +48,15 @@ export default class Accordion {
 	}
 
 	constructor(el, options, key) {
+		const { uiOptions } = el.dataset
 		this.options = { ...this.defaults, ...options }
 		this.key = key
+
+		if (uiOptions) {
+			this.options = { ...this.options, ...JSON.parse(uiOptions) }
+		}
+
+		log(this.options)
 
 		Object.assign(this, mitt())
 
@@ -63,7 +70,7 @@ export default class Accordion {
 			...this.$el.querySelectorAll('[data-accordion-button]')
 		].map((button, index) => {
 			const href = button.getAttribute('href')
-			const target = this.$el.querySelector(href)
+			const target = this.$el.querySelector(`${href} [data-accordion-content]`)
 
 			button.setAttribute('data-accordion-key', index)
 
