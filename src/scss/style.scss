@@ -2,7 +2,14 @@
   Third party dependencies
 */
 
+@import '../../node_modules/modularscale-sass/stylesheets/_modularscale.scss';
 @import '../../node_modules/sass-mq/mq.scss';
+@import 'susy';
+// @import 'plugins/svg-grid';
+// @import 'normalize';
+
+// @include normalize();
+
 @import '_system/core/units';
 @import '_system/core/colors';
 @import '_system/core/type';
@@ -10,25 +17,47 @@
 @import '_system/core/mq';
 @import '_system/core/misc';
 
-$breakpoints: (
-	sm: 576px,
-	md: 768px,
-	lg: 992px,
-	xl: 1200px
-);
+/*
+  JSON Output
+*/
+@import '_tokens/fonts';
+@import '_tokens/colors';
+@import '_tokens/breakpoints';
+
+/*
+  Settings
+*/
+
+@import '_config/base';
+@import '_config/dimensions';
+@import '_config/type-config';
+
+/*
+  Media query debugger
+*/
 
 @import '_system/debug';
 
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
+/*
+  Custom, site specific mixins
+*/
+
+@import '_system/site-mixins/mixins';
+
+/*
+  svg-symbols generated via `gulp symbols`
+*/
+
+@import '_system/gulp-output/svg-symbols';
+// @import '_system/gulp-output/svg-sprites';
+
+/*
+  Resets, and globals
+*/
 
 @tailwind preflight;
-@tailwind utilities;
 
-@import 'helpers/svg-symbols';
+@import 'framework/base';
 
 /*
   third party chuff
@@ -44,3 +73,28 @@ $breakpoints: (
 */
 
 @import '../templates/**/**/**/*';
+
+/*
+  Tailwindcss
+  see tailwind.config.js
+  https://tailwindcss.com/docs/what-is-tailwind/
+  Utilities and functions
+*/
+
+@tailwind utilities;
+
+@import 'framework/custom';
+
+/*
+  Print styles
+*/
+
+@import 'print';
+
+// .is-current-root {
+// 	color: rgba(28, 84, 158, 0.8);
+// }
+
+// .is-current-parent {
+// 	color: rgba(57, 143, 36, 0.8);
+// }

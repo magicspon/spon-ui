@@ -1,11 +1,5 @@
-.c-tab__item--active {
-	position: relative;
-	visibility: visible;
-	pointer-events: auto;
-}
+// no-js version
 
-.c-tabs__item {
-	p {
-		margin-bottom: gutter(1);
-	}
+[data-tab-item]:target {
+	@apply relative visible pointer-events-auto;
 }

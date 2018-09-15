@@ -41,7 +41,7 @@
 		}
 	}
 
-	:target {
+	.c-nav__dropdown:target {
 		@apply .opacity-100 .pointer-events-auto .block;
 
 		transform: translate3d(0, 0, 0);

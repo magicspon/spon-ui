@@ -1,0 +1,34 @@
+{
+	"public": "./deploy/public",
+
+	"browserSync": {
+		"proxy": "http://local.mudfractal.com"
+	},
+
+	"inline": {
+		"output": "_layout.twig",
+		"path": "./deploy/templates/wrapper/"
+	},
+
+	"inlineSvgs": {
+		"src": "images/svg-inline",
+		"dest": "./deploy/templates/svgs"
+	},
+
+	"tags": {
+		"src": "./deploy/templates/wrapper/_layout.twig",
+		"dest": "./deploy/templates/wrapper/",
+		"css": "/dist/css/",
+		"js": "/dist/js/"
+	},
+
+	"critical": {
+		"urlBase": "./deploy/library/",
+		"paths": [
+			{
+				"url": "./deploy/library/components/preview/home.html",
+				"source": "src/templates/05-pages/home/home.twig"
+			}
+		]
+	}
+}

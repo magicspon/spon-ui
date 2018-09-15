@@ -1,5 +1,3 @@
-import { plugin } from 'gulp-postcss/node_modules/postcss'
-
 const gulp = require('gulp')
 const rename = require('gulp-rename')
 const sass = require('gulp-sass')
@@ -17,11 +15,11 @@ const postcssTriangle = require('postcss-triangle')
 const objectFitImages = require('postcss-object-fit-images')
 const styleLint = require('gulp-stylelint')
 const rucksack = require('rucksack-css')
+const gradients = require('postcss-easing-gradients')
 const sassVariables = require('gulp-sass-variables')
 const browserSync = require('browser-sync')
 const { handleErrors } = require('../utils/logs')
 const tailwindcss = require('tailwindcss')
-const uncss = require('postcss-uncss')
 const path = require('path')
 const util = require('gulp-util')
 
@@ -69,75 +67,64 @@ function scss() {
 		writeSVG({
 			encoding: 'base64'
 		}),
+		gradients(),
 		tailwindcss(`${base}/tailwind.config.js`),
 		autoprefixer(TASK_CONFIG.scss.autoprefixer)
 	]
 
-	// if(PRODUCTION) {
-	// 	plugins.push(
-	// 		postcss({
-
-	// 		})
-	// 	)
-	// }
-
-	return (
-		gulp
-			.src([paths.src, paths.components])
-			.pipe(
-				styleLint({
-					debug: true,
-					failAfterError: false,
-					syntax: 'scss',
-					reporters: [
-						{
-							formatter: 'string',
-							console: true
-						}
-					]
+	return gulp
+		.src([paths.src, paths.components])
+		.pipe(
+			styleLint({
+				debug: true,
+				failAfterError: false,
+				syntax: 'scss',
+				reporters: [
+					{
+						formatter: 'string',
+						console: true
+					}
+				]
+			})
+		)
+		.on('error', handleErrors)
+		.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
+		.pipe(sassGlob())
+		.pipe(
+			sassVariables({
+				$env: PRODUCTION ? 'production' : util.env.test ? 'test' : 'development'
+			})
+		)
+		.pipe(
+			sass({
+				...TASK_CONFIG.scss.options,
+				includePaths: [
+					path.resolve(process.env.PWD, 'node_modules/normalize-scss/sass'),
+					path.resolve(process.env.PWD, 'node_modules/susy/sass')
+				]
+			})
+		)
+		.on('error', handleErrors)
+		.pipe(
+			gulpif(
+				!PRODUCTION,
+				sourcemaps.init({
+					loadMaps: true
 				})
 			)
-			.on('error', handleErrors)
-			.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
-			.pipe(sassGlob())
-			.pipe(
-				sassVariables({
-					$env: PRODUCTION
-						? 'production'
-						: util.env.test ? 'test' : 'development'
+		)
+		.pipe(postcss(plugins))
+		.on('error', handleErrors)
+		.pipe(gulpif(PRODUCTION, cssnano(TASK_CONFIG.scss.cssnanoOptions)))
+		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+		.pipe(
+			gulpif(
+				PRODUCTION,
+				rename({
+					suffix: `.${TASK_CONFIG.stamp}`
 				})
 			)
-			.pipe(
-				sass({
-					...TASK_CONFIG.scss.options,
-					includePaths: [
-						path.resolve(process.env.PWD, 'node_modules/normalize-scss/sass'),
-						path.resolve(process.env.PWD, 'node_modules/susy/sass')
-					]
-				})
-			)
-			.on('error', handleErrors)
-			.pipe(
-				gulpif(
-					!PRODUCTION,
-					sourcemaps.init({
-						loadMaps: true
-					})
-				)
-			)
-			.pipe(postcss(plugins))
-			.on('error', handleErrors)
-			.pipe(gulpif(PRODUCTION, cssnano(TASK_CONFIG.scss.cssnanoOptions)))
-			.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-			// .pipe(
-			// 	gulpif(
-			// 		PRODUCTION,
-			// 		rename({
-			// 			suffix: `.${TASK_CONFIG.stamp}`
-			// 		})
-			// 	)
-			// )
-			.pipe(gulp.dest(paths.dest))
-			.pipe(browserSync.stream())
-	)
+		)
+		.pipe(gulp.dest(paths.dest))
+		.pipe(browserSync.stream())
 }

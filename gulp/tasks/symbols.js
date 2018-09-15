@@ -85,25 +85,25 @@ function symbols() {
 		return file.contents.toString()
 	}
 
-	// gulp
-	// 	.src(paths.docsSrc)
-	// 	.pipe(
-	// 		inject(
-	// 			gulp.src(paths.src, {
-	// 				read: false
-	// 			}),
-	// 			{
-	// 				starttag: '"symbols": [',
-	// 				endtag: ']',
-	// 				transform: function(filepath, file, i, length) {
-	// 					return `"${file.relative.split('.svg')[0]}"${i + 1 < length
-	// 						? ','
-	// 						: ''}`
-	// 				}
-	// 			}
-	// 		)
-	// 	)
-	// 	.pipe(gulp.dest(paths.docsDest))
+	gulp
+		.src(paths.docsSrc)
+		.pipe(
+			inject(
+				gulp.src(paths.src, {
+					read: false
+				}),
+				{
+					starttag: '"symbols": [',
+					endtag: ']',
+					transform: function(filepath, file, i, length) {
+						return `"${file.relative.split('.svg')[0]}"${i + 1 < length
+							? ','
+							: ''}`
+					}
+				}
+			)
+		)
+		.pipe(gulp.dest(paths.docsDest))
 
 	return gulp
 		.src(paths.sourceFile)

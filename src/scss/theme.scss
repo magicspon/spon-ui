@@ -1,1 +1,6 @@
+@tailwind preflight;
+@tailwind utilities;
 
+.Header {
+	@apply .bg-black;
+}

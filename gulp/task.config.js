@@ -1,8 +1,10 @@
 const path = require('path')
-const $pkg = require(path.resolve(process.env.PWD, 'package.json'))
+const util = require('gulp-util')
+
+const { env } = util.env
 
 module.exports = {
-	title: $pkg.name,
+	title: 'Mud-Fractal',
 	mode: 'fractal',
 
 	cms: {
@@ -11,7 +13,19 @@ module.exports = {
 		extensions: ['twig']
 	},
 
-	critical: false,
+	critical: {
+		minify: true,
+		width: 1024,
+		height: 768
+	},
+
+	// set task/watch to false when using fractal mode
+	html: {
+		task: false,
+		watch: false,
+		extensions: ['twig', 'html', 'json'],
+		excludeFolders: ['__data', 'wrapper', 'macros']
+	},
 
 	fractal: {
 		layout: 'wrapper/_base.twig',
@@ -62,24 +76,19 @@ module.exports = {
 
 	js: {
 		entries: {
-			//common: ['axios'],
-			app: ['./app.js']
-		},
-		hot: {
-			enabled: true,
-			reload: true,
-			quiet: true,
-			react: false
+			app:
+				env !== 'production'
+					? [
+						'webpack/hot/dev-server',
+						'webpack-hot-middleware/client',
+						'./app.js'
+					  ]
+					: ['./app.js'],
+			preview: ['./app.js']
 		},
 		extensions: ['js', 'json'],
 		extractSharedJs: false,
 		filename: 'bundle' // no extension
-	},
-
-	serviceWorker: {
-		watch: true,
-		task: 'code',
-		extensions: ['js']
 	},
 
 	json: {
@@ -106,6 +115,10 @@ module.exports = {
 		filename: 'style' // no extension
 	},
 
+	purge: {
+		whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/, /icon--/]
+	},
+
 	images: {
 		task: 'asset',
 		watch: true,
@@ -113,6 +126,12 @@ module.exports = {
 	},
 
 	svgs: {
+		task: 'asset',
+		watch: true,
+		extensions: ['svg']
+	},
+
+	inlineSvgs: {
 		task: 'asset',
 		watch: true,
 		extensions: ['svg']
@@ -169,19 +188,20 @@ module.exports = {
 		task: 'asset',
 		watch: true,
 		scssTemplate: '../gulp/utils/symbols.tmp.scss',
-		scssOutputPath: 'scss/helpers/',
+		scssOutputPath: 'scss/_system/gulp-output/',
 		scssOutputFile: '_svg-symbols.scss',
 		sourceFile: 'images/svg-symbols/source.html',
 		fileName: 'symbols.twig',
 		extensions: ['svg']
 	},
+	
 
-	tokens: {
-		task: false,
-		watch: false,
-		prefix: '$tokens: ',
-		extensions: ['json']
+	inlineSvgs: {
+		task: 'asset',
+		watch: true,
+		extensions: ['svg']
 	},
+
 
 	watch: {
 		gulpWatch: {
@@ -202,35 +222,36 @@ module.exports = {
 			selector: ['body']
 		},
 		config: {
-			id: 'backstop_prod_test',
-			vieoutputorts: [
+			id: 'backstop_default',
+			viewports: [
 				{
-					name: 'phone',
+					label: 'phone',
 					width: 320,
 					height: 480
 				},
 				{
-					name: 'tablet',
-					width: 780,
-					height: 1024
-				},
-				{
-					name: 'desktop',
-					width: 1120,
-					height: 700
+					label: 'tablet',
+					width: 1024,
+					height: 768
 				}
 			],
+			onBeforeScript: 'chromy/onBefore.js',
+			onReadyScript: 'chromy/onReady.js',
+			scenarios: [],
 			paths: {
 				bitmaps_reference: '__snapshots/bitmaps_reference',
 				bitmaps_test: '__snapshots/bitmaps_test',
-				casper_scripts: '__snapshots/casper_scripts',
+				engine_scripts: '__snapshots/engine_scripts',
 				html_report: '__snapshots/html_report',
 				ci_report: '__snapshots/ci_report'
 			},
-			casperFlags: [],
-			engine: 'phantomjs',
 			report: ['browser'],
-			debug: false
+			engine: 'chrome',
+			engineFlags: [],
+			asyncCaptureLimit: 5,
+			asyncCompareLimit: 50,
+			debug: false,
+			debugWindow: false
 		}
 	}
 }

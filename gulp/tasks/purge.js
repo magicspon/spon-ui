@@ -1,13 +1,14 @@
 const gulp = require('gulp')
 const purgecss = require('gulp-purgecss')
 const purgeHtml = require('purge-from-html')
+// const purgeJs = require('purgecss-from-js')
 const path = require('path')
 
-module.exports = {
-	purge
+class TailwindExtractor {
+	static extract(content) {
+		return content.match(/[A-z0-9-:\/]+/g) || []
+	}
 }
-
-gulp.task('purge', purge)
 
 function purge() {
 	const build = path.resolve(
@@ -16,31 +17,34 @@ function purge() {
 		PATH_CONFIG.dist
 	)
 
-	const html = path.resolve(
-		process.env.PWD,
-		PATH_CONFIG.src,
-		PATH_CONFIG.fractal.src,
-		'**/**/*.twig'
-	)
+	const html = path.resolve(process.env.PWD, 'src', 'templates/**/**', '*.twig')
+	const js = path.resolve(process.env.PWD, 'src/js/**/**/*.js')
 
 	return new Promise((resolve, reject) => {
-		log('PURGE')
 		gulp
 			.src(path.resolve(build, `css/style.${TASK_CONFIG.stamp}.css`))
 			.pipe(
 				purgecss({
-					content: [html],
+					content: [html, js],
 					extractors: [
 						{
-							extractor: purgeHtml,
-							extensions: ['twig']
+							extractor: TailwindExtractor,
+							extensions: ['twig', 'js']
 						}
 					],
-					whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/]
+					whitelistPatterns: TASK_CONFIG.purge.whitelistPatterns
 				})
 			)
 			.on('error', reject)
 			.pipe(gulp.dest(`${build}/css`))
-			.on('end', resolve)
+			.on('end', () => {
+				resolve()
+			})
 	})
 }
+
+module.exports = {
+	purge
+}
+
+gulp.task('purge', purge)

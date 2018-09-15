@@ -1,0 +1,31 @@
+.c-dropdown {
+}
+
+.c-dropdown__btn {
+	&::after {
+		@apply .border-b .border-l .border-blue .block .z-10 .pointer-events-none;
+
+		content: ' ';
+		margin-top: rem(-5px);
+		height: rem(10px);
+		width: rem(10px);
+		transform: rotate(-45deg);
+		transform-origin: center;
+	}
+}
+
+.c-dropdown__menu {
+	top: 100%;
+	transform: translate3d(0, rem(-5px), 0) scale(0.8);
+	transform-origin: 0% 0%;
+	transition: transform 300ms ease, opacity 300ms ease, visibility 0ms 300ms;
+	opacity: 0;
+
+	&.is-open {
+		visibility: visible;
+		pointer-events: auto;
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+		transition-delay: 0ms;
+	}
+}

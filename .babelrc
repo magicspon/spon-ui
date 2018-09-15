@@ -1,3 +1,52 @@
 {
-	"presets": ["env", "stage-0"]
+	"presets": [
+		[
+			"env",
+			{
+				"targets": {
+					"browsers": [">0.25%", "not ie 11", "not op_mini all"]
+				},
+				"modules": false
+			}
+		]
+	],
+	"plugins": [
+		"transform-object-rest-spread",
+		"transform-class-properties",
+		"syntax-dynamic-import",
+		"transform-async-to-generator",
+
+		[
+			"transform-regenerator",
+			{
+				"asyncGenerators": true,
+				"generators": true,
+				"async": true
+			}
+		]
+	],
+
+	"env": {
+		"development": {
+			"plugins": ["ramda"]
+		},
+		"production": {
+			"plugins": ["ramda"]
+		},
+		"test": {
+			"plugins": [
+				"transform-es2015-modules-commonjs",
+				"dynamic-import-node",
+				[
+					"module-resolver",
+					{
+						"alias": {
+							"@": "./src/js/",
+							"~": "./src/templates/"
+						}
+					}
+				]
+			]
+		}
+	}
 }

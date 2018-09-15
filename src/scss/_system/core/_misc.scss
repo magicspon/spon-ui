@@ -24,7 +24,3 @@
 		@content;
 	}
 }
-
-@function ratio($x, $y) {
-	@return percentage($x /$y);
-}

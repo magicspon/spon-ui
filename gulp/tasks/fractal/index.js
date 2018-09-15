@@ -18,7 +18,21 @@ const { exportPaths } = require('./utils')
 	fractal.components.engine(require('@frctl/twig')(templateEngine(stamp)))
 	fractal.components.set('default.preview', '@base')
 	fractal.components.set('default.status', 'wip')
-	fractal.components.set('default.collated', false)
+	fractal.components.set('default.collated', true)
+
+	fractal.components.set(
+		'default.collator',
+		(markup, item) =>
+			`<!-- Start: @${item.handle} -->
+			<div style="margin: 0 0 40px 0;">
+				<h3 style="font-size: 14px; margin-bottom: 20px; color: rgba(83, 83, 99, 0.5); padding: 10px 40px; background-color: rgba(83, 83, 99, 0.075)">${item.handle}</h3>
+				<div style="padding: 20px 40px">
+					\n${markup}\n
+				</div>
+			</div>
+			<!-- End: @${item.handle} -->\n`
+	)
+
 	fractal.components.set('ext', '.twig')
 	fractal.components.set(
 		'path',

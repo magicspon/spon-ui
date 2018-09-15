@@ -2,10 +2,11 @@
 # ----------------------------------------------------------------------
 tmp
 private
-public
-
 .netlify
 
+# test output
+# ---------------------------------------------------------------------
+__snapshots/bitmaps_test
 
 # cms
 # ----------------------------------------------------------------------
@@ -14,7 +15,9 @@ deploy/.env
 deploy/.env.php
 deploy/storage
 
-deploy/web/assets
+deploy/public/assets
+deploy/public/resources
+docs
 
 
 # fractal
@@ -25,7 +28,6 @@ deploy/library
 # NodeJS modules folder
 # ----------------------------------------------------------------------
 node_modules
-_node_modules
 
 # Craft runtime and backups folders
 # ----------------------------------------------------------------------

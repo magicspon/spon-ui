@@ -22,6 +22,12 @@
   }
 }
 
+.icon--ui-chevron-down {
+  width: rem(20px);
+  &:after {
+    padding-bottom: 65%;
+  }
+}
 .icon--ui-close {
   width: rem(22.4px);
   &:after {
@@ -52,6 +58,12 @@
     padding-bottom: 192%;
   }
 }
+.icon--ui-tick {
+  width: rem(22px);
+  &:after {
+    padding-bottom: 100%;
+  }
+}
 .icon--ui-twitter {
   width: rem(20.82px);
   &:after {
@@ -67,6 +79,10 @@
 
 
 
+
+$icon--ui-chevron-down-width: 20px;
+$icon--ui-chevron-down-height: 13px;
+$icon--ui-chevron-down-ratio: 0.65;
 
 $icon--ui-close-width: 22px;
 $icon--ui-close-height: 22px;
@@ -87,6 +103,10 @@ $icon--ui-next-ratio: 1.92;
 $icon--ui-prev-width: 25px;
 $icon--ui-prev-height: 48px;
 $icon--ui-prev-ratio: 1.92;
+
+$icon--ui-tick-width: 22px;
+$icon--ui-tick-height: 22px;
+$icon--ui-tick-ratio: 1;
 
 $icon--ui-twitter-width: 20px;
 $icon--ui-twitter-height: 16px;

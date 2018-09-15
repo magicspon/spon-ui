@@ -3,11 +3,13 @@ const svgmin = require('gulp-svgmin')
 const browserSync = require('browser-sync')
 const path = require('path')
 
-module.exports = {
-	svgs
+function optimiseSVGS(src, dest) {
+	return gulp
+		.src(src)
+		.pipe(svgmin())
+		.pipe(gulp.dest(dest))
+		.pipe(browserSync.stream())
 }
-
-gulp.task('svgs', svgs)
 
 function svgs() {
 	const paths = {
@@ -24,9 +26,24 @@ function svgs() {
 		)
 	}
 
-	return gulp
-		.src(paths.src)
-		.pipe(svgmin())
-		.pipe(gulp.dest(paths.dest))
-		.pipe(browserSync.stream())
+	optimiseSVGS(paths.src, paths.dest)
 }
+
+function inlineSvgs() {
+	const src = path.resolve(
+		process.env.PWD,
+		PATH_CONFIG.src,
+		PATH_CONFIG.inlineSvgs.src,
+		'*.svg'
+	)
+
+	optimiseSVGS(src, PATH_CONFIG.inlineSvgs.dest)
+}
+
+module.exports = {
+	svgs,
+	inlineSvgs
+}
+
+gulp.task('svgs', svgs)
+gulp.task('inlineSvgs', inlineSvgs)

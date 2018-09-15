@@ -1,21 +1,41 @@
-<div class="c-dropdown relative inline-flex" data-ui="dropdown">
-  <button data-dropdown-button class="c-dropdown__btn no-apperance border py-2 px-2 relative inline-flex items-center justify-between" aria-haspopup="true" aria-controls="dropdown-menu">
-    <span class="mr-2" data-dropdown-label>Dropdown button</span>
-  </button>
-  <div class="c-dropdown__menu absolute pt-1 z-2 invisible pointer-events-none" id="dropdown-menu" data-dropdown-menu role="menu" data-flip-key="dropdown">
-    <div class="border">
-      <a href="#0" class="block px-2 py-2 whitespace-no-wrap no-underline">
-        Dropdown item
-      </a>
-      <a href="#0" class="block px-2 py-2 whitespace-no-wrap no-underline">
-        Other dropdown item
-      </a>
-      <a href="#0" class="block px-2 py-2 whitespace-no-wrap no-underline">
-        Active dropdown item
-      </a>
-      <a href="#0" class="block px-2 py-2 whitespace-no-wrap no-underline">
-        Other dropdown item
-      </a>
-    </div>
-  </div>
+{% import '@helpers' as h %}
+
+{# dropdown requirements:
+	
+	data-ui="Dropdown" needs to be on the root node
+
+	the button to open/close should have data-dropdown-button
+	the dropdown needs to have data-dropdown-menu
+	and each drop down link should have data-dropdown-item
+
+	is-open class is applied to the data-dropdown-menu element
+
+#}
+
+<div class="c-dropdown relative" 
+	data-ui="Dropdown" data-ui-options='{{ options|default({})|json_encode|raw }}'
+	data-ui-key="{{ uiKey|default('downloads-dropdown') }}"
+>
+	<button data-dropdown-button aria-controls="dropdown-menu-{{ key|default('products') }}" aria-haspopup="true" class="c-dropdown__btn bg-grey-lighter p-0-5 no-underline w-full flex items-center justify-between text-grey-darkest">
+		<span class="mr-1" data-dropdown-text>{{ label|default('View Products') }}</span>
+		<span class="trans c-dropdown__icon">{{ h.symbol('ui-chevron-down') }}</span>
+	</button>
+	<div class="c-dropdown__menu invisible absolute z-20 pointer-events-none w-full bg-white" data-dropdown-menu role="menu">
+		<ul class="list-reset">
+			<li class="bg-grey-lightest hidden" data-dropdown-reset role="button" tabindex="0">
+				<span class="py-0-5 px-0-75 w-full no-underline flex items-center justify-between text-grey text-body bg-grey-light">
+					Reset
+					<span class="block">{{ h.symbol('ui-close') }}</span>
+				</span>
+			</li>
+		  {% for i in range(1, 5) %}
+				<li>
+					<a data-dropdown-item data-value="{{ option.name }}" href="{{ option.url|default('#0') }}" class="p-0-5 w-full bg-grey-lighter no-underline flex items-center justify-between text-grey-darker">
+						{{ loop.index }}
+						{% if icon %}<span class="block">{{ h.symbol('ui-' ~ icon) }}</span>{% endif %}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
 </div>

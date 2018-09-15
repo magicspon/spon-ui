@@ -1,17 +1,19 @@
-<div className="c-accordion" aria-multiselectable="true">
+{% import '@helpers' as h %}
+
+<ul class="c-accordion list-reset" aria-multiselectable="true" role="tablist" data-ui="accordion" data-ui-options='{{ options|json_encode }}'>
   {% for i in range(0, 5) %}
-    <div data-accordion class="relative overflow-hidden" class="mb-4">
-      <button data-accordion-button class="appearance-none w-full py-2 text-left font-bold">
+    <li id="item-{{ i }}" data-accordion class="relative overflow-hidden bg-grey-lighter mb-0-25">
+      <a role="tab" href="#item-{{ i }}" data-accordion-button class="appearance-none p-0-5 w-full py-0-5 text-left font-bold no-underline text-grey-darker flex justify-content items-center">
         Panel {{ loop.index }}
-      </button>
-      <div data-accordion-content>
-        <div class="py-2">
-          <h2 class="mb-2">Title {{ loop.index }}</h2>
+      </a>
+      <div data-accordion-content class="hidden border-b-2 border-blue p-0-5">
+        <div class="py-1 ">
+          <h2 class="mb-1">Title {{ loop.index }}</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus natus quia numquam fugit dolore, non distinctio deserunt dignissimos minus! Et.
           </p>
         </div>
       </div>
-    </div>
+    </li>
   {% endfor %}
-</div>
+</ul>

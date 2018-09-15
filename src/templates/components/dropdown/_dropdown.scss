@@ -1,31 +1,40 @@
-.c-dropdown {
-}
-
 .c-dropdown__btn {
-	&::after {
-		@apply .border-b .border-l .border-blue .block .z-10 .pointer-events-none;
+	&.is-active {
+		@apply bg-grey-lightest;
 
-		content: ' ';
-		margin-top: rem(-5px);
-		height: rem(10px);
-		width: rem(10px);
-		transform: rotate(-45deg);
-		transform-origin: center;
+		.c-dropdown__icon {
+			@apply .rotate-180;
+		}
+	}
+
+	.icon {
+		width: rem(15px);
 	}
 }
 
 .c-dropdown__menu {
 	top: 100%;
-	transform: translate3d(0, rem(-5px), 0) scale(0.8);
 	transform-origin: 0% 0%;
-	transition: transform 300ms ease, opacity 300ms ease, visibility 0ms 300ms;
+	transition: opacity 300ms ease, visibility 0ms 300ms;
 	opacity: 0;
 
 	&.is-open {
 		visibility: visible;
 		pointer-events: auto;
 		opacity: 1;
-		transform: translate3d(0, 0, 0);
 		transition-delay: 0ms;
+	}
+
+	[data-dropdown-item] {
+		&:focus,
+		&.is-selected {
+			@apply bg-white;
+
+			outline: 0;
+		}
+
+		&.is-selected {
+			opacity: 0.5;
+		}
 	}
 }

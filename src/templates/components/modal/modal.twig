@@ -1,17 +1,20 @@
 {% import '@helpers' as h %}
 
-{% include '@button' with { text: 'Open Modal', attributes: 'data-micromodal-trigger="modal-1"' } %}
-<div class="c-modal" id="modal-1" aria-hidden="true">
-  <div tabindex="-1" data-micromodal-close class="fixed pin flex items-center justify-center bg-black-60pc">
-    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" class="relative bg-white overflow-y-scroll max-h-screen w-full max-w-md p-5">
-      <header class="mb-3"> 
-        <h2>Modal Title</h2>
-        {% include '@close-button' with { attributes: 'aria-label="Close modal" data-micromodal-close' } %}
-      </header>
-      <div class="mb-3">
-        Modal Content
-      </div>
-      {% include '@button' with { text: 'Close', attributes: 'data-micromodal-close aria-label="Close this dialog window"' } %}
-    </div>
-  </div>
+
+<a href="#{{ target }}" class="text-grey-dark">Open modal</a>
+
+
+<div id="{{ target }}" class="hidden" data-name="{{ name }}">
+  modal contents
+</div>
+
+
+<div class="c-modal perf-fixed pin w-full bg-black-60 opacity-0 z--1 flex items-center justify-center pointer-events-none">
+	<div class="c-modal__inner relative bg-white">
+		<a class="absolute text-grey pin-t pin-r pt-1 pr-1 trans" data-modal-close="" href="#0">
+			<span class="visuallyhidden">Close</span>
+			<i class="icon icon--ui-close"><svg><use xlink:href="#ui-close"></use></svg></i>
+		</a>
+		<div class="c-modal__content bg-white"></div>
+	</div>
 </div>
