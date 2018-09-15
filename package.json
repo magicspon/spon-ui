@@ -1,5 +1,5 @@
 {
-	"name": "mud-fractal",
+	"name": "spon-ui",
 	"description": "Gulp tasks and Fractal",
 	"version": "2.0.1",
 	"main": "gulpfile.babel.js",
