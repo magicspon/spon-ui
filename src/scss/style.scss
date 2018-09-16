@@ -49,7 +49,6 @@
 */
 
 @import '_system/gulp-output/svg-symbols';
-// @import '_system/gulp-output/svg-sprites';
 
 /*
   Resets, and globals
@@ -91,7 +90,6 @@
 
 @import 'print';
 
-/* purgecss start ignore */
 .Frame {
 	.Header,
 	.Frame-panel--sidebar {
@@ -137,5 +135,3 @@
 		@apply text-white;
 	}
 }
-
-/* purgecss end ignore */

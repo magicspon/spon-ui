@@ -9,7 +9,7 @@
 
 	"symbols": {
 		"src": "**/*.symbol.svg",
-		"scss": "./src/scss/output",
+		"scss": "./src/scss/_system/gulp-output",
 		"html": "./src/templates/_wrapper"
 	},
 
