@@ -1,0 +1,32 @@
+{
+	"src": "./src/",
+	"static": "./static/",
+	"public": "./tmp/public/",
+	"library": "./deploy/library",
+	"craft": "./deploy/",
+
+	"images": "**/*.+(jpg|jpeg|png|gif|svg)",
+
+	"symbols": {
+		"src": "**/*.symbol.svg",
+		"scss": "./src/scss/output",
+		"html": "./src/templates/_wrapper"
+	},
+
+	"js": {
+		"src": "js",
+		"dest": "dist/js",
+		"libs": ["./node_modules/picturefill/dist/picturefill.min.js"]
+	},
+
+	"scss": {
+		"src": ["scss/**/**/*.scss", "templates/**/**/*.scss"],
+		"dest": "dist/css"
+	},
+
+	"files": {
+		"exclude": "**/*.+(jpg|jpeg|png|gif|svg|css|js)",
+		"dotFiles": ".*",
+		"include": "**/*.*"
+	}
+}

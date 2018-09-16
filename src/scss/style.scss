@@ -91,6 +91,7 @@
 
 @import 'print';
 
+/* purgecss start ignore */
 .Frame {
 	.Header,
 	.Frame-panel--sidebar {
@@ -136,3 +137,5 @@
 		@apply text-white;
 	}
 }
+
+/* purgecss end ignore */

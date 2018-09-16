@@ -1,61 +1,29 @@
-const {
-	getPathConfig,
-	getTaskConfig,
-	getWebpackConfig
-} = require('./gulp/utils/paths')
 const requireDir = require('require-dir')
-const util = require('gulp-util')
-const path = require('path')
 const deepmerge = require('deepmerge')
-const PATH_CONFIG = getPathConfig()
-const TASK_CONFIG = getTaskConfig()
+const argList = require('./scripts/utils/argv')
+const TASK_CONFIG = require('./scripts/task.config')
+let PATH_CONFIG = require('./scripts/path.config.json')
+const { config, env } = argList(process.argv)
 
-// Fallback for windows backs out of node_modules folder to root of project
-process.env.PWD = process.env.PWD || __dirname
-
-const { env } = util.env
-let PATHS = PATH_CONFIG
-global.SERVER = PATHS.browserSync
-
-if (util.env.config) {
+if (config) {
 	try {
-		const PATH_OVERWRITES = require(path.resolve(
-			process.env.PWD,
-			`gulp/path.config.${util.env.config}.json`
-		))
-		PATHS = deepmerge(PATH_CONFIG, PATH_OVERWRITES)
-
-		global.SERVER = PATH_OVERWRITES.browserSync || global.SERVER
+		const pathConfig = require(`./scripts/path.config.${config}.json`) // eslint-disable-line import/no-dynamic-require
+		PATH_CONFIG = deepmerge(PATH_CONFIG, pathConfig)
 	} catch (e) {
 		throw new Error(
-			`gulp/path.config.${util.env.config}.json can not be found, ${e.name}: ${
+			`scripts/path.config.${config}.json can not be found, ${e.name}: ${
 				e.message
 			}`
 		)
 	}
 }
 
-global.env = env ? env : 'development'
+global.env = env || 'development'
 global.PRODUCTION = global.env === 'production'
-global.PATH_CONFIG = PATHS
 global.TASK_CONFIG = TASK_CONFIG
-global.BUILD_TYPE = util.env.config
-global.WEBPACK_CONFIG = getWebpackConfig(global.env)
-global.log = util.log
+global.PATH_CONFIG = PATH_CONFIG
+global.WEBPACK_CONFIG = require('./scripts/webpack/config.dev.js')(global.env)
 
-log(
-	` 
-	                 __        
-	.--------.--.--.|  |.-----.
-	|        |  |  ||  ||  _  |
-	|__|__|__|_____||__||   __|
-                            |__|
-	
-	ENV: ${global.env}, MODE: ${TASK_CONFIG.mode}, CONFIG: ${
-	util.env.config ? util.env.config : 'development'
-}`
-)
-
-requireDir('./gulp/tasks', {
+requireDir('./scripts/tasks', {
 	recurse: true
 })
