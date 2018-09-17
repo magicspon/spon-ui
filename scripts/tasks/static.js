@@ -11,8 +11,9 @@ const browserSync = require('browser-sync')
 
 const {
 	getStaticPaths,
-	getStaticDist,
-	getPublicPath
+	getPublicDist,
+	getPublicPath,
+	getSrcPaths
 } = require('../utils/paths')
 
 const exclude = path.resolve(
@@ -47,16 +48,15 @@ const images = () =>
 				imagemin.gifsicle({ interlaced: true }),
 				imagemin.jpegtran({ progressive: true }),
 				imagemin.optipng({ optimizationLevel: 5 })
-				// imagemin.svgo()
 			])
 		)
-		.pipe(gulp.dest(getStaticDist('dist')))
+		.pipe(gulp.dest(getPublicDist('dist')))
 		.pipe(browserSync.stream())
 
 const symbols = () => {
 	const svgs = gulp
 		.src(getStaticPaths(PATH_CONFIG.symbols.src))
-		// .pipe(svgmin())
+		.pipe(svgmin())
 		.pipe(
 			svgSymbols({
 				id: 'icon--%f',
@@ -69,9 +69,8 @@ const symbols = () => {
 				]
 			})
 		)
-		.pipe(gulpif(/[.]svg$/, gulp.dest(getStaticDist('img'))))
 		.pipe(gulpif(/[.]scss$/, rename('_svg-symbols.scss')))
-		.pipe(gulpif(/[.]scss$/, gulp.dest(PATH_CONFIG.symbols.scss)))
+		.pipe(gulpif(/[.]scss$/, gulp.dest(getSrcPaths(PATH_CONFIG.symbols.scss))))
 
 	function fileContents(filePath, file) {
 		return file.contents.toString()

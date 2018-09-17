@@ -1,16 +1,14 @@
 // const faker = require('faker')
 
-function templateEngine(stamp) {
+module.exports = function templateEngine(stamp) {
 	return {
 		filters: {},
 		functions: {
 			getStamp() {
-				return stamp
+				return {
+					stamp
+				}
 			}
 		}
 	}
-}
-
-module.exports = {
-	templateEngine
 }

@@ -24,6 +24,19 @@ global.TASK_CONFIG = TASK_CONFIG
 global.PATH_CONFIG = PATH_CONFIG
 global.WEBPACK_CONFIG = require('./scripts/webpack/config.dev.js')(global.env)
 
+console.log(
+	` 
+	                 __        
+	.--------.--.--.|  |.-----.
+	|        |  |  ||  ||  _  |
+	|__|__|__|_____||__||   __|
+                            |__|
+	
+	ENV: ${global.env}, MODE: ${TASK_CONFIG.mode}, CONFIG: ${
+	env ? config : 'development'
+}`
+)
+
 requireDir('./scripts/tasks', {
 	recurse: true
 })

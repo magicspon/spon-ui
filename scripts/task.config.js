@@ -60,7 +60,38 @@ module.exports = {
 	fractal: {
 		title: 'Mud-ui',
 		layout: 'wrapper/_base.twig',
+		base: '@base',
 		context: {},
+		collated: true,
+		collator(markup, item) {
+			return `<!-- Start: @${item.handle} -->
+			<div style="margin: 0 0 40px 0;">
+				<h3 style="font-size: 14px; margin: 0 0 20px; color: rgba(83, 83, 99, 0.5); padding: 10px 40px; background: rgba(83, 83, 99, 0.075)">${
+	item.handle
+}</h3>
+				<div style="padding: 20px 40px">
+					\n${markup}\n
+				</div>
+			</div>
+			<!-- End: @${item.handle} -->\n`
+		},
+
+		server: {
+			watch: true,
+			logFileChanges: true,
+			watchOptions: {
+				ignoreInitial: true,
+				ignored: ['**/*.js', '**/*.scss', '!**/*.config.js', '**/*.json']
+			},
+			files: [
+				{
+					options: {
+						ignored: '**/*.hot-update.json'
+					}
+				}
+			]
+		},
+
 		statuses: {
 			tool: {
 				label: 'Prototype',

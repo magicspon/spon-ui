@@ -1,35 +1,22 @@
-const path = require('path')
 const webpack = require('webpack')
-const { fractal } = require('./')
-const { pathToUrl } = require('../utils/paths')
+const fractal = require('./core')
+const { getPublicPath } = require('../utils/paths')
 
-function fractalServer() {
+function server() {
 	const compiler = webpack(global.WEBPACK_CONFIG)
 	const logger = fractal.cli.console
 
 	fractal.web.set('server.syncOptions', {
-		baseDir: path.resolve(process.env.PWD, PATH_CONFIG.public),
+		baseDir: getPublicPath(),
 		middleware: [
 			require('webpack-dev-middleware')(compiler, {
 				stats: 'errors-only',
-				publicPath: pathToUrl('/', TASK_CONFIG.js.publicPath)
+				publicPath: TASK_CONFIG.js.publicPath
 			}),
 			require('webpack-hot-middleware')(compiler)
 		],
-		watch: true,
-		logFileChanges: true,
-		watchOptions: {
-			ignoreInitial: true,
-			ignored: ['**/*.js', '**/*.scss', '!**/*.config.js', '**/*.json']
-		},
-		files: [
-			{
-				options: {
-					ignored: '**/*.hot-update.json'
-				}
-			}
-		],
-		...TASK_CONFIG.server
+		...TASK_CONFIG.server,
+		...TASK_CONFIG.fractal.server
 	})
 
 	fractal.web.set('server.sync', true)
@@ -42,6 +29,4 @@ function fractalServer() {
 		logger.success(`Fractal server is now running at ${server.url}`)
 	})
 }
-module.exports = {
-	fractalServer
-}
+module.exports = server

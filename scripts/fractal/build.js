@@ -1,7 +1,11 @@
-const { fractal } = require('./index')
-const { exportPaths } = require('./utils')
+const del = require('del')
+const fractal = require('./core')
+const { getLibraryPath } = require('../utils/paths')
+const exportPaths = require('./export-paths')
 
-function buildFractal() {
+const postBuildFractalClean = () => del([getLibraryPath('/dist/**/**.*')])
+
+const buildFractal = () => {
 	const logger = fractal.cli.console
 	const builder = fractal.web.builder()
 
@@ -12,10 +16,25 @@ function buildFractal() {
 
 	return builder.build().then(() => {
 		logger.success('Fractal build completed!')
-		return exportPaths(fractal)
+	})
+}
+
+const buildComponets = done => {
+	const server = fractal.web.server()
+	const logger = fractal.cli.console
+
+	server.start().then(() => {
+		logger.success(
+			'Fractal server is alive and well, components being built and json map being generated'
+		)
+		exportPaths(fractal)
+		server.stop()
+		done()
 	})
 }
 
 module.exports = {
-	buildFractal
+	buildFractal,
+	postBuildFractalClean,
+	buildComponets
 }

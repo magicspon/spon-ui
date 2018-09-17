@@ -5,12 +5,20 @@
 	"library": "./deploy/library",
 	"craft": "./deploy/",
 
-	"images": "**/*.+(jpg|jpeg|png|gif|svg)",
+	"images": "**/*.+(jpg|jpeg|png|gif|webp)",
+
+	"svgs": "**/*.svg",
+
+	"fractal": {
+		"partials": "_partials",
+		"templates": "templates/**/**/*.twig",
+		"exclude": ["**/_*.twig"]
+	},
 
 	"symbols": {
-		"src": "**/*.symbol.svg",
-		"scss": "./src/scss/_system/gulp-output",
-		"html": "./src/templates/_wrapper"
+		"src": "**/ui-*.svg",
+		"scss": "scss/_system/gulp-output",
+		"html": "./src/templates/wrapper"
 	},
 
 	"js": {
