@@ -27,25 +27,18 @@ const defaultTask = gulp.series('clean', 'static', scss, watch, server)
 
 const build = gulp.series(
 	'clean',
-	buildComponets,
-	syncPartials,
-	cacheTags,
-	'static',
-	scss,
+	gulp.parallel(buildComponets, syncPartials, cacheTags, 'static'),
+	gulp.parallel(scss, bundle),
 	purge,
-	bundle,
 	'sizereport'
 )
 
 const buildLibrary = gulp.series(
 	'clean',
 	buildFractal,
-	postBuildFractalClean,
-	'static',
-	scss,
-	purge,
-	bundle,
-	validateHtml,
+	gulp.parallel(postBuildFractalClean, cacheTags, 'static'),
+	gulp.parallel(scss, bundle),
+	gulp.parallel(purge, validateHtml),
 	'sizereport'
 )
 

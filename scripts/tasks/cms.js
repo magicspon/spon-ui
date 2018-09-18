@@ -1,6 +1,5 @@
 const gulp = require('gulp')
 const changed = require('gulp-changed')
-
 const browserSync = require('browser-sync')
 const path = require('path')
 const webpack = require('webpack')
