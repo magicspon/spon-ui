@@ -1,5 +1,6 @@
 const path = require('path')
-const fs = require('fs')
+const gulp = require('gulp')
+const source = require('vinyl-source-stream')
 const { getCraftPath } = require('../utils/paths')
 
 module.exports = function(fractal) {
@@ -13,18 +14,7 @@ module.exports = function(fractal) {
 		return acc
 	}, {})
 
-	fs.writeFile(
-		getCraftPath('components-map.json'),
-		JSON.stringify(map, null, 2),
-		err => {
-			if (err)
-				/* eslint-disable no-console */
-				console.error(
-					'error writing component paths to components-map.json',
-					err
-				)
-		}
-	)
+	const stream = source('components-map.json')
+	stream.end(JSON.stringify(map, null, 2))
+	stream.pipe(gulp.dest(getCraftPath()))
 }
-
-/* eslint-enable no-console */

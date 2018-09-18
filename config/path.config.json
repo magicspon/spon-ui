@@ -9,16 +9,22 @@
 
 	"svgs": "**/*.svg",
 
+	"cacheTag": {
+		"file": "_layout.twig",
+		"dir": "./deploy/templates/wrapper"
+	},
+
 	"fractal": {
 		"partials": "_partials",
 		"templates": "templates/**/**/*.twig",
-		"exclude": ["**/_*.twig"]
+		"exclude": ["templates/wrapper/**.twig"],
+		"craftOutput": "templates/_partials"
 	},
 
 	"symbols": {
 		"src": "**/ui-*.svg",
 		"scss": "scss/_system/gulp-output",
-		"html": "./src/templates/wrapper"
+		"html": "./src/templates/svgs"
 	},
 
 	"js": {

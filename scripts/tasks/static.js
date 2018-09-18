@@ -1,4 +1,5 @@
 const gulp = require('gulp')
+const stringHash = require('string-hash')
 const path = require('path')
 const imagemin = require('gulp-imagemin')
 const svgSymbols = require('gulp-svg-symbols')
@@ -8,7 +9,7 @@ const htmlmin = require('gulp-htmlmin')
 const inject = require('gulp-inject')
 const svgmin = require('gulp-svgmin')
 const browserSync = require('browser-sync')
-
+const { handleErrors } = require('../utils/logger')
 const {
 	getStaticPaths,
 	getPublicDist,
@@ -16,29 +17,19 @@ const {
 	getSrcPaths
 } = require('../utils/paths')
 
-const exclude = path.resolve(
-	process.env.PWD,
-	PATH_CONFIG.static,
-	PATH_CONFIG.files.exclude
-)
+const moveScripts = () =>
+	gulp.src(PATH_CONFIG.js.libs).pipe(gulp.dest(getPublicDist('dist/js')))
 
-const dotFitles = path.resolve(
-	process.env.PWD,
-	PATH_CONFIG.static,
-	PATH_CONFIG.files.dotFiles
-)
+const miscFiles = () => {
+	const exclude = getStaticPaths(PATH_CONFIG.files.exclude)
+	const dotFitles = getStaticPaths(PATH_CONFIG.files.dotFiles)
+	const otherStaticAssets = getStaticPaths(PATH_CONFIG.files.include)
 
-const otherStaticAssets = path.resolve(
-	process.env.PWD,
-	PATH_CONFIG.static,
-	PATH_CONFIG.files.include
-)
-
-const miscFiles = () =>
-	gulp
+	return gulp
 		.src([dotFitles, otherStaticAssets, `!${exclude}`])
 		.pipe(gulp.dest(getPublicPath()))
 		.pipe(browserSync.stream())
+}
 
 const images = () =>
 	gulp
@@ -50,25 +41,41 @@ const images = () =>
 				imagemin.optipng({ optimizationLevel: 5 })
 			])
 		)
+		.on('error', handleErrors)
 		.pipe(gulp.dest(getPublicDist('dist')))
 		.pipe(browserSync.stream())
 
 const symbols = () => {
 	const svgs = gulp
 		.src(getStaticPaths(PATH_CONFIG.symbols.src))
-		.pipe(svgmin())
+		.pipe(
+			svgmin(file => {
+				const prefix = path.basename(file.relative, path.extname(file.relative))
+				return {
+					plugins: [
+						{
+							prefixIds: {
+								prefix: stringHash(prefix)
+							}
+						}
+					]
+				}
+			})
+		)
 		.pipe(
 			svgSymbols({
 				id: 'icon--%f',
 				class: '.icon--%f',
 				title: false,
 				fontSize: 0,
+				warn: true,
 				templates: [
 					'default-svg',
 					path.resolve(process.env.PWD, 'scripts', 'templates/symbols.tmp.scss')
 				]
 			})
 		)
+		.on('error', handleErrors)
 		.pipe(gulpif(/[.]scss$/, rename('_svg-symbols.scss')))
 		.pipe(gulpif(/[.]scss$/, gulp.dest(getSrcPaths(PATH_CONFIG.symbols.scss))))
 
@@ -86,6 +93,7 @@ const symbols = () => {
 				removeComments: true
 			})
 		)
+		.on('error', handleErrors)
 		.pipe(gulp.dest(PATH_CONFIG.symbols.html))
 		.pipe(browserSync.stream())
 }
@@ -93,5 +101,6 @@ const symbols = () => {
 module.exports = {
 	miscFiles,
 	images,
-	symbols
+	symbols,
+	moveScripts
 }

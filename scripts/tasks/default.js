@@ -1,56 +1,54 @@
 const gulp = require('gulp')
-const sizereport = require('gulp-sizereport')
-
-const { miscFiles, images, symbols } = require('./static')
-const { scss } = require('./scss')
-const server = require('../fractal/server')
-const { getStaticPaths, getPublicDist, getSrcPaths } = require('../utils/paths')
+const clean = require('./clean')
+const fractalServer = require('../fractal/server')
 const {
 	buildFractal,
 	postBuildFractalClean,
 	buildComponets
 } = require('../fractal/build')
-const webpackProduction = require('./javascript')
+const { miscFiles, images, symbols, moveScripts } = require('./static')
+const { scss } = require('./scss')
+const bundle = require('./javascript')
 const purge = require('./purge')
+const watch = require('./watch')
+const { syncPartials, cacheTags, serverProxy } = require('./cms')
+const { sizeReport } = require('../utils/logger')
+const validateHtml = require('../utils/htmllint')
 
-gulp.task('sizereport', () =>
-	gulp.src(getPublicDist('dist/**/*.*')).pipe(sizereport({ gzip: true }))
-)
-
-gulp.task('static', gulp.parallel(miscFiles, images, symbols))
-
-const watch = done => {
-	gulp.watch(getStaticPaths('**/**'), gulp.series('static'))
-	gulp.watch(getSrcPaths(PATH_CONFIG.scss.src), gulp.series('scss'))
-
-	done()
-}
-
+gulp.task('clean', clean)
+gulp.task('scss', scss)
+gulp.task('symbols', symbols)
+gulp.task('sizereport', sizeReport)
+gulp.task('static', gulp.parallel(miscFiles, images, symbols, moveScripts))
 gulp.task('watch', watch)
 
-gulp.task('default', gulp.series('clean', 'static', scss, server, watch))
+const server = global.config === 'cms' ? serverProxy : fractalServer
+const defaultTask = gulp.series('clean', 'static', scss, watch, server)
 
-gulp.task(
-	'build:fractal',
-	gulp.series(
-		buildFractal,
-		postBuildFractalClean,
-		'static',
-		scss,
-		purge,
-		webpackProduction,
-		'sizereport'
-	)
+const build = gulp.series(
+	'clean',
+	buildComponets,
+	syncPartials,
+	cacheTags,
+	'static',
+	scss,
+	purge,
+	bundle,
+	'sizereport'
 )
 
-gulp.task(
-	'build',
-	gulp.series(
-		buildComponets,
-		'static',
-		scss,
-		purge,
-		webpackProduction,
-		'sizereport'
-	)
+const buildLibrary = gulp.series(
+	'clean',
+	buildFractal,
+	postBuildFractalClean,
+	'static',
+	scss,
+	purge,
+	bundle,
+	validateHtml,
+	'sizereport'
 )
+
+gulp.task('default', defaultTask)
+
+gulp.task('build', global.config === 'fractal' ? buildLibrary : build)

@@ -1,13 +1,27 @@
 const path = require('path')
 
-module.exports = {
+module.exports = env => ({
 	stamp: Date.now(),
 
 	server: {
 		open: false,
 		browser: ['google chrome'],
 		port: 3000,
-		logLevel: 'info'
+		logLevel: 'info',
+		watch: true,
+		logFileChanges: true,
+
+		watchOptions: {
+			ignoreInitial: true,
+			ignored: ['**/*.js', '**/*.scss', '!**/*.config.js', '**/*.json']
+		},
+		files: [
+			{
+				options: {
+					ignored: '**/*.hot-update.json'
+				}
+			}
+		]
 		// https: {
 		// 	key: path.resolve(process.env.PWD, 'private', 'key.pem'),
 		// 	cert: path.resolve(process.env.PWD, 'private', 'cert.pem')
@@ -16,13 +30,15 @@ module.exports = {
 
 	js: {
 		publicPath: '/dist/js/',
-
 		entries: {
-			app: [
-				'webpack/hot/dev-server',
-				'webpack-hot-middleware/client',
-				'./app.js'
-			],
+			app:
+				env !== 'production'
+					? [
+						'webpack/hot/dev-server',
+						'webpack-hot-middleware/client',
+						'./app.js'
+					  ]
+					: ['./app.js'],
 			preview: ['./app.js']
 		},
 		extensions: ['js', 'json'],
@@ -68,7 +84,7 @@ module.exports = {
 			<div style="margin: 0 0 40px 0;">
 				<h3 style="font-size: 14px; margin: 0 0 20px; color: rgba(83, 83, 99, 0.5); padding: 10px 40px; background: rgba(83, 83, 99, 0.075)">${
 	item.handle
-}</h3>
+	}</h3>
 				<div style="padding: 20px 40px">
 					\n${markup}\n
 				</div>
@@ -76,21 +92,7 @@ module.exports = {
 			<!-- End: @${item.handle} -->\n`
 		},
 
-		server: {
-			watch: true,
-			logFileChanges: true,
-			watchOptions: {
-				ignoreInitial: true,
-				ignored: ['**/*.js', '**/*.scss', '!**/*.config.js', '**/*.json']
-			},
-			files: [
-				{
-					options: {
-						ignored: '**/*.hot-update.json'
-					}
-				}
-			]
-		},
+		server: {},
 
 		statuses: {
 			tool: {
@@ -120,4 +122,4 @@ module.exports = {
 			}
 		}
 	}
-}
+})

@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const fractal = require('./core')
 const { getPublicPath } = require('../utils/paths')
+const middleware = require('../webpack/middleware')
 
 function server() {
 	const compiler = webpack(global.WEBPACK_CONFIG)
@@ -8,13 +9,7 @@ function server() {
 
 	fractal.web.set('server.syncOptions', {
 		baseDir: getPublicPath(),
-		middleware: [
-			require('webpack-dev-middleware')(compiler, {
-				stats: 'errors-only',
-				publicPath: TASK_CONFIG.js.publicPath
-			}),
-			require('webpack-hot-middleware')(compiler)
-		],
+		...middleware(compiler),
 		...TASK_CONFIG.server,
 		...TASK_CONFIG.fractal.server
 	})

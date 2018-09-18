@@ -1,0 +1,4 @@
+{
+	"public": "./deploy/public/",
+	"proxy": "http://local.spon-ui.io"
+}

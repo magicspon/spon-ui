@@ -1,10 +1,11 @@
-const gulp = require('gulp')
 const del = require('del')
+const { getPublicDist } = require('../utils/paths')
+// gulp.task('clean', clean)
 
-const { getPublicPath } = require('../utils/paths')
+const clean = () =>
+	del([
+		getPublicDist('dist/**'),
+		getPublicDist('*.+(jpg|jpeg|png|gif|svg|css|js|json|webmanifest)')
+	])
 
-const clean = () => {
-  return del([getPublicPath()])
-}
-
-gulp.task('clean', clean)
+module.exports = clean

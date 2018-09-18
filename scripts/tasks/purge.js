@@ -1,7 +1,7 @@
 const gulp = require('gulp')
 const purgecss = require('gulp-purgecss')
 const path = require('path')
-const { getLibraryPath, getPublicDist, getSrcPaths } = require('../utils/paths')
+const { getPublicDist, getSrcPaths } = require('../utils/paths')
 
 class TailwindExtractor {
 	static extract(content) {
@@ -9,12 +9,10 @@ class TailwindExtractor {
 	}
 }
 
-function purge() {
+const purge = () => {
 	const build = getPublicDist('dist')
 	const html = getSrcPaths('templates/**/**.twig')
 	const js = getSrcPaths('js/**/**/*.js')
-
-	console.log('PURGE')
 
 	return gulp
 		.src(path.resolve(build, `css/style.${TASK_CONFIG.stamp}.css`))
@@ -31,7 +29,5 @@ function purge() {
 		)
 		.pipe(gulp.dest(`${build}/css`))
 }
-
-gulp.task('purge', purge)
 
 module.exports = purge

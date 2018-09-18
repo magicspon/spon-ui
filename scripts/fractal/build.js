@@ -24,9 +24,7 @@ const buildComponets = done => {
 	const logger = fractal.cli.console
 
 	server.start().then(() => {
-		logger.success(
-			'Fractal server is alive and well, components being built and json map being generated'
-		)
+		logger.success('generating component-map.json')
 		exportPaths(fractal)
 		server.stop()
 		done()

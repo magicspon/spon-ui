@@ -9,6 +9,7 @@ const rename = require('gulp-rename')
 const sassVariables = require('gulp-sass-variables')
 const sassGlob = require('gulp-sass-glob')
 const browserSync = require('browser-sync')
+const { handleErrors } = require('../utils/logger')
 
 const { getSrcPaths, getPublicDist } = require('../utils/paths')
 
@@ -20,57 +21,52 @@ const scss = () => {
 		postcss: { plugins }
 	} = TASK_CONFIG.scss
 
-	return (
-		gulp
-			.src(getSrcPaths(src))
-			.pipe(
-				styleLint({
-					debug: true,
-					failAfterError: false,
-					syntax: 'scss',
-					reporters: [
-						{
-							formatter: 'string',
-							console: true
-						}
-					]
+	return gulp
+		.src(getSrcPaths(src))
+		.pipe(
+			styleLint({
+				debug: true,
+				failAfterError: false,
+				syntax: 'scss',
+				reporters: [
+					{
+						formatter: 'string',
+						console: true
+					}
+				]
+			})
+		)
+		.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
+		.pipe(sassGlob())
+		.pipe(
+			sassVariables({
+				$env: PRODUCTION ? 'production' : 'development'
+			})
+		)
+		.pipe(sass(options))
+		.on('error', handleErrors)
+		.pipe(
+			gulpif(
+				!PRODUCTION,
+				sourcemaps.init({
+					loadMaps: true
 				})
 			)
-			// .on('error', handleErrors)
-			.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
-			.pipe(sassGlob())
-			.pipe(
-				sassVariables({
-					$env: PRODUCTION ? 'production' : 'development'
+		)
+		.pipe(postcss(plugins))
+		.on('error', handleErrors)
+		.pipe(gulpif(PRODUCTION, cssnano(cssnanoOptions)))
+		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+		.pipe(
+			gulpif(
+				PRODUCTION,
+				rename({
+					suffix: `.${TASK_CONFIG.stamp}`
 				})
 			)
-			.pipe(sass(options))
-			// .on('error', handleErrors)
-			.pipe(
-				gulpif(
-					!PRODUCTION,
-					sourcemaps.init({
-						loadMaps: true
-					})
-				)
-			)
-			.pipe(postcss(plugins))
-			// .on('error', handleErrors)
-			.pipe(gulpif(PRODUCTION, cssnano(cssnanoOptions)))
-			.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-			.pipe(
-				gulpif(
-					PRODUCTION,
-					rename({
-						suffix: `.${TASK_CONFIG.stamp}`
-					})
-				)
-			)
-			.pipe(gulp.dest(getPublicDist(dest)))
-			.pipe(browserSync.stream())
-	)
+		)
+		.pipe(gulp.dest(getPublicDist(dest)))
+		.pipe(browserSync.stream())
 }
-
-gulp.task('scss', scss)
 
 module.exports = { scss }

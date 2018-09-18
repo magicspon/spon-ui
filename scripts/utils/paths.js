@@ -21,7 +21,7 @@ module.exports = {
 	 * @return {String|Array}
 	 *
 	 */
-	getCraftPath: src => path.join(basePath, PATH_CONFIG.craft, src),
+	getCraftPath: (src = '') => path.join(basePath, PATH_CONFIG.craft, src),
 
 	/**
 	 * @function getStaticPaths
@@ -29,7 +29,7 @@ module.exports = {
 	 * @return {String}
 	 *
 	 */
-	getStaticPaths: (...args) => path.join(basePath, PATH_CONFIG.static, ...args),
+	getStaticPaths: (src = '') => path.join(basePath, PATH_CONFIG.static, src),
 
 	/**
 	 * @function getPublicPath
@@ -51,5 +51,5 @@ module.exports = {
 	 * @return {String}
 	 *
 	 */
-	getPublicDist: (...args) => path.join(basePath, PATH_CONFIG.public, ...args)
+	getPublicDist: (src = '') => path.join(basePath, PATH_CONFIG.public, src)
 }

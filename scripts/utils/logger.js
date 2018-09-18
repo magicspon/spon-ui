@@ -1,6 +1,10 @@
 const PluginError = require('plugin-error')
 const log = require('fancy-log')
 const c = require('ansi-colors')
+const notify = require('gulp-notify')
+const gulp = require('gulp')
+const sizereport = require('gulp-sizereport')
+const { getPublicDist } = require('./paths')
 
 function prettyTime(milliseconds) {
 	if (milliseconds > 999) {
@@ -9,14 +13,29 @@ function prettyTime(milliseconds) {
 	return `${milliseconds} ms`
 }
 
-module.exports = function logger(err, stats) {
+const handleErrors = (errorObject, callback) => {
+	if (!errorObject) return
+
+	notify
+		.onError(
+			errorObject
+				.toString()
+				.split(': ')
+				.join(':\n')
+		)
+		.apply(this, errorObject, callback)
+	// Keep gulp from hanging on this task
+	if (typeof this.emit === 'function') this.emit('end', callback)
+}
+
+const logger = (err, stats) => {
 	if (err) throw new PluginError('webpack', err)
 
 	let statColor = stats.compilation.warnings.length < 1 ? 'green' : 'yellow'
 
 	if (stats.compilation.errors.length > 0) {
 		stats.compilation.errors.forEach(error => {
-			// handleErrors(error)
+			handleErrors(error)
 			statColor = 'red'
 		})
 	} else {
@@ -24,4 +43,15 @@ module.exports = function logger(err, stats) {
 		log(c[statColor](stats))
 		log('Compiled with', c.cyan('webpack'), 'in', c.magenta(compileTime))
 	}
+}
+
+const sizeReport = () =>
+	gulp
+		.src([getPublicDist('dist/**/*.js'), getPublicDist('dist/**/*.css')])
+		.pipe(sizereport({ gzip: true }))
+
+module.exports = {
+	logger,
+	handleErrors,
+	sizeReport
 }
