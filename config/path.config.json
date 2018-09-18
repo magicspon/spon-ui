@@ -6,7 +6,7 @@
 	"craft": "./deploy/",
 
 	"images": "**/*.+(jpg|jpeg|png|gif|webp)",
-
+	"css": "**/*.css",
 	"svgs": "**/*.svg",
 
 	"cacheTag": {

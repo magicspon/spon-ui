@@ -24,7 +24,8 @@ const purge = () => {
 						extractor: TailwindExtractor,
 						extensions: ['twig', 'js']
 					}
-				]
+				],
+				...TASK_CONFIG.purge
 			})
 		)
 		.pipe(gulp.dest(`${build}/css`))

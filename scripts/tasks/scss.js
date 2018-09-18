@@ -17,7 +17,6 @@ const scss = () => {
 	const { src, dest } = PATH_CONFIG.scss
 	const {
 		options,
-		cssnanoOptions,
 		postcss: { plugins }
 	} = TASK_CONFIG.scss
 
@@ -55,7 +54,7 @@ const scss = () => {
 		)
 		.pipe(postcss(plugins))
 		.on('error', handleErrors)
-		.pipe(gulpif(PRODUCTION, cssnano(cssnanoOptions)))
+		.pipe(gulpif(PRODUCTION, cssnano(TASK_CONFIG.cssnanoOptions)))
 		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
 		.pipe(
 			gulpif(
@@ -69,4 +68,4 @@ const scss = () => {
 		.pipe(browserSync.stream())
 }
 
-module.exports = { scss }
+module.exports = scss

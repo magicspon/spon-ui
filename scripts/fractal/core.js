@@ -4,7 +4,6 @@ const { getSrcPaths, getPublicPath, getLibraryPath } = require('../utils/paths')
 const exportPaths = require('./export-paths')
 
 const stamp = PRODUCTION ? `.${TASK_CONFIG.stamp}` : ''
-
 const {
 	title,
 	base,
@@ -28,7 +27,6 @@ fractal.components.set('default.context', context)
 fractal.components.set('statuses', statuses)
 fractal.components.set('label', 'Library')
 
-// Web UI config
 fractal.web.theme(
 	require('@frctl/mandelbrot')({
 		favicon: '/favicon.ico',

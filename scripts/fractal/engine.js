@@ -2,7 +2,9 @@
 
 module.exports = function templateEngine(stamp) {
 	return {
-		filters: {},
+		filters: {
+			// to do
+		},
 		functions: {
 			getStamp() {
 				return {

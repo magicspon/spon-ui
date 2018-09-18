@@ -68,9 +68,13 @@ module.exports = env => ({
 				require('tailwindcss')('./src/scss/tailwind.config.js'),
 				require('autoprefixer')()
 			]
-		},
+		}
+	},
 
-		cssnanoOptions: {}
+	cssnanoOptions: {},
+
+	purge: {
+		whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/, /icon--/]
 	},
 
 	fractal: {

@@ -1,4 +1,5 @@
 const gulp = require('gulp')
+const cssnano = require('gulp-cssnano')
 const stringHash = require('string-hash')
 const path = require('path')
 const imagemin = require('gulp-imagemin')
@@ -16,6 +17,12 @@ const {
 	getPublicPath,
 	getSrcPaths
 } = require('../utils/paths')
+
+const minifyStaticCss = () =>
+	gulp
+		.src(getStaticPaths(PATH_CONFIG.css))
+		.pipe(cssnano(TASK_CONFIG.cssnanoOptions))
+		.pipe(gulp.dest(getPublicPath()))
 
 const moveScripts = () =>
 	gulp.src(PATH_CONFIG.js.libs).pipe(gulp.dest(getPublicDist('dist/js')))
@@ -98,9 +105,10 @@ const symbols = () => {
 		.pipe(browserSync.stream())
 }
 
-module.exports = {
+module.exports = gulp.parallel(
 	miscFiles,
 	images,
 	symbols,
-	moveScripts
-}
+	moveScripts,
+	minifyStaticCss
+)

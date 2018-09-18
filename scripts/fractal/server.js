@@ -3,7 +3,7 @@ const fractal = require('./core')
 const { getPublicPath } = require('../utils/paths')
 const middleware = require('../webpack/middleware')
 
-function server() {
+const server = () => {
 	const compiler = webpack(global.WEBPACK_CONFIG)
 	const logger = fractal.cli.console
 
@@ -24,4 +24,5 @@ function server() {
 		logger.success(`Fractal server is now running at ${server.url}`)
 	})
 }
+
 module.exports = server
