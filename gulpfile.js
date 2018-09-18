@@ -25,7 +25,7 @@ global.config = config || 'default'
 global.PRODUCTION = global.env === 'production'
 global.TASK_CONFIG = TASK_CONFIG(env)
 global.PATH_CONFIG = PATH_CONFIG
-global.WEBPACK_CONFIG = require('./scripts/webpack/config.dev.js')(global.env)
+global.WEBPACK_CONFIG = require('./scripts/webpack/config.dev.js')
 
 const color =
 	config === 'cms' ? 'green' : config === 'fractal' ? 'cyan' : 'blue'
