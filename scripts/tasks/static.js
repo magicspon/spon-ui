@@ -18,19 +18,21 @@ const {
 	getSrcPaths
 } = require('../utils/paths')
 
+const { PATHS, CONFIG } = global
+
 const minifyStaticCss = () =>
 	gulp
-		.src(getStaticPaths(PATH_CONFIG.css))
-		.pipe(cssnano(TASK_CONFIG.cssnanoOptions))
+		.src(getStaticPaths(PATHS.css))
+		.pipe(cssnano(CONFIG.cssnanoOptions))
 		.pipe(gulp.dest(getPublicPath()))
 
 const moveScripts = () =>
-	gulp.src(PATH_CONFIG.js.libs).pipe(gulp.dest(getPublicDist('dist/js')))
+	gulp.src(PATHS.js.libs).pipe(gulp.dest(getPublicDist('dist/js')))
 
 const miscFiles = () => {
-	const exclude = getStaticPaths(PATH_CONFIG.files.exclude)
-	const dotFitles = getStaticPaths(PATH_CONFIG.files.dotFiles)
-	const otherStaticAssets = getStaticPaths(PATH_CONFIG.files.include)
+	const exclude = getStaticPaths(PATHS.files.exclude)
+	const dotFitles = getStaticPaths(PATHS.files.dotFiles)
+	const otherStaticAssets = getStaticPaths(PATHS.files.include)
 
 	return gulp
 		.src([dotFitles, otherStaticAssets, `!${exclude}`])
@@ -40,7 +42,7 @@ const miscFiles = () => {
 
 const images = () =>
 	gulp
-		.src(getStaticPaths(PATH_CONFIG.images))
+		.src(getStaticPaths(PATHS.images))
 		.pipe(
 			imagemin([
 				imagemin.gifsicle({ interlaced: true }),
@@ -54,7 +56,7 @@ const images = () =>
 
 const symbols = () => {
 	const svgs = gulp
-		.src(getStaticPaths(PATH_CONFIG.symbols.src))
+		.src(getStaticPaths(PATHS.symbols.src))
 		.pipe(
 			svgmin(file => {
 				const prefix = path.basename(file.relative, path.extname(file.relative))
@@ -84,7 +86,7 @@ const symbols = () => {
 		)
 		.on('error', handleErrors)
 		.pipe(gulpif(/[.]scss$/, rename('_svg-symbols.scss')))
-		.pipe(gulpif(/[.]scss$/, gulp.dest(getSrcPaths(PATH_CONFIG.symbols.scss))))
+		.pipe(gulpif(/[.]scss$/, gulp.dest(getSrcPaths(PATHS.symbols.scss))))
 
 	function fileContents(filePath, file) {
 		return file.contents.toString()
@@ -101,7 +103,7 @@ const symbols = () => {
 			})
 		)
 		.on('error', handleErrors)
-		.pipe(gulp.dest(PATH_CONFIG.symbols.html))
+		.pipe(gulp.dest(PATHS.symbols.html))
 		.pipe(browserSync.stream())
 }
 

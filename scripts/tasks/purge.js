@@ -13,9 +13,12 @@ const purge = () => {
 	const build = getPublicDist('dist')
 	const html = getSrcPaths('templates/**/**.twig')
 	const js = getSrcPaths('js/**/**/*.js')
+	const {
+		CONFIG: { stamp, purge: options }
+	} = global
 
 	return gulp
-		.src(path.resolve(build, `css/style.${TASK_CONFIG.stamp}.css`))
+		.src(path.resolve(build, `css/style.${stamp}.css`))
 		.pipe(
 			purgecss({
 				content: [html, js],
@@ -25,7 +28,7 @@ const purge = () => {
 						extensions: ['twig', 'js']
 					}
 				],
-				...TASK_CONFIG.purge
+				...options
 			})
 		)
 		.pipe(gulp.dest(`${build}/css`))

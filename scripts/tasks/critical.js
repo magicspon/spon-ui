@@ -6,15 +6,20 @@ const htmlreplace = require('gulp-html-replace')
 const criticalCSS = () => {
 	require('events').EventEmitter.defaultMaxListeners = 15
 
+	const {
+		PATHS: { critical: paths, proxy },
+		CONFIG: { critical: options }
+	} = global
+
 	return Promise.all(
-		PATH_CONFIG.critical.map(
+		paths.map(
 			({ url, template }) =>
 				new Promise((resolve, reject) => {
 					critical
 						.generate({
-							src: `${PATH_CONFIG.proxy}${url}`,
+							src: `${proxy}${url}`,
 							dest: '',
-							...TASK_CONFIG.critical
+							...options
 						})
 						.catch(e => {
 							reject(e)

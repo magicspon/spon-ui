@@ -4,22 +4,27 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 
 module.exports = {
 	output: {
-		filename: `[name].${TASK_CONFIG.js.filename}.${TASK_CONFIG.stamp}.js`
+		filename: `[name].${global.CONFIG.js.filename}.${global.CONFIG.stamp}.js`
 	},
 
 	devtool: 'source-map',
 
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: '"production"'
+			}
+		}),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new InjectManifest({
-			globDirectory: path.resolve(process.env.PWD, PATH_CONFIG.public, 'dist'),
+			warn: false,
+			globDirectory: path.resolve(process.env.PWD, global.PATHS.public, 'dist'),
 			globPatterns: ['**/*.{html,js,css,svg,png}'],
-			globIgnores: ['theme.*.css'],
-			swDest: path.resolve(process.env.PWD, PATH_CONFIG.public, 'sw.js'),
+			swDest: path.resolve(process.env.PWD, global.PATHS.public, 'sw.js'),
 			swSrc: path.resolve(
 				process.env.PWD,
-				PATH_CONFIG.src,
-				PATH_CONFIG.js.src,
+				global.PATHS.src,
+				global.PATHS.js.src,
 				'service-worker.js'
 			),
 			modifyUrlPrefix: {

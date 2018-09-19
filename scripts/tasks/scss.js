@@ -14,11 +14,17 @@ const { handleErrors } = require('../utils/logger')
 const { getSrcPaths, getPublicDist } = require('../utils/paths')
 
 const scss = () => {
-	const { src, dest } = PATH_CONFIG.scss
 	const {
-		options,
-		postcss: { plugins }
-	} = TASK_CONFIG.scss
+		CONFIG: {
+			scss: {
+				options,
+				postcss: { plugins }
+			}
+		},
+		PATHS: {
+			scss: { src, dest }
+		}
+	} = global
 
 	return gulp
 		.src(getSrcPaths(src))
@@ -54,13 +60,13 @@ const scss = () => {
 		)
 		.pipe(postcss(plugins))
 		.on('error', handleErrors)
-		.pipe(gulpif(PRODUCTION, cssnano(TASK_CONFIG.cssnanoOptions)))
+		.pipe(gulpif(PRODUCTION, cssnano(global.CONFIG.cssnanoOptions)))
 		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
 		.pipe(
 			gulpif(
 				PRODUCTION,
 				rename({
-					suffix: `.${TASK_CONFIG.stamp}`
+					suffix: `.${global.CONFIG.stamp}`
 				})
 			)
 		)

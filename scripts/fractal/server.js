@@ -1,17 +1,23 @@
 const webpack = require('webpack')
+const merge = require('webpack-merge')
 const fractal = require('./core')
 const { getPublicPath } = require('../utils/paths')
 const middleware = require('../webpack/middleware')
+const devConfig = require('../webpack/config.dev')
 
 const server = () => {
-	const compiler = webpack(global.WEBPACK_CONFIG)
+	const compiler = webpack(merge(global.WEBPACK_CONFIG, devConfig))
 	const logger = fractal.cli.console
+	const {
+		server: serverOptions,
+		fractal: { server: fractalServerOptions }
+	} = global.CONFIG
 
 	fractal.web.set('server.syncOptions', {
 		baseDir: getPublicPath(),
 		...middleware(compiler),
-		...TASK_CONFIG.server,
-		...TASK_CONFIG.fractal.server
+		...serverOptions,
+		...fractalServerOptions
 	})
 
 	fractal.web.set('server.sync', true)

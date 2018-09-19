@@ -3,13 +3,19 @@ const changed = require('gulp-changed')
 const browserSync = require('browser-sync')
 const path = require('path')
 const webpack = require('webpack')
+const merge = require('webpack-merge')
 const htmlreplace = require('gulp-html-replace')
 const inject = require('gulp-inject-string')
 const middleware = require('../webpack/middleware')
 const { getSrcPaths, getCraftPath } = require('../utils/paths')
+const devConfig = require('../webpack/config.dev')
 
 const cacheTags = () => {
-	const { file, dir } = PATH_CONFIG.cacheTag
+	const {
+		PATHS: {
+			cacheTag: { file, dir }
+		}
+	} = global
 
 	return gulp
 		.src(path.resolve(process.env.PWD, dir, file))
@@ -17,7 +23,7 @@ const cacheTags = () => {
 			htmlreplace(
 				{
 					cms: {
-						src: PRODUCTION ? `.${TASK_CONFIG.stamp}` : '',
+						src: PRODUCTION ? `.${global.CONFIG.stamp}` : '',
 						tpl: '{% set stamp = "%s" %}'
 					}
 				},
@@ -30,7 +36,12 @@ const cacheTags = () => {
 }
 
 const syncPartials = () => {
-	const { templates, exclude, craftOutput } = PATH_CONFIG.fractal
+	const {
+		PATHS: {
+			fractal: { templates, exclude, craftOutput }
+		}
+	} = global
+
 	const dest = getCraftPath(craftOutput)
 	return gulp
 		.src([
@@ -51,12 +62,17 @@ const syncPartials = () => {
 }
 
 const serverProxy = () => {
-	const compiler = webpack(global.WEBPACK_CONFIG)
+	const compiler = webpack(merge(global.WEBPACK_CONFIG, devConfig))
+
+	const {
+		PATHS: { proxy },
+		CONFIG: { server }
+	} = global
 
 	return browserSync.init({
 		...middleware(compiler),
-		proxy: PATH_CONFIG.proxy,
-		...TASK_CONFIG.server
+		proxy,
+		...server
 	})
 }
 

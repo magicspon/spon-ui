@@ -10,7 +10,7 @@ module.exports = function(fractal) {
 		const key = handle.split('--default')[0]
 		const dir = path.resolve(process.env.PWD, viewDir).split('templates/')[1]
 
-		acc[`@${key}`] = `${PATH_CONFIG.fractal.partials}/${dir}/${key}.twig`
+		acc[`@${key}`] = `${global.PATHS.fractal.partials}/${dir}/${key}.twig`
 		return acc
 	}, {})
 

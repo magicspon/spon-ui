@@ -11,9 +11,9 @@ module.exports = {
 	 */
 	getSrcPaths: src => {
 		if (typeof src === 'string')
-			return path.join(basePath, PATH_CONFIG.src, src)
+			return path.join(basePath, global.PATHS.src, src)
 
-		return src.map(str => path.join(basePath, PATH_CONFIG.src, str))
+		return src.map(str => path.join(basePath, global.PATHS.src, str))
 	},
 	/**
 	 * @function getCraftPath
@@ -21,7 +21,7 @@ module.exports = {
 	 * @return {String|Array}
 	 *
 	 */
-	getCraftPath: (src = '') => path.join(basePath, PATH_CONFIG.craft, src),
+	getCraftPath: (src = '') => path.join(basePath, global.PATHS.craft, src),
 
 	/**
 	 * @function getStaticPaths
@@ -29,21 +29,21 @@ module.exports = {
 	 * @return {String}
 	 *
 	 */
-	getStaticPaths: (src = '') => path.join(basePath, PATH_CONFIG.static, src),
+	getStaticPaths: (src = '') => path.join(basePath, global.PATHS.static, src),
 
 	/**
 	 * @function getPublicPath
 	 * @return {String}
 	 *
 	 */
-	getPublicPath: () => path.join(basePath, PATH_CONFIG.public),
+	getPublicPath: () => path.join(basePath, global.PATHS.public),
 
 	/**
 	 * @function getLibraryPath
 	 * @return {String}
 	 *
 	 */
-	getLibraryPath: (src = '') => path.join(basePath, PATH_CONFIG.library, src),
+	getLibraryPath: (src = '') => path.join(basePath, global.PATHS.library, src),
 
 	/**
 	 * @function getPublicDist
@@ -51,5 +51,5 @@ module.exports = {
 	 * @return {String}
 	 *
 	 */
-	getPublicDist: (src = '') => path.join(basePath, PATH_CONFIG.public, src)
+	getPublicDist: (src = '') => path.join(basePath, global.PATHS.public, src)
 }

@@ -6,11 +6,11 @@ const { syncPartials } = require('./cms')
 
 const watch = done => {
 	gulp.watch(getStaticPaths('**/**'), gulp.series(staticFiles))
-	gulp.watch(getSrcPaths(PATH_CONFIG.scss.src), gulp.series(scss))
+	gulp.watch(getSrcPaths(global.PATHS.scss.src), gulp.series(scss))
 
 	if (global.config === 'cms') {
 		gulp.watch(
-			getSrcPaths(PATH_CONFIG.fractal.templates),
+			getSrcPaths(global.PATHS.fractal.templates),
 			gulp.series(syncPartials)
 		)
 	}
