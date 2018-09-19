@@ -1,23 +1,24 @@
 module.exports = argList => {
-  let arg = {},
-    a,
-    opt,
-    thisOpt,
-    curOpt
-  for (a = 0; a < argList.length; a++) {
-    thisOpt = argList[a].trim()
-    opt = thisOpt.replace(/^\-+/, '')
+	const arg = {}
+	let a
+	let opt
+	let thisOpt
+	let curOpt
 
-    if (opt === thisOpt) {
-      // argument value
-      if (curOpt) arg[curOpt] = opt
-      curOpt = null
-    } else {
-      // argument name
-      curOpt = opt
-      arg[curOpt] = true
-    }
-  }
+	for (a = 0; a < argList.length; a += 1) {
+		thisOpt = argList[a].trim()
+		opt = thisOpt.replace(/^\-+/, '')
 
-  return arg
+		if (opt === thisOpt) {
+			// argument value
+			if (curOpt) arg[curOpt] = opt
+			curOpt = null
+		} else {
+			// argument name
+			curOpt = opt
+			arg[curOpt] = true
+		}
+	}
+
+	return arg
 }

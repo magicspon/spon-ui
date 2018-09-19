@@ -1,4 +1,11 @@
 {
 	"public": "./deploy/public/",
-	"proxy": "http://local.spon-ui.io"
+	"proxy": "http://local.spon-ui.io",
+
+	"critical": [
+		{
+			"url": "/",
+			"template": ""
+		}
+	]
 }

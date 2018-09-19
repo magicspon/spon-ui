@@ -73,6 +73,12 @@ module.exports = env => ({
 
 	cssnanoOptions: {},
 
+	critical: {
+		minify: true,
+		width: 1024,
+		height: 768
+	},
+
 	purge: {
 		whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/, /icon--/]
 	},
