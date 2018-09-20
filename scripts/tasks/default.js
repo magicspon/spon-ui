@@ -37,8 +37,7 @@ const buildLibrary = gulp.series(
 	gulp.parallel(purge, validateHtml),
 	sizeReport
 )
-console.log(global.TASK.stamp)
-//
+
 gulp.task(
 	'default',
 	gulp.task('default', global.config === 'cms' ? cmsTask : defaultTask)
