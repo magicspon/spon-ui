@@ -15,7 +15,7 @@ const { getSrcPaths, getPublicDist } = require('../utils/paths')
 
 const scss = () => {
 	const {
-		CONFIG: {
+		TASK: {
 			scss: {
 				options,
 				postcss: { plugins }
@@ -60,13 +60,13 @@ const scss = () => {
 		)
 		.pipe(postcss(plugins))
 		.on('error', handleErrors)
-		.pipe(gulpif(PRODUCTION, cssnano(global.CONFIG.cssnanoOptions)))
+		.pipe(gulpif(PRODUCTION, cssnano(global.TASK.cssnanoOptions)))
 		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
 		.pipe(
 			gulpif(
 				PRODUCTION,
 				rename({
-					suffix: `.${global.CONFIG.stamp}`
+					suffix: `.${global.TASK.stamp}`
 				})
 			)
 		)

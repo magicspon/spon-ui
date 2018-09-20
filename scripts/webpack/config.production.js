@@ -4,7 +4,7 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 
 module.exports = {
 	output: {
-		filename: `[name].${global.CONFIG.js.filename}.${global.CONFIG.stamp}.js`
+		filename: `[name].${global.TASK.js.filename}.${global.TASK.stamp}.js`
 	},
 
 	devtool: 'source-map',
@@ -17,7 +17,6 @@ module.exports = {
 		}),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new InjectManifest({
-			warn: false,
 			globDirectory: path.resolve(process.env.PWD, global.PATHS.public, 'dist'),
 			globPatterns: ['**/*.{html,js,css,svg,png}'],
 			swDest: path.resolve(process.env.PWD, global.PATHS.public, 'sw.js'),

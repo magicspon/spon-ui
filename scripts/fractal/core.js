@@ -3,7 +3,7 @@ const templateEngine = require('./engine')
 const { getSrcPaths, getPublicPath, getLibraryPath } = require('../utils/paths')
 const exportPaths = require('./export-paths')
 
-const stamp = PRODUCTION ? `.${global.CONFIG.stamp}` : ''
+const stamp = PRODUCTION ? `.${global.TASK.stamp}` : ''
 const {
 	title,
 	base,
@@ -12,7 +12,7 @@ const {
 	layout,
 	context,
 	statuses
-} = global.CONFIG.fractal
+} = global.TASK.fractal
 
 fractal.set('project.title', title)
 fractal.components.engine(require('@frctl/twig')(templateEngine(stamp)))

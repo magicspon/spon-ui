@@ -3,7 +3,7 @@ const { getSrcPaths, getPublicDist } = require('../utils/paths')
 
 const {
 	env,
-	CONFIG: {
+	TASK: {
 		js: { entries: entry, filename }
 	},
 	PATHS: {

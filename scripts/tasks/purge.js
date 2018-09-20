@@ -1,7 +1,7 @@
 const gulp = require('gulp')
 const purgecss = require('gulp-purgecss')
 const path = require('path')
-const { getPublicDist, getSrcPaths } = require('../utils/paths')
+const { getPublicDist, getSrcPaths, getCraftPath } = require('../utils/paths')
 
 class TailwindExtractor {
 	static extract(content) {
@@ -11,10 +11,13 @@ class TailwindExtractor {
 
 const purge = () => {
 	const build = getPublicDist('dist')
-	const html = getSrcPaths('templates/**/**.twig')
+	const html =
+		global.config === 'cms'
+			? getCraftPath('templates/**/**/**/*.twig')
+			: getSrcPaths('templates/**/**.twig')
 	const js = getSrcPaths('js/**/**/*.js')
 	const {
-		CONFIG: { stamp, purge: options }
+		TASK: { stamp, purge: options }
 	} = global
 
 	return gulp

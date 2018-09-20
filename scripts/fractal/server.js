@@ -5,13 +5,13 @@ const { getPublicPath } = require('../utils/paths')
 const middleware = require('../webpack/middleware')
 const devConfig = require('../webpack/config.dev')
 
-const server = () => {
+const server = done => {
 	const compiler = webpack(merge(global.WEBPACK_CONFIG, devConfig))
 	const logger = fractal.cli.console
 	const {
 		server: serverOptions,
 		fractal: { server: fractalServerOptions }
-	} = global.CONFIG
+	} = global.TASK
 
 	fractal.web.set('server.syncOptions', {
 		baseDir: getPublicPath(),
@@ -28,6 +28,7 @@ const server = () => {
 
 	return server.start().then(() => {
 		logger.success(`Fractal server is now running at ${server.url}`)
+		done()
 	})
 }
 

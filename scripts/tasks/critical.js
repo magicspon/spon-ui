@@ -1,59 +1,40 @@
-const gulp = require('gulp')
 const critical = require('critical')
 const path = require('path')
-const htmlreplace = require('gulp-html-replace')
+const del = require('del')
+const { getCraftPath, getPublicPath, getPublicDist } = require('../utils/paths')
 
-const criticalCSS = () => {
-	require('events').EventEmitter.defaultMaxListeners = 15
+const criticalCSS = async () => {
+	// require('events').EventEmitter.defaultMaxListeners = 15
 
 	const {
 		PATHS: { critical: paths, proxy },
-		CONFIG: { critical: options }
+		TASK: { critical: options }
 	} = global
 
+	await del([getCraftPath('templates/inline-css')])
+
+	console.log(getPublicPath())
+
 	return Promise.all(
-		paths.map(
-			({ url, template }) =>
-				new Promise((resolve, reject) => {
-					critical
-						.generate({
-							src: `${proxy}${url}`,
-							dest: '',
-							...options
-						})
-						.catch(e => {
-							reject(e)
-						})
-						.then(output => {
-							gulp
-								.src(path.resolve(process.env.PWD, template))
-								.pipe(
-									htmlreplace(
-										{
-											critical: {
-												src: null,
-												tpl: `<style>${output}</style>`
-											}
-										},
-										{
-											keepBlockTags: true
-										}
-									)
-								)
-								.pipe(
-									gulp.dest(
-										path.resolve(
-											process.env.PWD,
-											template.split(
-												template.substr(template.lastIndexOf('/'))
-											)[0]
-										)
-									)
-								)
-								.on('end', resolve)
-						})
-				})
-		)
+		paths.map(({ url, css }) => {
+			return new Promise((resolve, reject) => {
+				critical
+					.generate({
+						inline: false,
+						src: `${proxy}${url}`,
+						css: [getPublicDist(`dist/css/style.${global.TASK.stamp}.css`)],
+						dest: path.resolve(
+							process.env.PWD,
+							`./deploy/templates/inline-css/${css}.css`
+						),
+						...options
+					})
+					.catch(e => {
+						reject(e)
+					})
+					.then(resolve)
+			})
+		})
 	)
 }
 module.exports = criticalCSS

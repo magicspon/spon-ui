@@ -21,11 +21,11 @@ module.exports = env => ({
 					ignored: '**/*.hot-update.json'
 				}
 			}
-		]
-		// https: {
-		// 	key: path.resolve(process.env.PWD, 'private', 'key.pem'),
-		// 	cert: path.resolve(process.env.PWD, 'private', 'cert.pem')
-		// }
+		],
+		https: {
+			key: path.resolve(process.env.PWD, 'private', 'key.pem'),
+			cert: path.resolve(process.env.PWD, 'private', 'cert.pem')
+		}
 	},
 
 	js: {
@@ -80,7 +80,7 @@ module.exports = env => ({
 	},
 
 	purge: {
-		whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/, /icon--/]
+		whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/, /icon--/, /lazy/]
 	},
 
 	fractal: {

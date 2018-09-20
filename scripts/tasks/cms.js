@@ -23,7 +23,7 @@ const cacheTags = () => {
 			htmlreplace(
 				{
 					cms: {
-						src: PRODUCTION ? `.${global.CONFIG.stamp}` : '',
+						src: PRODUCTION ? `.${global.TASK.stamp}` : '',
 						tpl: '{% set stamp = "%s" %}'
 					}
 				},
@@ -61,19 +61,21 @@ const syncPartials = () => {
 		.pipe(browserSync.stream())
 }
 
-const serverProxy = () => {
+const serverProxy = done => {
 	const compiler = webpack(merge(global.WEBPACK_CONFIG, devConfig))
 
 	const {
 		PATHS: { proxy },
-		CONFIG: { server }
+		TASK: { server }
 	} = global
 
-	return browserSync.init({
+	browserSync.init({
 		...middleware(compiler),
 		proxy,
 		...server
 	})
+
+	done()
 }
 
 module.exports = {

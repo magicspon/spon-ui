@@ -18,12 +18,12 @@ const {
 	getSrcPaths
 } = require('../utils/paths')
 
-const { PATHS, CONFIG } = global
+const { PATHS, TASK } = global
 
 const minifyStaticCss = () =>
 	gulp
 		.src(getStaticPaths(PATHS.css))
-		.pipe(cssnano(CONFIG.cssnanoOptions))
+		.pipe(cssnano(TASK.cssnanoOptions))
 		.pipe(gulp.dest(getPublicPath()))
 
 const moveScripts = () =>

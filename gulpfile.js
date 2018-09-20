@@ -3,7 +3,7 @@ const deepmerge = require('deepmerge')
 const log = require('fancy-log')
 const c = require('ansi-colors')
 const argList = require('./scripts/utils/argv')
-const CONFIG = require('./config/task.config')
+const TASK = require('./config/task.config')
 let PATHS = require('./config/path.config.json')
 const { config, env } = argList(process.argv)
 
@@ -23,7 +23,7 @@ if (config) {
 global.env = env || 'development'
 global.config = config || 'default'
 global.PRODUCTION = global.env === 'production'
-global.CONFIG = CONFIG(env)
+global.TASK = TASK(env)
 global.PATHS = PATHS
 // after the above, some globals are used
 global.WEBPACK_CONFIG = require('./scripts/webpack/config.base')
