@@ -1,0 +1,39 @@
+@tailwind utilities;
+@tailwind screens;
+
+.Frame .Header,
+.Frame .Frame-panel--sidebar {
+	background-color: #22292f;
+}
+
+.Frame .Tree-collectionLabel {
+	color: #a5a5b7;
+}
+
+.Frame .Tree-entityLink {
+	color: #fff;
+}
+
+.Frame .Tree-collectionLabel span::before {
+	top: 0;
+	bottom: 0;
+	margin-top: auto;
+	margin-bottom: auto;
+	opacity: 1;
+}
+
+.Frame .Browser-tab {
+	background-color: #22292f;
+}
+
+.Frame .Browser-tab a {
+	color: #fff;
+}
+
+.Frame .Pen {
+	background-color: #1c1c1c;
+}
+
+.Frame .Pen-previewLink {
+	color: #fff;
+}

@@ -27,12 +27,16 @@ fractal.components.set('default.context', context)
 fractal.components.set('statuses', statuses)
 fractal.components.set('label', 'Library')
 
+fractal.docs.engine(require('@frctl/nunjucks')(templateEngine()))
+fractal.docs.set('ext', '.md')
+fractal.docs.set('path', getSrcPaths('docs'))
+
 fractal.web.theme(
 	require('@frctl/mandelbrot')({
 		favicon: '/favicon.ico',
 		lang: 'en-gb',
 		skin: 'black',
-		styles: ['default', `/dist/css/style${stamp}.css`],
+		styles: ['default', '/frct/theme.css'],
 		static: {
 			mount: 'fractal'
 		}

@@ -1,6 +1,6 @@
 .c-dropdown__btn {
 	&.is-active {
-		@apply bg-grey-lightest;
+		@apply bg-grey-lighter;
 
 		.c-dropdown__icon {
 			@apply .rotate-180;

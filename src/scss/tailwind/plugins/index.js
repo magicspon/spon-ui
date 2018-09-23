@@ -1,5 +1,5 @@
 const R = require('ramda')
-const { numRange } = require('./tailwind.utils')
+const { numRange } = require('../tailwind.utils')
 
 module.exports = {
 	plugins: [
@@ -22,11 +22,11 @@ module.exports = {
 		}),
 
 		require('tailwindcss-visuallyhidden')(),
-		require('./plugins/order')(),
-		require('./plugins/object-fit')(),
-		require('./plugins/rotate')(),
-		require('./plugins/translate3d')(['responsive', 'hover', 'group-hover']),
-		require('./plugins/transition')(['responsive', 'hover']),
+		require('./order')(),
+		require('./object-fit')(),
+		require('./rotate')(),
+		require('./translate3d')(['responsive', 'hover', 'group-hover']),
+		require('./transition')(['responsive', 'hover']),
 
 		// position fix perf fix
 		function({ addUtilities }) {

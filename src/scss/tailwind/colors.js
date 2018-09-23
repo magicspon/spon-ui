@@ -18,13 +18,11 @@ const colors = {
 	transparent: 'transparent',
 
 	black: '#22292f',
-	'grey-darkest': '#3d4852',
-	'grey-darker': '#606f7b',
-	'grey-dark': '#8795a1',
-	grey: '#b8c2cc',
-	'grey-light': '#dae1e7',
-	'grey-lighter': '#f1f5f8',
-	'grey-lightest': '#f8fafc',
+	'grey-darker': '#1c1c1c',
+	'grey-dark': '#292929',
+	grey: '#494949',
+	'grey-light': '#878787',
+	'grey-lighter': '#e0e0e0',
 	white: '#ffffff',
 
 	// 'red-darkest': '#3b0d0c',

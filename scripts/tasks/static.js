@@ -9,6 +9,7 @@ const rename = require('gulp-rename')
 const htmlmin = require('gulp-htmlmin')
 const inject = require('gulp-inject')
 const svgmin = require('gulp-svgmin')
+const postcss = require('gulp-postcss')
 const browserSync = require('browser-sync')
 const { handleErrors } = require('../utils/logger')
 const {
@@ -20,9 +21,16 @@ const {
 
 const { PATHS, TASK } = global
 
+const {
+	scss: {
+		postcss: { plugins }
+	}
+} = TASK
+
 const minifyStaticCss = () =>
 	gulp
 		.src(getStaticPaths(PATHS.css))
+		.pipe(postcss(plugins))
 		.pipe(cssnano(TASK.cssnanoOptions))
 		.pipe(gulp.dest(getPublicPath()))
 

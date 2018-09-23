@@ -1,14 +1,12 @@
-/*
-  Third party dependencies
-*/
+// // /*
+// //   Third party dependencies
+// // */
 
 @import '../../node_modules/modularscale-sass/stylesheets/_modularscale.scss';
 @import '../../node_modules/sass-mq/mq.scss';
 @import 'susy';
-// @import 'plugins/svg-grid';
-// @import 'normalize';
 
-// @include normalize();
+// // @include normalize();
 
 @import '_system/core/units';
 @import '_system/core/colors';
@@ -17,16 +15,9 @@
 @import '_system/core/mq';
 @import '_system/core/misc';
 
-/*
-  JSON Output
-*/
-@import '_tokens/fonts';
-@import '_tokens/colors';
-@import '_tokens/breakpoints';
-
-/*
-  Settings
-*/
+// /*
+//   Settings
+// */
 
 @import '_config/base';
 @import '_config/dimensions';
@@ -50,88 +41,43 @@
 
 @import '_system/gulp-output/svg-symbols';
 
-/*
-  Resets, and globals
-*/
+// /*
+//   Resets, and globals
+// */
 
 @tailwind preflight;
 
 @import 'framework/base';
 
-/*
-  third party chuff
-*/
+// /*
+//   third party chuff
+// */
 @import 'vendor/plyr/plyr';
 
-/*
-  [01] Base Styles
-  [02] Object patterns
-  [03] Global elements patterns
-  [04] Components patterns
-  [05] Pages
-*/
+// /*
+//   [01] Base Styles
+//   [02] Object patterns
+//   [03] Global elements patterns
+//   [04] Components patterns
+//   [05] Pages
+// */
 
 @import '../templates/**/**/**/*';
 
-/*
-  Tailwindcss
-  see tailwind.config.js
-  https://tailwindcss.com/docs/what-is-tailwind/
-  Utilities and functions
-*/
+// /*
+//   Tailwindcss
+//   see tailwind.config.js
+//   https://tailwindcss.com/docs/what-is-tailwind/
+//   Utilities and functions
+// */
 
 @tailwind utilities;
+@tailwind screens;
 
 @import 'framework/custom';
 
-/*
-  Print styles
-*/
+// /*
+//   Print styles
+// */
 
 @import 'print';
-
-.Frame {
-	.Header,
-	.Frame-panel--sidebar {
-		@apply .bg-black;
-	}
-
-	.Tree-title {
-	}
-
-	.Tree-collectionLabel {
-		color: #a5a5b7;
-	}
-
-	//
-
-	.Tree-entityLink {
-		@apply .text-white;
-	}
-
-	.Tree-collectionLabel {
-		span {
-			&::before {
-				@apply pin-y my-auto;
-
-				opacity: 1;
-			}
-		}
-	}
-
-	.Browser-tab {
-		@apply bg-black;
-
-		a {
-			@apply text-white;
-		}
-	}
-
-	.Pen {
-		@apply bg-grey-darkest;
-	}
-
-	.Pen-previewLink {
-		@apply text-white;
-	}
-}

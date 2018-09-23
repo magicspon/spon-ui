@@ -16,13 +16,13 @@
 	data-ui="Dropdown" data-ui-options='{{ options|default({})|json_encode|raw }}'
 	data-ui-key="{{ uiKey|default('downloads-dropdown') }}"
 >
-	<button data-dropdown-button aria-controls="dropdown-menu-{{ key|default('products') }}" aria-haspopup="true" class="c-dropdown__btn bg-grey-lighter p-0-5 no-underline w-full flex items-center justify-between text-grey-darkest">
+	<button data-dropdown-button aria-controls="dropdown-menu-{{ key|default('products') }}" aria-haspopup="true" class="c-dropdown__btn bg-grey-lighter p-0-5 no-underline w-full flex items-center justify-between text-grey-darker">
 		<span class="mr-1" data-dropdown-text>{{ label|default('View Products') }}</span>
 		<span class="trans c-dropdown__icon">{{ h.symbol('ui-chevron-down') }}</span>
 	</button>
 	<div class="c-dropdown__menu invisible absolute z-20 pointer-events-none w-full bg-white" data-dropdown-menu role="menu">
 		<ul class="list-reset">
-			<li class="bg-grey-lightest hidden" data-dropdown-reset role="button" tabindex="0">
+			<li class="bg-grey-lighter hidden" data-dropdown-reset role="button" tabindex="0">
 				<span class="py-0-5 px-0-75 w-full no-underline flex items-center justify-between text-grey text-body bg-grey-light">
 					Reset
 					<span class="block">{{ h.symbol('ui-close') }}</span>

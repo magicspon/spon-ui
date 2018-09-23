@@ -1,7 +1,7 @@
 /* no-js version */
 
 body :target[data-accordion] {
-	@apply bg-grey-lightest;
+	@apply bg-grey-lighter;
 
 	[data-accordion-content] {
 		display: block !important;

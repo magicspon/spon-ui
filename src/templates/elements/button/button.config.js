@@ -1,6 +1,6 @@
 module.exports = {
 	context: {
-		text: 'Button',
+		text: 'I am a button',
 		href: '#0',
 		attributes: ''
 	}
