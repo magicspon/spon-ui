@@ -9,9 +9,8 @@ const rename = require('gulp-rename')
 const sassVariables = require('gulp-sass-variables')
 const sassGlob = require('gulp-sass-glob')
 const browserSync = require('browser-sync')
-const { handleErrors } = require('../utils/logger')
 
-const { getSrcPaths, getPublicDist } = require('../utils/paths')
+const { getSrcPaths, getPublicPath } = require('../utils/paths')
 
 const scss = () => {
 	const {
@@ -26,52 +25,60 @@ const scss = () => {
 		}
 	} = global
 
-	return gulp
-		.src(getSrcPaths(src))
-		.pipe(
-			styleLint({
-				debug: true,
-				failAfterError: false,
-				syntax: 'scss',
-				reporters: [
-					{
-						formatter: 'string',
-						console: true
-					}
-				]
-			})
-		)
-		.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
-		.pipe(sassGlob())
-		.pipe(
-			sassVariables({
-				$env: PRODUCTION ? 'production' : 'development'
-			})
-		)
-		.pipe(sass(options))
-		.on('error', handleErrors)
-		.pipe(
-			gulpif(
-				!PRODUCTION,
-				sourcemaps.init({
-					loadMaps: true
+	return (
+		gulp
+			.src(getSrcPaths(src))
+			.pipe(
+				styleLint({
+					debug: true,
+					failAfterError: false,
+					syntax: 'scss',
+					reporters: [
+						{
+							formatter: 'string',
+							console: true
+						}
+					]
 				})
 			)
-		)
-		.pipe(postcss(plugins))
-		.on('error', handleErrors)
-		.pipe(gulpif(PRODUCTION, cssnano(global.TASK.cssnanoOptions)))
-		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-		.pipe(
-			gulpif(
-				PRODUCTION,
-				rename({
-					suffix: `.${global.TASK.stamp}`
+			.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
+			.pipe(sassGlob())
+			.pipe(
+				sassVariables({
+					$env: PRODUCTION ? 'production' : 'development'
 				})
 			)
-		)
-		.pipe(gulp.dest(getPublicDist(dest)))
-		.pipe(browserSync.stream())
+			.pipe(sass(options))
+			// .on('error', e => {
+			// 	// silently catch 'ENOENT' error typically caused by renaming watched folders
+			// 	if (e.code === 'ENOENT') {
+			// 		console.error(e)
+
+			// 	}
+			// })
+			.pipe(
+				gulpif(
+					!PRODUCTION,
+					sourcemaps.init({
+						loadMaps: true
+					})
+				)
+			)
+			.pipe(postcss(plugins))
+			// .on('error', e => console.error(e))
+			.pipe(gulpif(PRODUCTION, cssnano(global.TASK.cssnanoOptions)))
+			.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+			.pipe(
+				gulpif(
+					PRODUCTION,
+					rename({
+						suffix: `.${global.TASK.stamp}`
+					})
+				)
+			)
+			.pipe(gulp.dest(getPublicPath(dest)))
+			.pipe(browserSync.stream())
+	)
 }
 
 module.exports = scss

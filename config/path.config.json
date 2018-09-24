@@ -23,7 +23,7 @@
 
 	"symbols": {
 		"src": "**/ui-*.svg",
-		"scss": "scss/_system/gulp-output",
+		"scss": "scss/framework",
 		"html": "./src/templates/svgs"
 	},
 

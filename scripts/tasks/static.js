@@ -11,13 +11,10 @@ const inject = require('gulp-inject')
 const svgmin = require('gulp-svgmin')
 const postcss = require('gulp-postcss')
 const browserSync = require('browser-sync')
+const changed = require('gulp-changed')
 const { handleErrors } = require('../utils/logger')
-const {
-	getStaticPaths,
-	getPublicDist,
-	getPublicPath,
-	getSrcPaths
-} = require('../utils/paths')
+
+const { getStaticPaths, getPublicPath, getSrcPaths } = require('../utils/paths')
 
 const { PATHS, TASK } = global
 
@@ -30,12 +27,13 @@ const {
 const minifyStaticCss = () =>
 	gulp
 		.src(getStaticPaths(PATHS.css))
+		.pipe(changed(getPublicPath()))
 		.pipe(postcss(plugins))
 		.pipe(cssnano(TASK.cssnanoOptions))
 		.pipe(gulp.dest(getPublicPath()))
 
 const moveScripts = () =>
-	gulp.src(PATHS.js.libs).pipe(gulp.dest(getPublicDist('dist/js')))
+	gulp.src(PATHS.js.libs).pipe(gulp.dest(getPublicPath('dist/js')))
 
 const miscFiles = () => {
 	const exclude = getStaticPaths(PATHS.files.exclude)
@@ -44,6 +42,7 @@ const miscFiles = () => {
 
 	return gulp
 		.src([dotFitles, otherStaticAssets, `!${exclude}`])
+		.pipe(changed(getPublicPath()))
 		.pipe(gulp.dest(getPublicPath()))
 		.pipe(browserSync.stream())
 }
@@ -51,6 +50,7 @@ const miscFiles = () => {
 const images = () =>
 	gulp
 		.src(getStaticPaths(PATHS.images))
+		.pipe(changed(getPublicPath('dist')))
 		.pipe(
 			imagemin([
 				imagemin.gifsicle({ interlaced: true }),
@@ -59,7 +59,7 @@ const images = () =>
 			])
 		)
 		.on('error', handleErrors)
-		.pipe(gulp.dest(getPublicDist('dist')))
+		.pipe(gulp.dest(getPublicPath('dist')))
 		.pipe(browserSync.stream())
 
 const symbols = () => {
@@ -102,6 +102,7 @@ const symbols = () => {
 
 	return gulp
 		.src(path.resolve(process.env.PWD, 'scripts', 'templates/symbols.tmp.html'))
+		.pipe(changed(PATHS.symbols.html))
 		.pipe(inject(svgs, { transform: fileContents }))
 		.pipe(rename('_symbols.twig'))
 		.pipe(

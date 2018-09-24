@@ -1,4 +1,4 @@
-@include mq($from: breakpoint('lg')) {
+@screen lg {
 	.c-nav__dropdown {
 		top: calc(100% - #{rem(4px)});
 		transform: translate3d(0, rem(5px), 0);
@@ -31,7 +31,7 @@
 	}
 }
 
-@include mq($until: breakpoint('lg')) {
+@screen-lg {
 	.c-nav__item-btn {
 		width: rem(40px);
 		height: rem(40px);

@@ -18,7 +18,6 @@ deploy/storage
 deploy
 deploy/public/assets
 deploy/public/resources
-docs
 
 
 # fractal

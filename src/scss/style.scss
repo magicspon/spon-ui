@@ -1,83 +1,49 @@
-// // /*
-// //   Third party dependencies
-// // */
-
-@import '../../node_modules/modularscale-sass/stylesheets/_modularscale.scss';
-@import '../../node_modules/sass-mq/mq.scss';
-@import 'susy';
-
-// // @include normalize();
-
-@import '_system/core/units';
-@import '_system/core/colors';
-@import '_system/core/type';
-@import '_system/core/spaces';
-@import '_system/core/mq';
-@import '_system/core/misc';
-
-// /*
-//   Settings
-// */
-
-@import '_config/base';
-@import '_config/dimensions';
-@import '_config/type-config';
-
 /*
   Media query debugger
 */
-
-@import '_system/debug';
-
-/*
-  Custom, site specific mixins
-*/
-
-@import '_system/site-mixins/mixins';
+@import 'framework/units';
+@import 'framework/debug';
 
 /*
   svg-symbols generated via `gulp symbols`
 */
+@import 'framework/svg-symbols';
 
-@import '_system/gulp-output/svg-symbols';
-
-// /*
-//   Resets, and globals
-// */
-
+/*
+  Resets, and globals
+*/
 @tailwind preflight;
 
 @import 'framework/base';
 
-// /*
-//   third party chuff
-// */
-@import 'vendor/plyr/plyr';
+/*
+  third party chuff
+*/
+// @import 'vendor/plyr/plyr';
 
-// /*
-//   [01] Base Styles
-//   [02] Object patterns
-//   [03] Global elements patterns
-//   [04] Components patterns
-//   [05] Pages
-// */
-
+/*
+  [01] Base Styles
+  [02] Object patterns
+  [03] Global elements patterns
+  [04] Components patterns
+*/
 @import '../templates/**/**/**/*';
 
-// /*
-//   Tailwindcss
-//   see tailwind.config.js
-//   https://tailwindcss.com/docs/what-is-tailwind/
-//   Utilities and functions
-// */
-
+/*
+  Tailwindcss
+  see tailwind.config.js
+  https://tailwindcss.com/docs/what-is-tailwind/
+  Utilities and functions
+*/
 @tailwind utilities;
 @tailwind screens;
 
+/*
+  custom utilities
+*/
 @import 'framework/custom';
 
-// /*
-//   Print styles
-// */
-
-@import 'print';
+/*
+  Print styles
+*/
+@import 'framework/print';

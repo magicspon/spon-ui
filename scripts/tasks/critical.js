@@ -1,7 +1,7 @@
 const critical = require('critical')
 const path = require('path')
 const del = require('del')
-const { getCraftPath, getPublicPath, getPublicDist } = require('../utils/paths')
+const { getCraftPath, getPublicPath } = require('../utils/paths')
 
 const criticalCSS = async () => {
 	// require('events').EventEmitter.defaultMaxListeners = 15
@@ -14,23 +14,26 @@ const criticalCSS = async () => {
 	await del([getCraftPath('templates/inline-css')])
 
 	return Promise.all(
-		paths.map(({ url, css }) => new Promise((resolve, reject) => {
-			critical
-				.generate({
-					inline: false,
-					src: `${proxy}${url}`,
-					css: [getPublicDist(`dist/css/style.${global.TASK.stamp}.css`)],
-					dest: path.resolve(
-						process.env.PWD,
-						`./deploy/templates/inline-css/${css}.css`
-					),
-					...options
+		paths.map(
+			({ url, css }) =>
+				new Promise((resolve, reject) => {
+					critical
+						.generate({
+							inline: false,
+							src: `${proxy}${url}`,
+							css: [getPublicPath(`dist/css/style.${global.TASK.stamp}.css`)],
+							dest: path.resolve(
+								process.env.PWD,
+								`./deploy/templates/inline-css/${css}.css`
+							),
+							...options
+						})
+						.catch(e => {
+							reject(e)
+						})
+						.then(resolve)
 				})
-				.catch(e => {
-					reject(e)
-				})
-				.then(resolve)
-		}))
+		)
 	)
 }
 module.exports = criticalCSS

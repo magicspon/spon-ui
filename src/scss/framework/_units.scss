@@ -5,6 +5,7 @@ $current-rootsize: 16px !default;
 		$value: strip-units($value) * strip-units($current-rootsize);
 		$value: $value * 1px;
 	}
+
 	@return $value;
 }
 
@@ -12,13 +13,16 @@ $current-rootsize: 16px !default;
 	@if $report == true {
 		@debug $value $context;
 	}
+
 	@if unit($context) == 'rem' {
 		$context: rem-to-px($context);
 	}
+
 	@if unit($value) == 'px' {
 		$value: strip-units($value) / strip-units($context);
 		$value: $value * 1rem;
 	}
+
 	@return $value;
 }
 

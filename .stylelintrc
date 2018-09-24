@@ -5,7 +5,9 @@
 	"ignoreFiles": [
 		"./src/scss/_system/**/*",
 		"./src/scss/_config/*",
-		"./src/scss/_tokens/*"
+		"./src/scss/_tokens/*",
+    "./static/**/**/*.css",
+    "./tmp/**/**/**/*.css",
 	],
   "rules": {
     "color-no-invalid-hex": true,

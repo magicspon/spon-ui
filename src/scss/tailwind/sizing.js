@@ -1,4 +1,4 @@
-const { columns, maxSizes } = require('./tailwind.utils')
+const { columns, maxSizes, px2rem } = require('./tailwind.utils')
 
 /*
   |-----------------------------------------------------------------------------
@@ -64,6 +64,7 @@ const minWidth = {
 
 const maxWidth = {
 	...maxSizes(1, 10, 2),
+	wrapper: px2rem(1440),
 	full: '100%'
 }
 

@@ -1,5 +1,5 @@
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
-const { getSrcPaths, getPublicDist } = require('../utils/paths')
+const { getSrcPaths, getPublicPath } = require('../utils/paths')
 
 const {
 	env,
@@ -19,7 +19,7 @@ module.exports = {
 	mode: env,
 	cache: true,
 	output: {
-		path: getPublicDist(dest),
+		path: getPublicPath(dest),
 		publicPath: '/dist/js/',
 		pathinfo: true,
 		globalObject: 'this', // https://github.com/webpack/webpack/issues/6642

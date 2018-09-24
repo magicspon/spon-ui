@@ -36,20 +36,12 @@ module.exports = {
 	 * @return {String}
 	 *
 	 */
-	getPublicPath: () => path.join(basePath, global.PATHS.public),
+	getPublicPath: (src = '') => path.join(basePath, global.PATHS.public, src),
 
 	/**
 	 * @function getLibraryPath
 	 * @return {String}
 	 *
 	 */
-	getLibraryPath: (src = '') => path.join(basePath, global.PATHS.library, src),
-
-	/**
-	 * @function getPublicDist
-	 * @param {String} src
-	 * @return {String}
-	 *
-	 */
-	getPublicDist: (src = '') => path.join(basePath, global.PATHS.public, src)
+	getLibraryPath: (src = '') => path.join(basePath, global.PATHS.library, src)
 }
