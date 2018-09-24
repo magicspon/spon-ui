@@ -84,7 +84,7 @@ module.exports = env => ({
 	},
 
 	fractal: {
-		title: 'Mud-ui',
+		title: 'spon-ui',
 		layout: 'wrapper/_base.twig',
 		base: '@base',
 		context: {},

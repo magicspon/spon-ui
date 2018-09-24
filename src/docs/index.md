@@ -1,12 +1,13 @@
 ---
 title: Overview
+order: 1
 ---
 
 ## Project Structure
 
 ### Core files
 
-- `src/scss` All base styles, grid, typography, scss variables/mixins/functions
+- `src/scss` scss entry point and tailwind config
 - `src/js` Core javascript, utilities, behaviour loader (see Javascript notes)
 - `static/fonts` All of the webfonts
 - `static/img/` Placeholder images (jpgs, pngs, svgs), prefix svg's with ui- for symbols
@@ -17,6 +18,7 @@ All of the html, css for specific pattern components can be found in `src/templa
 
 - `src/templates/03-global/header/header.twig`
 - `src/templates/03-global/header/_header.scss`
+- `src/templates/03-global/header/header.config.js`
 
 ## Component categories
 

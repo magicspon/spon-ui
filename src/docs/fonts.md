@@ -8,7 +8,6 @@ font-{ key }
 <thead>
   <th>key</th>
   <th>ems</th>
-  <th>px</th>
 </thead>
 {% for key, value in fonts -%}
   <tr class="font-{{ key }}">
