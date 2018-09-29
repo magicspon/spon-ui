@@ -38,7 +38,6 @@
 	},
 	"homepage": "https://github.com/magicspon/spon-ui#readme",
 	"scripts": {
-		"bootstrap": "./bootstrap.sh",
 		"start": "node_modules/.bin/gulp",
 		"cms": "node_modules/.bin/gulp --config cms",
 		"build:components": "node_modules/.bin/gulp build:partials",
@@ -48,7 +47,7 @@
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"coverage": "jest --coverage",
-		"gen-cert": "node ./scripts/utils/cert/cli.js gen-certs",
+		"gen-cert": "mkdir private && node ./scripts/utils/cert/cli.js gen-certs",
 		"lint:js": "eslint --ext src/js/** .",
 		"lint:scss": "stylelint src/**/*.scss --syntax scss",
 		"pretty": "prettier 'src/**/*.{js,jsx,scss}' --write",

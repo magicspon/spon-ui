@@ -29,7 +29,7 @@ const minifyStaticCss = () =>
 		.src(getStaticPaths(PATHS.css))
 		.pipe(changed(getPublicPath()))
 		.pipe(postcss(plugins))
-		.pipe(cssnano(TASK.cssnanoOptions))
+		.pipe(cssnano({ ...TASK.cssnanoOptions, discardUnused: false}))
 		.pipe(gulp.dest(getPublicPath()))
 
 const moveScripts = () =>
