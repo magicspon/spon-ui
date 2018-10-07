@@ -69,19 +69,19 @@
 
 `npm run build:components`
 
-###### Create a static build (see publish settings in gulp/path.config.json)
-
-`npm run build:static`
-
 ### Unit and regression tests
 
 ###### Save a snapshot of components for regression testing
 
-`npm run reference`
+`npm run regression:reference`
 
 ###### Test against the snapshots with an optimised build
 
-`npm run diff`
+`npm run regression:test`
+
+###### Approve previous regression tests
+
+`npm run regression:approve`
 
 ###### Run any tests with jest
 
