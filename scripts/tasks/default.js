@@ -15,10 +15,10 @@ const { syncPartials, cacheTags, serverProxy } = require('./cms')
 const { sizeReport } = require('../utils/logger')
 const validateHtml = require('../utils/htmllint')
 const criticalCSS = require('./critical')
-
 const server = global.config === 'cms' ? serverProxy : fractalServer
 const defaultTask = gulp.series(clean, staticFiles, scss, watch, server)
 const cmsTask = gulp.series(clean, cacheTags, staticFiles, scss, watch, server)
+const regressionTest = require('../backstop')
 
 const build = gulp.series(
 	clean,
@@ -37,6 +37,8 @@ const buildLibrary = gulp.series(
 	gulp.parallel(purge, validateHtml),
 	sizeReport
 )
+
+gulp.task('regression:test', regressionTest)
 
 gulp.task(
 	'default',

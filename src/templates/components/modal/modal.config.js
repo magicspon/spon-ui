@@ -1,4 +1,6 @@
 module.exports = {
+	status: 'test',
+
 	context: {
 		target: 'modal-1',
 		options: {}

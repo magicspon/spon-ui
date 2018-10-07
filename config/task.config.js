@@ -88,7 +88,7 @@ module.exports = env => ({
 		layout: 'wrapper/_base.twig',
 		base: '@base',
 		context: {},
-		collated: true,
+		collated: false,
 		collator(markup, item) {
 			return `<!-- Start: @${item.handle} -->
 			<div style="margin: 0 0 40px 0;">
@@ -130,6 +130,55 @@ module.exports = env => ({
 				description: 'Component in production, regression tests approved',
 				color: '#29CC29'
 			}
+		}
+	},
+
+	backstop: {
+		url: 'http://localhost:3000/components/preview/',
+		defaults: {
+			selectorExpansion: true,
+			hideSelectors: [],
+			removeSelectors: [],
+			readyEvent: null,
+			delay: 500,
+			misMatchThreshold: 0.2,
+			requireSameDimensions: true,
+			selector: ['body']
+		},
+
+		config: {
+			id: 'spon regression tests',
+			viewports: [
+				{
+					label: 'phone',
+					width: 320,
+					height: 480
+				},
+				{
+					label: 'tablet',
+					width: 1024,
+					height: 768
+				}
+			],
+			onBeforeScript: 'puppet/onBefore.js',
+			onReadyScript: 'puppet/onReady.js',
+			scenarios: [],
+			paths: {
+				bitmaps_reference: '__snapshots/bitmaps_reference',
+				bitmaps_test: '__snapshots/bitmaps_test',
+				engine_scripts: '__snapshots/engine_scripts',
+				html_report: '__snapshots/html_report',
+				ci_report: '__snapshots/ci_report'
+			},
+			report: ['browser'],
+			engine: 'puppeteer',
+			engineOptions: {
+				args: ['--no-sandbox']
+			},
+			asyncCaptureLimit: 5,
+			asyncCompareLimit: 50,
+			debug: false,
+			debugWindow: false
 		}
 	}
 })

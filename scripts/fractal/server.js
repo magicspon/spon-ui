@@ -28,7 +28,11 @@ const server = done => {
 
 	return server.start().then(() => {
 		logger.success(`Fractal server is now running at ${server.url}`)
-		done()
+		if (typeof done === 'function') {
+			done()
+		}
+
+		return server
 	})
 }
 
