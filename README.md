@@ -136,9 +136,11 @@ To create a static site from fractal, create a “pages” folder in the fractal
 
 As with all fractal components, each page will need a unique name.
 
-Create a /file/.config.js file for each page
+Create a fileName.config.js file for each page
 
 The context object should have a ‘path’ prop that defines the pages pathname. Each generated page will be renamed to index.html and placed in a folder matching the path prop.
+
+i.e `about.config.js`
 
 ```javascript
 module.exports = {
