@@ -131,9 +131,9 @@ The following commands require `komp`: https://github.com/FrancisVega/komp (`npm
 
 ## Static Builds
 
-To create a static site from fractal components create a “pages” directory in the fractal templates directory.
+To create a static site from fractal, create a “pages” folder in the fractal templates directory.
 
-As with all fractal files, each page will need a unique name.
+As with all fractal components, each page will need a unique name.
 
 Create a /file/.config.js file for each page
 
