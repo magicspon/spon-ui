@@ -25,60 +25,50 @@ const scss = () => {
 		}
 	} = global
 
-	return (
-		gulp
-			.src(getSrcPaths(src))
-			.pipe(
-				styleLint({
-					debug: true,
-					failAfterError: false,
-					syntax: 'scss',
-					reporters: [
-						{
-							formatter: 'string',
-							console: true
-						}
-					]
+	return gulp
+		.src(getSrcPaths(src))
+		.pipe(
+			styleLint({
+				debug: true,
+				failAfterError: false,
+				syntax: 'scss',
+				reporters: [
+					{
+						formatter: 'string',
+						console: true
+					}
+				]
+			})
+		)
+		.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
+		.pipe(sassGlob())
+		.pipe(
+			sassVariables({
+				$env: PRODUCTION ? 'production' : 'development'
+			})
+		)
+		.pipe(sass(options))
+		.pipe(
+			gulpif(
+				!PRODUCTION,
+				sourcemaps.init({
+					loadMaps: true
 				})
 			)
-			.pipe(gulpif(!PRODUCTION, sourcemaps.init()))
-			.pipe(sassGlob())
-			.pipe(
-				sassVariables({
-					$env: PRODUCTION ? 'production' : 'development'
+		)
+		.pipe(postcss(plugins))
+		.pipe(gulpif(PRODUCTION, cssnano(global.TASK.cssnanoOptions)))
+		.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+		.pipe(
+			gulpif(
+				PRODUCTION,
+				rename({
+					suffix: `.${global.TASK.stamp}`
 				})
 			)
-			.pipe(sass(options))
-			// .on('error', e => {
-			// 	// silently catch 'ENOENT' error typically caused by renaming watched folders
-			// 	if (e.code === 'ENOENT') {
-			// 		console.error(e)
-
-			// 	}
-			// })
-			.pipe(
-				gulpif(
-					!PRODUCTION,
-					sourcemaps.init({
-						loadMaps: true
-					})
-				)
-			)
-			.pipe(postcss(plugins))
-			// .on('error', e => console.error(e))
-			.pipe(gulpif(PRODUCTION, cssnano(global.TASK.cssnanoOptions)))
-			.pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-			.pipe(
-				gulpif(
-					PRODUCTION,
-					rename({
-						suffix: `.${global.TASK.stamp}`
-					})
-				)
-			)
-			.pipe(gulp.dest(getPublicPath(dest)))
-			.pipe(browserSync.stream())
-	)
+		)
+		.pipe(gulp.dest(getPublicPath(dest)))
+		.pipe(browserSync.stream())
 }
 
 module.exports = scss
