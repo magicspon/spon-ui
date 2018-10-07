@@ -39,8 +39,6 @@ const buildLibrary = gulp.series(
 	sizeReport
 )
 
-gulp.task('build:static', buildStatic)
-
 gulp.task('regression:test', regressionTest)
 
 gulp.task(
@@ -49,3 +47,7 @@ gulp.task(
 )
 
 gulp.task('build', global.config === 'fractal' ? buildLibrary : build)
+
+gulp.task('build:static', buildStatic)
+
+gulp.task('server', require('./server'))

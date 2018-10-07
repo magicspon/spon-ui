@@ -18,6 +18,7 @@
 - htmlhint
 - prettier
 - jest
+- backstopjs - regression tests
 
 ## Getting started
 
