@@ -23,10 +23,13 @@
 		],
 		"mapCoverage": true,
 		"collectCoverageFrom": [
-			"src/js/core/**/*.{js,jsx,ts,tsx}"
+			"src/js/core/**/*.{js,jsx,ts,tsx}",
+			"!**/node_modules/**",
+			"!cypress/**"
 		],
 		"testMatch": [
-			"**/?(*.)(spec|test).js?(x)"
+			"**/?(*.)(spec|test).js?(x)",
+			"!cypress/**"
 		]
 	},
 	"quokka": {
@@ -43,6 +46,8 @@
 		"build:components": "node_modules/.bin/gulp build:partials",
 		"build": "node_modules/.bin/gulp build --env production --config cms",
 		"build:fractal": "node_modules/.bin/gulp build --env production --config fractal",
+		"prebuild:static": "npm run build:fractal",
+		"build:static": "node_modules/.bin/gulp build:static --config static",
 		"deploy": "netlify deploy",
 		"regression:reference": "node_modules/.bin/gulp regression:test ---backstop reference",
 		"regression:test": "node_modules/.bin/gulp regression:test ---backstop test",

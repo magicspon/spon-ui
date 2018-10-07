@@ -19,6 +19,7 @@ const server = global.config === 'cms' ? serverProxy : fractalServer
 const defaultTask = gulp.series(clean, staticFiles, scss, watch, server)
 const cmsTask = gulp.series(clean, cacheTags, staticFiles, scss, watch, server)
 const regressionTest = require('../backstop')
+const buildStatic = require('../fractal/static')
 
 const build = gulp.series(
 	clean,
@@ -37,6 +38,8 @@ const buildLibrary = gulp.series(
 	gulp.parallel(purge, validateHtml),
 	sizeReport
 )
+
+gulp.task('build:static', buildStatic)
 
 gulp.task('regression:test', regressionTest)
 

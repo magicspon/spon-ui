@@ -61,13 +61,13 @@
 
 `npm run build`
 
-###### Create an optimised build with critical/purge css
-
-`npm run build:production`
-
 ###### Build fractal components
 
 `npm run build:components`
+
+###### Create a static site from fractal pages (see docs below)
+
+`npm run build:static`
 
 ### Unit and regression tests
 
@@ -128,3 +128,21 @@ The following commands require `komp`: https://github.com/FrancisVega/komp (`npm
 ###### Scaffold new objects/components/etc
 
 `komp new --template fractal ./components/blob`
+
+## Static Builds
+
+To create a static site from fractal components create a “pages” directory in the fractal templates directory.
+
+As with all fractal files, each page will need a unique name.
+
+Create a /file/.config.js file for each page
+
+The context object should have a ‘path’ prop that defines the pages pathname. Each generated page will be renamed to index.html and placed in a folder matching the path prop.
+
+```javascript
+module.exports = {
+	context: {
+		path: '/about/'
+	}
+}
+```

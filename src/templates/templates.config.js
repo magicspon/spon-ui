@@ -1,3 +1,15 @@
 module.exports = {
-	context: {}
+	context: {
+		craft: {
+			app: {
+				config: {
+					general: {
+						custom: {
+							wrapper: '/wrapper/'
+						}
+					}
+				}
+			}
+		}
+	}
 }

@@ -19,21 +19,19 @@ const regressionTest = async done => {
 	const components = fractal.components.flattenDeep().toArray()
 
 	const scenarios = R.compose(
-		R.reduce((acc, { handle, context }) => {
+		R.map(({ handle, context }) => {
 			const key = handle.split('--default')[0]
 
 			const selector = context.selector || 'body'
 
-			acc.push({
+			return {
 				...defaults,
 				url: `${url}${key}`,
 				label: key,
 				selector: [`${selector}`],
 				...context.backstop
-			})
-
-			return acc
-		}, []),
+			}
+		}),
 		R.filter(item => item.status.label.toLowerCase() === 'test')
 	)(components)
 
