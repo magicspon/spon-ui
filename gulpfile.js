@@ -5,7 +5,7 @@ const c = require('ansi-colors')
 const argList = require('./scripts/utils/argv')
 const TASK = require('./config/task.config')
 let PATHS = require('./config/path.config.json')
-const { config, env } = argList(process.argv)
+const { config, env, generate } = argList(process.argv)
 
 if (config) {
 	try {
@@ -20,10 +20,12 @@ if (config) {
 	}
 }
 
+const prefixUrls = generate !== 'static-site'
+
 global.env = env || 'development'
 global.config = config || 'default'
 global.PRODUCTION = global.env === 'production'
-global.TASK = TASK(env)
+global.TASK = TASK(env, prefixUrls)
 global.PATHS = PATHS
 // after the above, some globals are used
 global.WEBPACK_CONFIG = require('./scripts/webpack/config.base')

@@ -1,6 +1,6 @@
 const path = require('path')
 
-module.exports = env => ({
+module.exports = (env, prefixUrls) => ({
 	stamp: Date.now(),
 
 	server: {
@@ -87,7 +87,9 @@ module.exports = env => ({
 		title: 'spon-ui',
 		layout: 'wrapper/_base.twig',
 		base: '@base',
-		context: {},
+		context: {
+			BASE_PATH: prefixUrls ? '/components/preview' : ''
+		},
 		collated: false,
 		collator(markup, item) {
 			return `<!-- Start: @${item.handle} -->
