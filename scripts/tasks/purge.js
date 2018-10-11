@@ -2,6 +2,8 @@ const gulp = require('gulp')
 const purgecss = require('gulp-purgecss')
 const path = require('path')
 const { getPublicPath, getSrcPaths, getCraftPath } = require('../utils/paths')
+const argList = require('../utils/argv')
+const { backstop: task } = argList(process.argv)
 
 class TailwindExtractor {
 	static extract(content) {
@@ -9,7 +11,12 @@ class TailwindExtractor {
 	}
 }
 
-const purge = () => {
+const purge = done => {
+	if (task === 'reference') {
+		done()
+		return
+	}
+
 	const build = getPublicPath('dist')
 	const html =
 		global.config === 'cms'
