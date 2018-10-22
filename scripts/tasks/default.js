@@ -41,6 +41,8 @@ const buildLibrary = gulp.series(
 
 gulp.task('regression:test', regressionTest)
 
+gulp.task('build:partials', gulp.parallel(buildComponets, syncPartials))
+
 gulp.task(
 	'default',
 	gulp.task('default', global.config === 'cms' ? cmsTask : defaultTask)

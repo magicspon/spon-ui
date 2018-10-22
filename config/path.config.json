@@ -16,8 +16,8 @@
 
 	"fractal": {
 		"partials": "_partials",
-		"templates": "templates/**/**/*.twig",
-		"exclude": ["templates/wrapper/**.twig"],
+		"templates": "templates/**/**/**/**/**/**/*.twig",
+		"exclude": ["templates/wrapper/**.twig", "templates/05-pages/**/*.twig"],
 		"craftOutput": "templates/_partials"
 	},
 
