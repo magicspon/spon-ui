@@ -34,12 +34,13 @@ const color =
 	config === 'cms' ? 'green' : config === 'fractal' ? 'cyan' : 'blue'
 
 log(`${c[color](` 
-	                 __        
-	.--------.--.--.|  |.-----.
-	|        |  |  ||  ||  _  |
-	|__|__|__|_____||__||   __|
-                            |__|
-	`)}
+             _/_/_/  _/_/_/      _/_/    _/_/_/    
+          _/_/      _/    _/  _/    _/  _/    _/   
+             _/_/  _/    _/  _/    _/  _/    _/    
+        _/_/_/    _/_/_/      _/_/    _/    _/     
+                 _/                                
+                _/       
+        	`)}
 	
 	ENV: ${c.bold[color](global.env)}, CONFIG: ${c.bold[color](global.config)}\n
 	`)

@@ -43,7 +43,7 @@
 	},
 	"homepage": "https://github.com/magicspon/spon-ui#readme",
 	"scripts": {
-		"start": "npx gulp",
+		"start": "webpack-dashboard npx gulp",
 		"cms": "npx gulp --config cms",
 		"build:components": "npx gulp build:partials",
 		"build": "npx gulp build --env production --config cms",
@@ -83,6 +83,7 @@
 		"plyr": "^3.3.21",
 		"raf-throttle": "^2.0.3",
 		"ramda": "^0.25.0",
+		"scroll-locker": "^0.0.1",
 		"spon-slide": "^1.0.8",
 		"validate.js": "^0.12.0"
 	},
@@ -93,6 +94,7 @@
 		"@babel/plugin-transform-async-to-generator": "^7.1.0",
 		"@babel/plugin-transform-runtime": "^7.1.0",
 		"@babel/preset-env": "^7.0.0",
+		"@babel/preset-react": "^7.0.0",
 		"@babel/register": "^7.0.0",
 		"@babel/runtime": "^7.0.0",
 		"@frctl/fractal": "^1.1.7",
@@ -180,6 +182,7 @@
 		"webpack": "4.19.1",
 		"webpack-bundle-analyzer": "^3.0.2",
 		"webpack-config-utils": "^2.3.1",
+		"webpack-dashboard": "^2.0.0",
 		"webpack-dev-middleware": "^3.3.0",
 		"webpack-hot-middleware": "^2.24.0",
 		"webpack-merge": "^4.1.4",

@@ -7,4 +7,4 @@ if (module.hot) {
 	module.hot.accept()
 }
 
-Ui.mount()
+Ui.hydrate()
