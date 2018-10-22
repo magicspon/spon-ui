@@ -1,5 +1,8 @@
 import { createEvents } from '@/core/modules/createEvents'
 import mitt from 'mitt'
+import setStyle from '@/core/dom-utils/setStyle'
+import eventPromise from '@/utils/eventPromise'
+import animationEnd from '@/utils/animationEnd'
 
 /** *
  * @namespace Accordion
@@ -70,7 +73,7 @@ export default class Accordion {
 			...this.$el.querySelectorAll('[data-accordion-button]')
 		].map((button, index) => {
 			const href = button.getAttribute('href')
-			const target = this.$el.querySelector(`${href} [data-accordion-content]`)
+			const target = this.$el.querySelector(`${href}`)
 
 			button.setAttribute('data-accordion-key', index)
 
@@ -81,7 +84,8 @@ export default class Accordion {
 					open: { CLICK: 'close' },
 					close: { CLICK: 'open' }
 				},
-				state: this.options.activeIndex === index ? 'open' : 'close'
+				state: this.options.activeIndex === index ? 'open' : 'close',
+				isAnimating: false
 			}
 		})
 
@@ -132,7 +136,10 @@ export default class Accordion {
 		const { accordionKey } = elm.dataset
 		const key = parseInt(accordionKey, 10)
 		// get the current state
-		const { state } = this.$panels[key]
+		const { state, isAnimating } = this.$panels[key]
+		// if the item is currrently animating, bail
+		if (isAnimating) return
+
 		// get the new action
 		const action = this.$panels[key].machine[state].CLICK
 
@@ -160,13 +167,37 @@ export default class Accordion {
 	 *
 	 * @return {void}
 	 */
-	open = index => {
-		this.$panels[index].state = 'open'
+	open = async index => {
 		const { button, target } = this.$panels[index]
 
-		button.classList.add('is-active')
+		this.$panels[index].isAnimating = true
+
 		target.style.display = 'block'
-		// target.querySelectorAll('a')[0].focus()
+
+		const { clientHeight: height } = target
+
+		setStyle(target, {
+			height: 0,
+			transition: 'height 300ms ease',
+			'will-change': 'height'
+		})
+
+		await eventPromise(animationEnd('transition'), target, () => {
+			setTimeout(() => {
+				setStyle(target, {
+					height: `${height}px`
+				})
+			})
+		})
+
+		this.$panels[index].isAnimating = false
+		this.$panels[index].state = 'open'
+		button.classList.add('is-active')
+		target.classList.add('is-open')
+
+		setStyle(target, {
+			height: ''
+		})
 	}
 
 	/** *
@@ -177,12 +208,26 @@ export default class Accordion {
 	 *
 	 * @return {void}
 	 */
-	close = index => {
-		this.$panels[index].state = 'close'
+	close = async index => {
 		const { button, target } = this.$panels[index]
+		this.$panels[index].isAnimating = true
 
-		button.classList.remove('is-active')
-		button.focus()
+		const { clientHeight: height } = target
+		target.style.height = `${height}px`
+
+		await eventPromise(animationEnd('transition'), target, () => {
+			setTimeout(() => {
+				setStyle(target, {
+					height: '0px'
+				})
+			})
+		})
+
+		this.$panels[index].isAnimating = false
+		this.$panels[index].state = 'close'
 		target.style.display = ''
+		target.style.height = ''
+		button.classList.remove('is-active')
+		target.classList.remove('is-open')
 	}
 }

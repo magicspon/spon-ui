@@ -33,7 +33,9 @@
 		]
 	},
 	"quokka": {
-		"babel": true,
+		"babel": {
+			"env": "test"
+		},
 		"installPackageCommand": "yarn add {packageName}",
 		"plugins": [
 			"jsdom-quokka-plugin"
@@ -147,6 +149,7 @@
 		"gulp-svgstore": "^7.0.0",
 		"htmlhint-stylish": "^1.0.3",
 		"jsdoc": "^3.5.5",
+		"jsdom-quokka-plugin": "^1.0.13",
 		"markdown-it": "^8.4.2",
 		"markdown-it-abbr": "^1.0.0",
 		"markdown-it-footnote": "^3.0.0",

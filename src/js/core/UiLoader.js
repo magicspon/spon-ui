@@ -1,6 +1,7 @@
+/* eslint-disable no-new */
 import * as R from 'ramda'
-import { gather } from '@/core/modules/loader'
-import { camelify } from '@/core/utils/strings'
+import throttle from 'raf-throttle'
+import eventBus from '@/core/modules/eventBus'
 
 /**
  * @namespace UI
@@ -8,122 +9,128 @@ import { camelify } from '@/core/utils/strings'
  *
  */
 export default (() => {
-	const cache = {}
-	// using the the gather function from the core loader
-	const chunks = component => import(`@/ui/${component}`)
-	const loader = gather(chunks, 'data-ui')
+	const cache = new Map()
 
-	return {
-		/**
-		 * @memberof UI
-		 * @function mount
-		 * @description loader data-ui component
-		 * @param {HTMLElement} context - the element to querySelectorAll from
-		 * @return {Promise}
-		 */
-		mount(context = document) {
-			// this is the same as the core loader (more or less)
-			return Promise.all(
-				loader([...context.querySelectorAll('*[data-ui]')])
-			).then(data => {
-				R.forEach(({ behaviour: Behaviour, node }) => {
-					let { uiOptions: options, uiKey: key } = node.dataset // eslint-disable-line prefer-const
-					if (options) {
-						try {
-							options = R.compose(
-								R.reduce((acc, [key, value]) => {
-									acc[key] = value
-
-									return acc
-								}, {}),
-								Object.entries
-							)(JSON.parse(options))
-						} catch (e) {
-							console.error(e) // eslint-disable-line no-console
-						}
-					}
-
-					const fn = new Behaviour(node, options, key)
-					setTimeout(() => {
-						fn.mount()
+	const scan = () => {
+		cache.forEach(async item => {
+			const { query, key, behaviour, node, options, module, hasLoaded } = item
+			// has the item already been loaded
+			if (hasLoaded) {
+				// if the query no longer passes call the unmount method
+				if (query && !window.matchMedia(query).matches) {
+					module.unmount()
+					// update the cache
+					cache.set(key, {
+						...item,
+						hasLoaded: false
 					})
 
-					this.set(key, fn)
-				})(data)
-			})
-		},
+					eventBus.emit(`ui/${key}:unmount`, cache.get(key))
+				}
 
-		/**
-		 * @memberof UI
-		 * @function unmount
-		 * @description destroy ui components
-		 * @return {voide}
-		 */
-		unmount() {
-			R.compose(
-				R.reduce((acc, [key, value]) => {
-					if (typeof value.unmount === 'function') {
-						value.unmount()
+				return
+			}
+
+			// if there is a query and it matches, or if there is no query at all
+			if (window.matchMedia(query).matches || typeof query === 'undefined') {
+				// if we haven't already constructured the behaviour
+				if (!module) {
+					// fetch the behaviour
+					const resp = await import(`@/ui/${behaviour}`)
+					const { default: Ui } = resp
+					let settings = {
+						key
 					}
-					this.remove(key)
-					return acc
-				}, {}),
-				Object.entries
-			)(JSON.parse(cache))
-		},
 
-		/** *
-		 *
-		 * @memberof UI
-		 * @function set
-		 * @example set('terry', value)
-		 * @description set an item into the cache
-		 * @param {String} set - the name of the key
-		 * @param {Any} value - the vaue to store
-		 *
-		 * @return {void}
-		 */
-		set(key, value) {
-			cache[key] = value
-		},
+					if (options) {
+						settings = { ...settings, ...JSON.parse(options) }
+					}
 
-		/** *
-		 *
-		 * @memberof UI
-		 * @function get
-		 * @example get('terry')
-		 * @description get an item from the cache
-		 * @param {String} key - the name of item to get
-		 *
-		 * @return {Object}
-		 */
-		get(key) {
-			return cache[key]
-		},
+					const module = new Ui(node, settings)
 
-		/** *
-		 *
-		 * @memberof UI
-		 * @function getStore
-		 * @description get the entire cache
-		 *
-		 * @return {Object}
-		 */
-		getStore() {
-			return cache
-		},
+					module.mount()
 
-		/** *
-		 *
-		 * @memberof UI
-		 * @function remove
-		 * @description delete an item from the cache
-		 * @param {string} key - remove an item from the cache
-		 *
-		 * @return {voide}
-		 */
-		remove(key) {
-			delete cache[key]
-		}
+					cache.set(key, {
+						...item,
+						module,
+						hasLoaded: true
+					})
+
+					setTimeout(() => {
+						eventBus.emit(`ui/${key}:mount`, cache.get(key))
+					})
+				} else {
+					// we've already contructred the behaviour
+					// we just need to remount it
+					module.mount()
+
+					cache.set(key, {
+						...item,
+						hasLoaded: true
+					})
+
+					setTimeout(() => {
+						eventBus.emit(`ui/${key}:mount`, cache.get(key))
+					})
+				}
+			}
+		})
+	}
+
+	const hydrate = (context = document) => {
+		R.compose(
+			R.forEach(item => {
+				const { key } = item
+				cache.set(key, item)
+			}),
+			R.flatten,
+			R.map(node =>
+				R.compose(
+					R.map(behaviour => {
+						const { key, uiOptions: options, query } = node.dataset
+
+						log(key)
+
+						if (!key) {
+							throw new Error('ui components must have a unique key')
+						}
+
+						return {
+							behaviour,
+							node,
+							key,
+							options,
+							query,
+							hasLoaded: false
+						}
+					}),
+					R.split(' '),
+					R.replace(/^\s+|\s+$|\s+(?=\s)/g, '')
+				)(node.getAttribute('data-ui'))
+			)
+		)([...context.querySelectorAll('*[data-ui]')])
+
+		scan()
+	}
+
+	const destroy = (selector = 'page-child') => {
+		cache.forEach(({ module, key, hasLoaded, node }) => {
+			if (hasLoaded && node.closest(selector)) {
+				module.destroy()
+				cache.delete(key)
+			}
+		})
+	}
+
+	const handle = throttle(scan)
+
+	window.addEventListener('resize', handle, false)
+
+	return {
+		hydrate,
+
+		destroy,
+
+		cache
 	}
 })()

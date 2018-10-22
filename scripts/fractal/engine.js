@@ -1,5 +1,4 @@
 const fs = require('fs')
-const path = require('path')
 const mdAbbr = require('markdown-it-abbr')
 const mdFootnote = require('markdown-it-footnote')
 const md = require('markdown-it')({
@@ -34,10 +33,18 @@ module.exports = function templateEngine(stamp) {
 			// TO DO... implement these filters
 			// https://docs.craftcms.com/v3/dev/filters.html
 			camel: str => str,
-			kebab: str => str,
 			lcfirst: str => str,
 			snake: str => str,
 			ucfirst: str => str,
+			kebab: str =>
+				str
+					.toString()
+					.toLowerCase()
+					.replace(/\s+/g, '-')
+					.replace(/[^\w\-]+/g, '')
+					.replace(/\-\-+/g, '-')
+					.replace(/^-+/, '')
+					.replace(/-+$/, ''),
 
 			values: arr => arr,
 			without: arr => arr
