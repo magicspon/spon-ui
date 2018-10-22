@@ -43,7 +43,8 @@
 	},
 	"homepage": "https://github.com/magicspon/spon-ui#readme",
 	"scripts": {
-		"start": "webpack-dashboard npx gulp",
+		"start": "npx gulp",
+		"nasa": "webpack-dashboard npx gulp",
 		"cms": "npx gulp --config cms",
 		"build:components": "npx gulp build:partials",
 		"build": "npx gulp build --env production --config cms",
