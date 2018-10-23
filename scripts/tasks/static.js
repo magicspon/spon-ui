@@ -104,7 +104,7 @@ const symbols = () => {
 		.src(path.resolve(process.env.PWD, 'scripts', 'templates/symbols.tmp.html'))
 		.pipe(changed(PATHS.symbols.html))
 		.pipe(inject(svgs, { transform: fileContents }))
-		.pipe(rename('_symbols.twig'))
+		.pipe(rename('symbols.twig'))
 		.pipe(
 			htmlmin({
 				collapseWhitespace: true,

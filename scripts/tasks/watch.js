@@ -1,7 +1,8 @@
 const gulp = require('gulp')
+const browserSync = require('browser-sync')
 const staticFiles = require('./static')
 const scss = require('./scss')
-const { getStaticPaths, getSrcPaths } = require('../utils/paths')
+const { getStaticPaths, getSrcPaths, getCraftPath } = require('../utils/paths')
 const { syncPartials } = require('./cms')
 
 const watch = done => {
@@ -13,6 +14,10 @@ const watch = done => {
 			getSrcPaths(global.PATHS.fractal.templates),
 			gulp.series(syncPartials)
 		)
+
+		gulp
+			.watch(getCraftPath('templates/**/**/*.twig'))
+			.on('change', browserSync.reload)
 	}
 
 	done()
