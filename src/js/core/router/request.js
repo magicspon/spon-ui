@@ -1,5 +1,8 @@
 import cache from './cache'
 
+const Queue = new Set()
+
+export { Queue }
 /**
  * @memberof RouterUtils
  * @function request
@@ -19,14 +22,23 @@ export default (
 	},
 	type = 'text'
 ) =>
-	new Promise(resolve => {
+	new Promise(async resolve => {
 		// are we in the cache... yeah... get me and return
-		if (cache.get(pathname)) {
-			resolve(cache.get(pathname))
+
+		Queue.add(pathname)
+		const fromCache = cache.get(pathname)
+
+		if (fromCache && fromCache.status === 'cached') {
+			resolve(cache.get(pathname).data)
 			return
 		}
 
 		// no cache... lets fetch it
+		cache.set(pathname, { status: 'loading' })
+
+		const timer = setTimeout(() => {
+			window.location = pathname
+		}, 5000)
 
 		/** *
 		 * native fetch
@@ -36,36 +48,38 @@ export default (
 		 *
 		 * @return :promise
 		 */
-		fetch(pathname, options)
-			.then(response => {
-				const { ok, status, url } = response
+		const data = await fetch(pathname, options).then(response => {
+			clearTimeout(timer)
+			Queue.delete(pathname)
 
-				if (ok) {
-					// return the response transform
-					// i.e. for html response.html(), or json: response.json()
-					return response[type]()
-				}
+			const { ok, status, url } = response
+			cache.set(pathname, { status: 'loaded' })
+			if (ok) {
+				// return the response transform
+				// i.e. for html response.html(), or json: response.json()
+				return response[type]()
+			}
 
-				// things are not so good....
-				// object to hold all that went wrong
-				const resp = {
-					data: false,
-					ok,
-					status,
-					url
-				}
-				return resp
+			// things are not so good....
+			// object to hold all that went wrong
+			const resp = {
+				data: false,
+				ok,
+				status,
+				url
+			}
+			return resp
+		})
+
+		// we have the goodies
+		// add it to the cache
+
+		if (data) {
+			cache.set(pathname, {
+				status: 'cached',
+				data
 			})
-			.then(data => {
-				// we have the goodies
-				// add it to the cache
-
-				if (!data.data) {
-					cache.set(pathname, {
-						data
-					})
-				}
-				// we are done here... pass the response on
-				resolve(data)
-			})
+		}
+		// we are done here... pass the response on
+		resolve(data)
 	})

@@ -1,3 +1,4 @@
+import domify from 'domify'
 import { findRoute } from './utils/paths'
 import { setTransitionAttributes } from './utils/dom'
 import baseTransition from './transition'
@@ -6,7 +7,6 @@ import cache from './cache'
 import historyManager from './history'
 import eventBus from '@/core/modules/eventBus'
 import * as Action from './actions'
-import domify from 'domify'
 
 /**
  * @typedef {Object} lifecycle
