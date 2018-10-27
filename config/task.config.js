@@ -38,8 +38,8 @@ module.exports = (env, prefixUrls) => ({
 						'webpack-hot-middleware/client',
 						'./app.js'
 					  ]
-					: ['./app.js'],
-			preview: ['./app.js']
+					: ['./app.js']
+			// preview: ['./app.js']
 		},
 		extensions: ['js', 'json'],
 		extractSharedJs: false,
@@ -80,11 +80,22 @@ module.exports = (env, prefixUrls) => ({
 	},
 
 	purge: {
-		whitelistPatterns: [/plyr/, /is-/, /has-/, /no-/, /icon--/, /lazy/]
+		whitelistPatterns: [
+			/plyr/,
+			/is-/,
+			/has-/,
+			/no-/,
+			/icon--/,
+			/lazy/,
+			/headroom/,
+			/modal/,
+			/nprogress/
+		],
+		whitelistPatternsChildren: [/nprogress/]
 	},
 
 	fractal: {
-		title: 'spon-ui',
+		title: 'spon ui',
 		layout: 'wrapper/_base.twig',
 		base: '@base',
 		context: {

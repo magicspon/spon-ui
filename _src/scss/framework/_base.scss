@@ -1,0 +1,29 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/*
+	image defaults
+*/
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+/*
+	class used for lazyloading images, combined with data-src
+*/
+.lazyload {
+	opacity: 0;
+	transition: opacity 300ms ease-in-out;
+}
+
+/*
+	base wrapper class
+*/
+.wrapper {
+	@apply w-full max-w-wrapper px-1 mx-auto;
+}

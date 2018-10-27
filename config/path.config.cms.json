@@ -1,6 +1,6 @@
 {
 	"public": "./deploy/public/",
-	"proxy": "https://spon.dev",
+	"proxy": "http://local.islington.com",
 
 	"critical": [{ "url": "/", "css": "home-page" }]
 }

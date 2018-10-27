@@ -1,0 +1,49 @@
+/*
+  Media query debugger
+*/
+@import 'framework/units';
+@import 'framework/debug';
+
+/*
+  svg-symbols generated via `gulp symbols`
+*/
+@import 'framework/svg-symbols';
+
+/*
+  Resets, and globals
+*/
+@tailwind preflight;
+
+@import 'framework/base';
+
+/*
+  third party chuff
+*/
+// @import 'vendor/plyr/plyr';
+
+/*
+  [01] Base Styles
+  [02] Object patterns
+  [03] Global elements patterns
+  [04] Components patterns
+*/
+@import '../templates/**/**/**/*';
+
+/*
+  Tailwindcss
+  see tailwind.config.js
+  https://tailwindcss.com/docs/what-is-tailwind/
+  Utilities and functions
+*/
+@tailwind utilities;
+@tailwind screens;
+
+/*
+  custom utilities
+*/
+@import 'framework/custom';
+
+/*
+  Print styles
+*/
+@import 'framework/print';

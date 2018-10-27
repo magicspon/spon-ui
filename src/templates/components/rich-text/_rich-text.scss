@@ -39,7 +39,7 @@
 	}
 
 	blockquote {
-		@apply bg-grey-lighter border-l-5 border-grey-light p-1;
+		@apply bg-grey border-l-5 border-grey p-1;
 	}
 
 	ol {
@@ -86,14 +86,14 @@
 		thead {
 			td,
 			th {
-				@apply border-b-2 border-grey-light;
+				@apply border-b-2;
 			}
 		}
 
 		tfoot {
 			td,
 			th {
-				@apply border-t-2 border-grey-light;
+				@apply border-t-2;
 			}
 		}
 	}

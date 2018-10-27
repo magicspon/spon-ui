@@ -7,7 +7,7 @@
 	<html lang="en-gb" dir="ltr" class="no-js">
 		<head>
 			<meta charset="utf-8">
-			<title>{{ siteTitle|length ? siteTitle : 'Mud/Fractal' }}</title>
+			<title>Islington Giving</title>
 			<meta name="description" content="">
 			<meta name="viewport" content="width=device-width, initial-scale=1" viewport-fit="cover">
 			<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -41,11 +41,11 @@
 					document.createElement('picture');
 					loadjs("/dist/js/picturefill.min.js");
 				}
-				loadCSS('//fonts.googleapis.com/css?family=Roboto')
+				loadCSS('/fonts/fonts.css')
 			</script>
 		</head>
 
-		<body data-spon-track="true">
+		<body class="font-regular">
 			{{ yield }}
 			{% include '@symbols' %}
 			<script>

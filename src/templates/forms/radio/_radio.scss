@@ -10,7 +10,7 @@
 	&:focus {
 		& ~ label {
 			.o-radio__button {
-				@apply border-grey-darker;
+				@apply border-grey;
 			}
 		}
 	}

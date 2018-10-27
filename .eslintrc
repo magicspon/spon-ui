@@ -60,7 +60,8 @@
 		"PATH_CONFIG": true,
 		"BUILD_TYPE": true,
 		"SERVER": true,
-		"__STAMP__": true
+		"__STAMP__": true,
+		"google": true
 	},
 	"parserOptions": {
 		"ecmaFeatures": {

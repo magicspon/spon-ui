@@ -82,8 +82,7 @@ export default class Accordion {
 					open: { CLICK: 'close' },
 					close: { CLICK: 'open' }
 				},
-				state: this.options.activeIndex === index ? 'open' : 'close',
-				isAnimating: false
+				state: this.options.activeIndex === index ? 'open' : 'close'
 			}
 		})
 
@@ -140,9 +139,7 @@ export default class Accordion {
 		const { accordionKey } = elm.dataset
 		const key = parseInt(accordionKey, 10)
 		// get the current state
-		const { state, isAnimating } = this.$panels[key]
-		// if the item is currrently animating, bail
-		if (isAnimating) return
+		const { state } = this.$panels[key]
 
 		// get the new action
 		const action = this.$panels[key].machine[state].CLICK
@@ -155,7 +152,7 @@ export default class Accordion {
 		) {
 			this.close(this.$selectedIndex)
 		}
-
+		// debugger // eslint-disable-line
 		// do the new action
 		this[action](key)
 
@@ -173,8 +170,6 @@ export default class Accordion {
 	 */
 	open = async index => {
 		const { button, target } = this.$panels[index]
-
-		this.$panels[index].isAnimating = true
 
 		target.style.display = 'block'
 
@@ -194,7 +189,6 @@ export default class Accordion {
 			})
 		})
 
-		this.$panels[index].isAnimating = false
 		this.$panels[index].state = 'open'
 		button.classList.add('is-active')
 		target.classList.add('is-open')
@@ -214,7 +208,6 @@ export default class Accordion {
 	 */
 	close = async index => {
 		const { button, target } = this.$panels[index]
-		this.$panels[index].isAnimating = true
 
 		const { clientHeight: height } = target
 		target.style.height = `${height}px`
@@ -227,7 +220,6 @@ export default class Accordion {
 			})
 		})
 
-		this.$panels[index].isAnimating = false
 		this.$panels[index].state = 'close'
 		target.style.display = ''
 		target.style.height = ''

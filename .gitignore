@@ -11,13 +11,13 @@ __snapshots/bitmaps_test
 
 # cms
 # ----------------------------------------------------------------------
-deploy/vendor
-deploy/.env
-deploy/.env.php
-deploy/storage
+# deploy/vendor
+# deploy/.env
+# deploy/.env.php
+# deploy/storage
 deploy
-deploy/public/assets
-deploy/public/resources
+# deploy/public/assets
+# deploy/public/resources
 
 
 # fractal

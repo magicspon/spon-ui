@@ -72,6 +72,7 @@ module.exports = {
 		fonts: config.fonts,
 		breakpoints: config.screens,
 		width: config.width,
+		height: config.height,
 		maxWidth: config.maxWidth,
 		spacing: sortValues(config.margin),
 		fluid: fluid(type.fluid),

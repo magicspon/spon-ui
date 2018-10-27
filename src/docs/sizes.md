@@ -40,3 +40,21 @@ label: 'Sizes'
   </tr>
 {% endfor %}
 </table>
+
+## Height Values
+
+<table>
+  <thead>
+    <th>key</th>
+    <th>value</th>
+  </thead>
+{% for key, value in height -%}
+  <tr>
+    <td style="max-width: 200px; overflow: auto;">
+      {{ key }}
+      <div style="width: {{ value }}; height: 4px; background: #4ae;"></div>
+    </td>
+    <td>{{ value }}</td>
+  </tr>
+{% endfor %}
+</table>

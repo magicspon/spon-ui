@@ -30,6 +30,8 @@ global.PATHS = PATHS
 // after the above, some globals are used
 global.WEBPACK_CONFIG = require('./scripts/webpack/config.base')
 
+process.env.NODE_ENV = env
+
 const color =
 	config === 'cms' ? 'green' : config === 'fractal' ? 'cyan' : 'blue'
 

@@ -1,9 +1,10 @@
-{# 
-{% include '@header' %} #}
-<main id="barba-wrapper" class="w-full">
-	<div class="barba-container" data-namespace="{% block namespace %}{% endblock %}">
-		{% block content %}
-		{% endblock %}
-	</div>
-</main>
-{# {% include '@footer' %} #}
+
+{% include '@header' %}
+<div id="page-wrapper">
+  <div class="page-child">
+    {% block content %}
+    {% endblock %}
+  </div>
+</div>
+{% include '@footer' %}
+{% include '@modal' %}
