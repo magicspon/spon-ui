@@ -8,25 +8,20 @@
 				},
 				"modules": false
 			}
-		]
+		],
+		"@babel/preset-react"
 	],
 	"plugins": [
 		"@babel/plugin-syntax-dynamic-import",
 		"@babel/plugin-proposal-class-properties",
 		"@babel/plugin-transform-runtime",
 		"@babel/plugin-transform-async-to-generator",
-		"ramda"
+		"ramda",
+		"lodash"
 	],
-
 	"env": {
 		"test": {
-			"plugins": [
-				"@babel/plugin-syntax-dynamic-import",
-				"@babel/plugin-proposal-class-properties",
-				"@babel/plugin-transform-runtime",
-				"@babel/plugin-transform-async-to-generator",
-				"ramda"
-			]
+			"plugins": ["@babel/plugin-transform-modules-commonjs"]
 		}
 	}
 }

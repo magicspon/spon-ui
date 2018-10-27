@@ -51,15 +51,21 @@ export default {
 	},
 
 	onExit({ next }) {
+		log('on exit')
 		// console.table({ from: from.data.path, to: to.data.path, action }) // eslint-disable-line
 		next()
 	},
 
-	onAfterExit() {},
+	onAfterExit() {
+		log('after exit')
+	},
 
 	onEnter({ next }) {
+		log('on enter')
 		next()
 	},
 
-	onAfterEnter() {}
+	onAfterEnter() {
+		log('on after enter')
+	}
 }

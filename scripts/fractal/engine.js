@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const mdAbbr = require('markdown-it-abbr')
 const mdFootnote = require('markdown-it-footnote')
 const md = require('markdown-it')({

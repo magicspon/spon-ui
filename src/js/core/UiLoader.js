@@ -36,7 +36,7 @@ export default (() => {
 				// if we haven't already constructured the behaviour
 				if (!module) {
 					// fetch the behaviour
-					const resp = await import(`@/ui/${behaviour}`)
+					const resp = await import(/* webpackChunkName: "ui-[request]" */ `@/ui/${behaviour}`)
 					const { default: Ui } = resp
 					let settings = {
 						key
@@ -53,6 +53,7 @@ export default (() => {
 					cache.set(key, {
 						...item,
 						module,
+						options: settings,
 						hasLoaded: true
 					})
 
@@ -88,9 +89,6 @@ export default (() => {
 				R.compose(
 					R.map(behaviour => {
 						const { key, uiOptions: options, query } = node.dataset
-
-						log(key)
-
 						if (!key) {
 							throw new Error('ui components must have a unique key')
 						}
@@ -113,7 +111,7 @@ export default (() => {
 		scan()
 	}
 
-	const destroy = (selector = 'page-child') => {
+	const destroy = (selector = '.page-child') => {
 		cache.forEach(({ module, key, hasLoaded, node }) => {
 			if (hasLoaded && node.closest(selector)) {
 				module.destroy()

@@ -47,7 +47,7 @@ self.addEventListener(
 						}
 					})
 					.catch(() => {
-						log('abort request')
+						console.log('abort request') // eslint-disable-line
 					})
 			}).catch(() => ({
 				key: link,

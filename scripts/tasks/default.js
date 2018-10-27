@@ -17,7 +17,16 @@ const validateHtml = require('../utils/htmllint')
 const criticalCSS = require('./critical')
 const server = global.config === 'cms' ? serverProxy : fractalServer
 const defaultTask = gulp.series(clean, staticFiles, scss, watch, server)
-const cmsTask = gulp.series(clean, cacheTags, staticFiles, scss, watch, server)
+const cmsTask = gulp.series(
+	clean,
+	buildComponets,
+	syncPartials,
+	cacheTags,
+	staticFiles,
+	scss,
+	watch,
+	server
+)
 const regressionTest = require('../backstop')
 const buildStatic = require('../fractal/static')
 

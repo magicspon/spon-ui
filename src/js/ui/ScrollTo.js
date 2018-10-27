@@ -1,37 +1,33 @@
 import { createEvents } from '@/core/modules/createEvents'
 import mitt from 'mitt'
-
+import fromTo from 'mud-from-to'
 /** *
- * @namespace MyUiWidget
- * @class MyUiWidget
- * @desc This class handles MyUiWidgets... 
+ * @namespace ScrollTo
+ * @class ScrollTo
+ * @desc This class handles ScrollTos... 
  * @example 
  * 
  * js: 
  * 
- * new MyUiWidget(document.getElementById('test'), {}, 'test-node').mount()
+ * new ScrollTo(document.getElementById('test'), {}).mount()
  * 
  * Required markup:
  * 
- * <div id="test" data-ui="MyUiWidget" data-ui-options='{}' data-ui-key="menu-MyUiWidget"></div>
+ * <div id="test" data-ui="ScrollTo" data-ui-options='{}' data-key="menu-ScrollTo"></div>
  *
 
  * @param {HTMLElement} el - node to bind to
  * @param {Object} options - options
- * @param {String} key - key name
  *
- * @property {Boolean} options.XXX - only allow one MyUiWidget to be open at a time
- * @property {Number} options.XXX - set one of the MyUiWidgets to be open
  * 
- * @return {MyUiWidget}
+ * @return {ScrollTo}
  */
 
-export default class MyUiWidget {
+export default class ScrollTo {
 	defaults = {}
 
-	constructor(el, options, key) {
+	constructor(el, options) {
 		this.options = { ...this.defaults, ...options }
-		this.key = key
 
 		Object.assign(this, mitt())
 
@@ -41,7 +37,7 @@ export default class MyUiWidget {
 	}
 
 	/** *
-	 * @memberof MyUiWidget
+	 * @memberof ScrollTo
 	 * @method mount
 	 * @desc Add the events
 	 *
@@ -52,11 +48,11 @@ export default class MyUiWidget {
 	}
 
 	events = {
-		'click [data-my-button]': 'onClick'
+		'click [data-scroll-to]': 'onClick'
 	}
 
 	/** *
-	 * @memberof MyUiWidget
+	 * @memberof ScrollTo
 	 * @method unmount
 	 * @desc remove the events
 	 *
@@ -67,7 +63,7 @@ export default class MyUiWidget {
 	}
 
 	/** *
-	 * @memberof MyUiWidget
+	 * @memberof ScrollTo
 	 * @method onClick
 	 * @desc the click event...
 	 * @param {Object} e : the event object
@@ -75,5 +71,23 @@ export default class MyUiWidget {
 	 *
 	 * @return {void}
 	 */
-	onClick = (e, elm) => {}
+	onClick = async (e, elm) => {
+		e.preventDefault()
+		const href = elm.getAttribute('href')
+		const { offset = 0 } = elm.dataset
+		const target = document.querySelector(href)
+		const { offsetTop } = target
+
+		await fromTo(
+			{
+				start: window.pageYOffset,
+				end: offsetTop + offset
+			},
+			v => {
+				window.scrollTo(0, v)
+			}
+		)
+
+		this.emit('scrollto/done', { elm, target })
+	}
 }

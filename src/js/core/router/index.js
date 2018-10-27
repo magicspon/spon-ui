@@ -1,12 +1,13 @@
+import NProgress from 'nprogress'
 import { createEvents } from '@/core/modules/createEvents'
 import eventBus from '@/core/modules/eventBus'
 import { composeProps } from '@/core/modules/refs'
 import { preventClick, activeLinks, localLinks } from './utils/links'
 import historyManager from './history'
 import cache from './cache'
-import request from './request'
-import lifecycle from './lifecycle'
+import request, { Queue } from './request'
 import lazyload from './lazyload'
+import Lifecycle from './lifecycle'
 import * as Action from './actions'
 
 /**
@@ -42,19 +43,20 @@ export default (() => {
 	 */
 	return class Router {
 		constructor({
-			routes,
+			routes = defaultRoutes,
 			rootNode,
 			navLinks,
 			classes,
 			onEnter,
 			onExit,
-			prefetchTargets = '[data-prefetch]'
+			prefetchTargets = '[data-prefetch]',
+			progressOptions = {
+				showSpinner: true
+			}
 		}) {
-			// bootup the lifecycle
-			lifecycle
-				.addRoutes(routes || defaultRoutes)
-				.setWrapper(rootNode)
-				.onLoad(window.location.pathname)
+			this.lifecycle = new Lifecycle({ routes, rootNode })
+
+			this.lifecycle.onLoad()
 
 			this.prefetchTargets = prefetchTargets
 
@@ -72,6 +74,8 @@ export default (() => {
 
 			eventBus.on(Action.ROUTE_TRANSITION_AFTER_DOM_UPDATE, onEnter)
 
+			NProgress.configure(progressOptions)
+
 			return this
 		}
 
@@ -86,20 +90,28 @@ export default (() => {
 		 *
 		 * @return {void}
 		 */
-		static goTo = ({ pathname, action, dataAttrs }, transition) => {
-			lifecycle
-				.transition({ pathname, action, transition, dataAttrs })
-				.then(({ action, newHtml }) => {
-					if (action === 'PUSH') {
-						historyManager.push(pathname, { attr: dataAttrs })
-					}
-					localLinks(newHtml)
+		async goTo({ pathname, action, dataAttrs }, transition) {
+			try {
+				NProgress.start()
+
+				const { newHtml } = await this.lifecycle.init({
+					pathname,
+					action,
+					transition,
+					dataAttrs
 				})
-				.catch(err => {
-					eventBus.emit(Action.ROUTER_PAGE_NOT_FOUND, err)
-					// eslint-disable-next-line
-					console.warn(`[PREFETCH] no page found at ${err}`)
-				})
+				localLinks(newHtml)
+
+				if (action === 'PUSH') {
+					historyManager.push(pathname, { attr: dataAttrs })
+				}
+				NProgress.done()
+			} catch (err) {
+				eventBus.emit(Action.ROUTER_PAGE_NOT_FOUND, err)
+				// eslint-disable-next-line
+				console.warn(`[PREFETCH] no page found at ${err}`)
+				window.location = pathname
+			}
 		}
 
 		/** *
@@ -112,25 +124,18 @@ export default (() => {
 		 * @return {void}
 		 */
 		onMouseEnter = (e, elm) => {
-			const { pathname } = elm
-			if (
-				!preventClick(e, elm) ||
-				cache.get(pathname) ||
-				elm.classList.contains('---is-fetching---')
-			) {
+			const { href } = elm
+			const pathname = href.replace(window.location.origin, '')
+			const fromCache = cache.get(pathname)
+
+			if (!preventClick(e, elm) || fromCache || Queue.size >= 4) {
 				return
 			}
 
-			elm.classList.add('---is-fetching---')
-
-			request(pathname)
-				.then(() => {
-					elm.classList.remove('---is-fetching---')
-				})
-				.catch(err => {
-					// eslint-disable-next-line
-					console.warn(`[PREFETCH] no page found at ${pathname}`, err)
-				})
+			request(pathname).catch(err => {
+				// eslint-disable-next-line
+				console.warn(`[PREFETCH] no page found at ${pathname}`, err)
+			})
 		}
 
 		/** *
@@ -143,21 +148,22 @@ export default (() => {
 		 * @return {void}
 		 */
 		onClick = (e, elm) => {
-			const { pathname } = elm
+			const { href } = elm
+			const pathname = href.replace(window.location.origin, '')
 
 			if (!preventClick(e, elm)) {
 				return
 			}
 
-			e.stopPropagation()
-			e.preventDefault()
+			if (pathname === window.location.href.replace(window.location.origin, ''))
+				return
 
-			if (pathname === window.location.pathname) return
+			e.preventDefault()
 
 			const dataAttrs = composeProps([...elm.attributes])
 
 			lazyload.cancel()
-			Router.goTo({ pathname, dataAttrs, action: 'PUSH' })
+			this.goTo({ pathname, dataAttrs, action: 'PUSH' })
 		}
 
 		/** *
@@ -169,7 +175,7 @@ export default (() => {
 		 */
 		mount = () => {
 			eventBus.on(Action.ROUTER_POP_EVENT, ({ pathname }) => {
-				lifecycle.transition({ pathname, action: 'POP' })
+				this.lifecycle.init({ pathname, action: 'POP' })
 			})
 
 			eventBus.on(

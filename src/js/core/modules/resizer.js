@@ -1,5 +1,5 @@
 import eventBus from '@/core/modules/eventBus'
-import raf from 'raf'
+import raf from 'raf-throttle'
 import * as R from 'ramda'
 
 /**

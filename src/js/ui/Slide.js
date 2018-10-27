@@ -74,7 +74,6 @@ export default class Carousel {
 	 */
 	mount = () => {
 		const slide = new Slide(this.$el, this.options)
-
 		slide.init()
 	}
 

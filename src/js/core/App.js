@@ -1,4 +1,5 @@
 import loader from '@/core/modules/loader'
+import Ui from '@/core/UiLoader'
 import eventBus from '@/core/modules/eventBus'
 import Router from '@/core/router/'
 import * as Actions from '@/core/router/actions'
@@ -15,16 +16,27 @@ export default (() =>
 
 		mount = () => {
 			this.$loader.hydrate(document)
+			Ui.hydrate()
 
-			if (this.$router) this.$router.mount().lazyload()
+			if (!this.$router) return
+
+			this.$router.mount().lazyload()
 
 			eventBus.on(Actions.ROUTE_TRANSITION_BEFORE_DOM_UPDATE, () => {
+				Ui.destroy()
 				this.$loader.unmount()
 			})
 
 			eventBus.on(Actions.ROUTE_TRANSITION_AFTER_DOM_UPDATE, ({ newHtml }) => {
 				this.$loader.hydrate(newHtml)
-				this.$router.lazyload()
+
+				Ui.hydrate(newHtml)
+
+				if (window.requestIdleCallback) {
+					window.requestIdleCallback(() => {
+						this.$router.lazyload()
+					})
+				}
 			})
 		}
 	})()

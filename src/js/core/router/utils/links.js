@@ -1,8 +1,7 @@
 import * as R from 'ramda'
 import { segmentize, beautifyPath } from '@/core/utils/strings'
-import { parseUrl } from './parseUrl'
-
 import local from 'local-links'
+import { parseUrl } from './parseUrl'
 
 /**
  *

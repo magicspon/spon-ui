@@ -46,9 +46,7 @@ const syncPartials = () => {
 	return gulp
 		.src([
 			getSrcPaths(templates),
-			getSrcPaths(exclude)
-				.map(item => `!${item}`)
-				.join(',')
+			...exclude.map(item => `!${getSrcPaths(item)}`)
 		])
 		.pipe(changed(dest))
 		.pipe(
@@ -72,7 +70,12 @@ const serverProxy = done => {
 	browserSync.init({
 		...middleware(compiler),
 		proxy,
-		...server
+		...server,
+		files: [
+			{
+				match: [getCraftPath('templates/**/**/*.twig')]
+			}
+		]
 	})
 
 	done()

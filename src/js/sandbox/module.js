@@ -1,27 +1,37 @@
-const R = require('ramda')
+/* eslint-disable no-console */
 
-const ob = {
-	lineItems: {
-		'123': {
-			id: '123',
-			options: {
-				type: 'app'
-			}
-		},
-		'35324': {
-			id: '35324',
-			options: {
-				type: 'desktop'
-			}
-		}
+const delay = delay => new Promise(resolve => setTimeout(resolve, delay))
+
+class Lifecycle {
+	constructor({ routes, wrapper }) {
+		this.routes = routes
+		this.wrapper = wrapper
+	}
+
+	async init() {
+		this.argh = 10
+
+		await Promise.all([this.onExit(), this.onFetch()])
+
+		console.log('hello')
+	}
+
+	async onExit() {
+		this.chump = 10
+		await delay(500)
+		console.log('onExit')
+	}
+
+	async onFetch() {
+		this.chumper = 10
+		await delay(1000)
+		console.log('onFetch')
 	}
 }
 
-R.compose(
-	// R.filter(item => item.type === 'app'),
-	// R.pluck('options'),
+const a = new Lifecycle({
+	routes: [],
+	wrapper: undefined
+})
 
-	// R.map(([key, value]) => value),
-	Object.entries,
-	R.prop('lineItems')
-)(ob) // ?
+a.init()

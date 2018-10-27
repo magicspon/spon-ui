@@ -31,7 +31,7 @@ export default (() => {
 		R.reject(key => R.contains(key)(errorLinks)),
 		// ignore any that are in the cache
 		R.filter(
-			pathname => pathname !== window.location.pathname && !cache.get(pathname)
+			pathname => pathname !== window.location.pathname && !cache.has(pathname)
 		),
 		// just get the unique paths
 		R.uniqBy(value => value),
@@ -43,9 +43,9 @@ export default (() => {
 		enter({ isIntersecting, target }) {
 			if (isIntersecting) {
 				const link = getLinks([target])
-
 				if (link) {
 					// R.forEach(worker.postMessage)(links)
+					cache.set(link, { status: 'loading' })
 					worker.postMessage({ link })
 				}
 
@@ -56,13 +56,10 @@ export default (() => {
 
 	// add listen to events...
 	worker.addEventListener('message', ({ data }) => {
-		// should probably check what i'm getting here
-		// but... alpha... we're getting html responses
-
 		data.forEach(({ key, data }) => {
-			log(`fetched: ${key}`)
+			// log(`fetched: ${key}`)
 			if (data) {
-				cache.set(key, { data })
+				cache.set(key, { data, status: 'cached' })
 			} else {
 				if (!R.contains(key)(errorLinks)) {
 					errorLinks.push(key)
@@ -77,9 +74,13 @@ export default (() => {
 
 	return {
 		fetch(nodes) {
-			const validLinks = R.filter(link => !preventClick({}, link.pathname))(
-				nodes
-			)
+			const validLinks = R.compose(
+				R.take(10),
+				R.filter(link => {
+					const href = link.href.replace(window.location.origin, '')
+					return !preventClick({}, href) && !cache.has(href)
+				})
+			)(nodes)
 
 			viewport.destroy()
 

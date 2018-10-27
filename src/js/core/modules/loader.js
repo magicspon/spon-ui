@@ -78,9 +78,7 @@ export default function loader(fn) {
 			const stack = R.map(({ behaviour: Behaviour, node, id }) => {
 				const fn = new Behaviour(node, id)
 				fn.init()
-				setTimeout(() => {
-					fn.mount()
-				})
+				fn.mount()
 				const destroy = node.closest(wrapper)
 				return { fn, destroy, id }
 			})(data)

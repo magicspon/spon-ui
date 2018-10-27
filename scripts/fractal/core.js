@@ -36,7 +36,7 @@ fractal.web.theme(
 		favicon: '/favicon.ico',
 		lang: 'en-gb',
 		skin: 'black',
-		styles: ['default', '/frct/theme.css'],
+		styles: ['default', '/frct/theme.css', '/fonts/fonts.css'],
 		static: {
 			mount: 'fractal'
 		}

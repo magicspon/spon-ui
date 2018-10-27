@@ -59,8 +59,6 @@ export default class Accordion {
 			this.options = { ...this.options, ...JSON.parse(uiOptions) }
 		}
 
-		log(this.options)
-
 		Object.assign(this, mitt())
 
 		this.$el = el
@@ -103,6 +101,7 @@ export default class Accordion {
 	 * @return {void}
 	 */
 	mount = () => {
+		log('mount it')
 		this.$$events.attachAll()
 	}
 
@@ -118,7 +117,12 @@ export default class Accordion {
 	 * @return {void}
 	 */
 	unmount = () => {
+		log('unmount it')
 		this.$$events.destroy()
+	}
+
+	destroy = () => {
+		log('kill it')
 	}
 
 	/** *

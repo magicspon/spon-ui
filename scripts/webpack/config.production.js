@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const { InjectManifest } = require('workbox-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 module.exports = {
 	output: {
@@ -10,6 +11,7 @@ module.exports = {
 	devtool: 'source-map',
 
 	plugins: [
+		new LodashModuleReplacementPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': {
 				NODE_ENV: '"production"'

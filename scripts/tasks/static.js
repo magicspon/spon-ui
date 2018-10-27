@@ -29,7 +29,7 @@ const minifyStaticCss = () =>
 		.src(getStaticPaths(PATHS.css))
 		.pipe(changed(getPublicPath()))
 		.pipe(postcss(plugins))
-		.pipe(cssnano({ ...TASK.cssnanoOptions, discardUnused: false}))
+		.pipe(cssnano({ ...TASK.cssnanoOptions, discardUnused: false }))
 		.pipe(gulp.dest(getPublicPath()))
 
 const moveScripts = () =>
@@ -46,6 +46,28 @@ const miscFiles = () => {
 		.pipe(gulp.dest(getPublicPath()))
 		.pipe(browserSync.stream())
 }
+
+// this is a temporary task.. waiting for an update to gulp-imagemin
+const compressSVGs = () =>
+	gulp
+		.src(getStaticPaths(PATHS.svgs))
+		.pipe(changed(getPublicPath('dist')))
+		.pipe(
+			svgmin(file => {
+				const prefix = path.basename(file.relative, path.extname(file.relative))
+				return {
+					plugins: [
+						{
+							prefixIds: {
+								prefix: stringHash(prefix)
+							}
+						}
+					]
+				}
+			})
+		)
+		.pipe(gulp.dest(getPublicPath('dist')))
+		.pipe(browserSync.stream())
 
 const images = () =>
 	gulp
@@ -104,7 +126,7 @@ const symbols = () => {
 		.src(path.resolve(process.env.PWD, 'scripts', 'templates/symbols.tmp.html'))
 		.pipe(changed(PATHS.symbols.html))
 		.pipe(inject(svgs, { transform: fileContents }))
-		.pipe(rename('_symbols.twig'))
+		.pipe(rename('symbols.twig'))
 		.pipe(
 			htmlmin({
 				collapseWhitespace: true,
@@ -121,5 +143,6 @@ module.exports = gulp.parallel(
 	images,
 	symbols,
 	moveScripts,
-	minifyStaticCss
+	minifyStaticCss,
+	compressSVGs
 )

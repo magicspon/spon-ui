@@ -27,6 +27,9 @@ const historyManager = (() => {
 	// listen to any history changes
 	history.listen((location, action) => {
 		const { pathname, state } = location
+
+		if (pathname === window.location.pathname) return
+
 		// if 'POP'... i.e forward/backward
 		// emit the event
 		if (action === 'POP') {
