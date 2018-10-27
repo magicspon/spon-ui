@@ -14,6 +14,10 @@ const watch = done => {
 			getSrcPaths(global.PATHS.fractal.templates),
 			gulp.series(syncPartials)
 		)
+
+		gulp
+			.watch(getCraftPath('templates/**/**/*.twig'))
+			.on('change', browserSync.reload)
 	}
 
 	done()

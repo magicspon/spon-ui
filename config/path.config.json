@@ -24,7 +24,7 @@
 	"symbols": {
 		"src": "**/ui-*.svg",
 		"scss": "scss/framework",
-		"html": "./src/templates/svgs"
+		"html": "./src/templates/_svgs"
 	},
 
 	"js": {

@@ -178,35 +178,20 @@ export default (() => {
 				this.lifecycle.init({ pathname, action: 'POP' })
 			})
 
-			eventBus.on(
-				Action.ROUTE_TRANSITION_AFTER_DOM_UPDATE,
-				({
-					to: {
-						params: { raw: url }
-					}
-				}) => {
-					this.$links(url)
+			if (this.$router) this.$router.mount().lazyload()
+
+			eventBus.on(Actions.ROUTE_TRANSITION_BEFORE_DOM_UPDATE, () => {
+				this.$loader.unmount()
+			})
+
+			eventBus.on(Actions.ROUTE_TRANSITION_AFTER_DOM_UPDATE, ({ newHtml }) => {
+				this.$loader.hydrate(newHtml)
+
+				if (window.requestIdleCallback) {
+					window.requestIdleCallback(() => {
+						this.$router.lazyload()
+					})
 				}
-			)
-
-			localLinks(document)
-
-			this.$events.attachAll()
-
-			return this
+			})
 		}
-
-		/** *
-		 * @method lazyload
-		 * @memberof Router
-		 * @description prefetch content on a service worker
-		 *
-		 * @return {Router}
-		 */
-		lazyload = () => {
-			const items = [...document.querySelectorAll(this.prefetchTargets)]
-			lazyload.fetch(items)
-			return this
-		}
-	}
-})()
+	})()
