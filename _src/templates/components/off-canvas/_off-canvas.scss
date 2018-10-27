@@ -1,9 +1,0 @@
-.c-off-canvas {
-	transform: translate3d(-100%, 0, 0);
-	transition: transform 300ms ease, visibility 0ms 300ms;
-}
-
-.c-off-canvas--open {
-	transform: translate3d(0, 0, 0);
-	transition-delay: 0ms;
-}

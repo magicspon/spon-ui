@@ -1,9 +1,0 @@
-{% import '@helpers' as h %}
-
-<div>
-	<input class="visuallyhidden o-checkbox" type="checkbox" id="{{ id }}-option" name="{{ id }}-option" {{ attr|default('') }}>
-	<label class="flex items-center" for="{{ id }}-option">
-		<span class="o-checkbox__button mr-0-5 border border-grey-light flex items-center justify-center">{{ h.symbol('ui-tick') }}</span>
-		<span>Checkbox label</span>
-	</label>
-</div>
