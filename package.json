@@ -60,7 +60,7 @@
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"coverage": "jest --coverage",
-		"gen-cert": "mkdir private && node ./scripts/utils/cert/cli.js gen-certs",
+		"gen-cert": "mkdir private || node ./scripts/utils/cert/cli.js gen-certs",
 		"lint:js": "eslint --ext src/js/** .",
 		"lint:scss": "stylelint src/**/*.scss --syntax scss",
 		"pretty": "prettier 'src/**/*.{js,jsx,scss}' --write",
