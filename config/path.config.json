@@ -30,7 +30,16 @@
 	"js": {
 		"src": "js",
 		"dest": "dist/js",
-		"libs": ["./node_modules/picturefill/dist/picturefill.min.js"]
+		"libs": ["./node_modules/picturefill/dist/picturefill.min.js"],
+		"inline": {
+			"file": "_base.twig",
+			"dir": "./templates/wrapper",
+			"scripts": [
+				"./node_modules/loadjs/dist/loadjs.min.js",
+				"./node_modules/fg-loadcss/dist/loadCSS.min.js",
+				"./node_modules/fg-loadcss/dist/cssrelpreload.min.js"
+			]
+		}
 	},
 
 	"scss": {
