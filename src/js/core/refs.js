@@ -20,6 +20,7 @@ const getRefs = node => {
 
 		acc[ref] = {
 			node,
+			name: ref,
 			selector: `[data-ref="${ref}"]`,
 			data: {
 				set: (key, value) => {
@@ -32,7 +33,13 @@ const getRefs = node => {
 					return node.dataset[key]
 				}
 			},
-			styler: styler(node)
+			styler: styler(node),
+			emit: (event, ...args) => {
+				emitter.emit(`${ref}:${event}`, ...args)
+			},
+			on(event, fn) {
+				emitter.on(`${ref}:${event}`, fn)
+			}
 		}
 
 		return acc
@@ -68,9 +75,9 @@ const getRefs = node => {
 						const name = attributeName.split('data-')[1]
 						const state = target.dataset[camelCased(name)]
 						if (oldValue !== state) {
-							emitter.emit('data:update', {
-								ref: refs[ref],
-								name,
+							const { name } = refs[ref]
+
+							emitter.emit(`${name}:data:update`, {
 								prev: oldValue,
 								current: state
 							})

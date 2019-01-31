@@ -27,7 +27,11 @@ const mapStateToRender = (prevState, current, watch) => ({
 export const render = (fn, listen = []) => () => {
 	return sync.render(() => {
 		const current = store.getState()
-		const { prev, newState } = mapStateToRender(prevState, current, listen)
+		const { prev, current: newState } = mapStateToRender(
+			prevState,
+			current,
+			listen
+		)
 		const changes = diff(prev, newState)
 		if (Object.keys(changes).length) {
 			fn({ prev, current: newState })
