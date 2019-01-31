@@ -3992,6 +3992,11 @@ deep-is@~0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
 
+deep-object-diff@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/deep-object-diff/-/deep-object-diff-1.1.0.tgz#d6fabf476c2ed1751fc94d5ca693d2ed8c18bc5a"
+  integrity sha512-b+QLs5vHgS+IoSNcUE4n9HP2NwcHj7aqnJWsjPtuG75Rh5TOaGt0OjAYInh77d5T16V5cRDC+Pw/6ZZZiETBGw==
+
 deepmerge@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-3.1.0.tgz#a612626ce4803da410d77554bfd80361599c034d"
@@ -4216,10 +4221,6 @@ dom-delegate@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/dom-delegate/-/dom-delegate-2.2.0.tgz#fcbe2e0de086f82bd03eaa2caaac51e4a87f2e6b"
   integrity sha512-uhzlGq+RIYiRrXo8jEe8SQ84UYyE1z5Ucq95oQGxW3KjLtqrxI0mNi0Un8t5QZXQ8U7ig0I1pJQNqDvr3aJg2Q==
-
-dom-delegate@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/dom-delegate/-/dom-delegate-2.0.3.tgz#0adb664ef4d2e099e7f4a176fa9448c821a2bb8c"
 
 dom-serializer@0, dom-serializer@0.1.0, dom-serializer@^0.1.0, dom-serializer@~0.1.0:
   version "0.1.0"

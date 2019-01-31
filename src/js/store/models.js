@@ -1,29 +1,47 @@
-export const count = {
-	state: 0,
-	reducers: {
-		increment: state => state + 1,
-		decrement: state => state - 1
-	},
-	effects: dispatch => ({
-		async incrementAsync() {
-			await setTimeout(() => {
-				dispatch.count.increment()
-			}, 1000)
-		}
-	})
-}
+import * as R from 'ramda'
 
-export const terry = {
-	state: 0,
-	reducers: {
-		increment: state => state + 1,
-		decrement: state => state - 1
+export const count = {
+	state: {
+		items: []
 	},
-	effects: dispatch => ({
-		async incrementAsync() {
-			await setTimeout(() => {
-				dispatch.count.increment()
-			}, 1000)
+	reducers: {
+		addGroup: (state, payload) => {
+			const { items } = state
+
+			if (items[payload]) return state
+
+			return {
+				...state,
+				items: {
+					...items,
+					[payload]: {}
+				}
+			}
+		},
+		addItemGroup: (state, payload) => {
+			const { items } = state
+			const { key, value } = payload
+			const item = items[key]
+			const { count = 0 } = item
+
+			return {
+				...state,
+				items: {
+					...items,
+					[key]: {
+						...item,
+						count: count + 1,
+						value
+					}
+				}
+			}
 		}
-	})
+	}
+	// effects: dispatch => ({
+	// 	async incrementAsync() {
+	// 		await setTimeout(() => {
+	// 			dispatch.count.increment()
+	// 		}, 1000)
+	// 	}
+	// })
 }

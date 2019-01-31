@@ -1,11 +1,11 @@
 import { init } from '@rematch/core'
 import sync from 'framesync'
-import { count, terry } from './models'
+import { diff } from 'deep-object-diff'
+import { count } from './models'
 
 const store = init({
 	models: {
-		count,
-		terry
+		count
 	}
 })
 
@@ -27,7 +27,10 @@ const mapStateToRender = (prevState, current, watch) => ({
 export const render = (fn, listen = []) => () => {
 	return sync.render(() => {
 		const current = store.getState()
-		fn(mapStateToRender(prevState, current, listen))
+		const changes = diff(prevState, current)
+		if (Object.keys(changes).length) {
+			fn(mapStateToRender(prevState, current, listen))
+		}
 		prevState = current
 	})
 }

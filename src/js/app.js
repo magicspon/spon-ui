@@ -12,7 +12,8 @@ const sandbox = ({ node, store, render }) => {
 
 	addEvents({
 		[`click ${button.selector}`]: () => {
-			dispatch.count.increment()
+			dispatch.count.addGroup(button.data.get('key'))
+			dispatch.count.addItemGroup({ key: '10', value: 'hello' })
 		},
 		keydown: () => {
 			button.data.set('thing', 500)
@@ -26,9 +27,9 @@ const sandbox = ({ node, store, render }) => {
 	const unsubscribe = store.subscribe(
 		render(
 			({ prev, current }) => {
-				log(prev, current)
+				log(current.count.items['10'].count)
 			},
-			[] // an array of models you want to listen to (see store/index.js)
+			['count'] // an array of models you want to listen to (see store/index.js)
 		)
 	)
 
