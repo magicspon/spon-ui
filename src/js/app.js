@@ -7,12 +7,13 @@ const node = document.getElementById('sandbox')
 const sandbox = ({ node, store, render }) => {
 	const { refs, emitter } = getRefs(node)
 	const { dispatch } = store
-	const { button } = refs
+	const { button, data } = refs
 	const { addEvents, removeEvents } = domEvents(node)
+
+	dispatch.count.addGroup(button.data.get('key'))
 
 	addEvents({
 		[`click ${button.selector}`]: () => {
-			dispatch.count.addGroup(button.data.get('key'))
 			dispatch.count.addItemGroup({ key: '10', value: 'hello' })
 		},
 		keydown: () => {
@@ -27,7 +28,7 @@ const sandbox = ({ node, store, render }) => {
 	const unsubscribe = store.subscribe(
 		render(
 			({ prev, current }) => {
-				log(current.count.items['10'].count)
+				data.node.textContent = current.count.items['10'].count
 			},
 			['count'] // an array of models you want to listen to (see store/index.js)
 		)
