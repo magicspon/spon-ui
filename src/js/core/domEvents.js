@@ -4,19 +4,11 @@ const createStore = () => {
 	const store = {}
 
 	return {
-		addItem(key, value) {
+		add(key, value) {
 			store[key] = value
 		},
 
-		getItem(key) {
-			return store[key]
-		},
-
-		hasItem(key) {
-			return !!store[key]
-		},
-
-		removeItem(key) {
+		delete(key) {
 			delete store[key]
 		},
 
@@ -33,7 +25,7 @@ export default (node = document.body) => {
 	const addEvents = events => {
 		Object.entries(events).forEach(([key, fn]) => {
 			const [event, selector] = key.split(' ')
-			eventStore.addItem(`${event} ${selector}`, fn)
+			eventStore.add(`${event} ${selector}`, fn)
 			root.on(event, selector, fn)
 		})
 	}
@@ -41,7 +33,7 @@ export default (node = document.body) => {
 	const removeEvents = () => {
 		Object.entries(eventStore.store).forEach(([key, fn]) => {
 			const [event, selector] = key.split(' ')
-			eventStore.removeItem(`${event} ${selector}`)
+			eventStore.delete(`${event} ${selector}`)
 			root.off(event, selector, fn)
 		})
 	}
