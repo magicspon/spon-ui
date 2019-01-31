@@ -67,11 +67,14 @@ const getRefs = node => {
 					if (attributeName.indexOf('data-') !== -1) {
 						const name = attributeName.split('data-')[1]
 						const state = target.dataset[camelCased(name)]
-						emitter.emit('data:update', {
-							name,
-							prev: oldValue,
-							current: state
-						})
+						if (oldValue !== state) {
+							emitter.emit('data:update', {
+								ref: refs[ref],
+								name,
+								prev: oldValue,
+								current: state
+							})
+						}
 					}
 				}
 

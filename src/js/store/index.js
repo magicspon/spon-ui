@@ -24,7 +24,7 @@ const mapStateToRender = (prevState, current, watch) => ({
 	current: mapStateToRenderHelper(current, watch)
 })
 
-export const render = (fn, listen) => () => {
+export const render = (fn, listen = []) => () => {
 	return sync.render(() => {
 		const current = store.getState()
 		fn(mapStateToRender(prevState, current, listen))

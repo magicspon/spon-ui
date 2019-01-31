@@ -5,7 +5,7 @@ import store, { render } from '@/store'
 
 const node = document.getElementById('sandbox')
 const sandbox = ({ node, store, render }) => {
-	const { refs } = getRefs(node)
+	const { refs, emitter } = getRefs(node)
 	const { dispatch } = store
 	const { button } = refs
 	const { addEvents, removeEvents } = domEvents(node)
@@ -13,7 +13,14 @@ const sandbox = ({ node, store, render }) => {
 	addEvents({
 		[`click ${button.selector}`]: () => {
 			dispatch.count.increment()
+		},
+		keydown: () => {
+			button.data.set('thing', 500)
 		}
+	})
+
+	emitter.on('data:update', ({ ref, name, prev, current }) => {
+		log('hello', ref, name, prev, current)
 	})
 
 	const unsubscribe = store.subscribe(
