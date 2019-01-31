@@ -27,7 +27,7 @@ const sandbox = ({ node, store, render }) => {
 
 	const unsubscribe = store.subscribe(
 		render(
-			({ prev, current }) => {
+			({ current }) => {
 				data.node.textContent = current.count.items['10'].count
 			},
 			['count'] // an array of models you want to listen to (see store/index.js)
