@@ -1,49 +1,34 @@
 import '@/plugins/logger'
+import getRefs from '@/core/refs'
+import domEvents from '@/core/domEvents'
+import store, { render } from '@/store'
 
-import webfontloader from '@/plugins/webfontloader'
-import 'lazysizes'
+const node = document.getElementById('sandbox')
+const sandbox = ({ node, store, render }) => {
+	const { refs } = getRefs(node)
+	const { dispatch } = store
+	const { button } = refs
+	const { addEvents, removeEvents } = domEvents(node)
 
-if (module.hot) {
-	module.hot.accept()
-}
+	addEvents({
+		[`click ${button.selector}`]: () => {
+			dispatch.count.increment()
+		}
+	})
 
-webfontloader()
-
-async function init() {
-	const [App, routes] = await Promise.all([
-		import(/* webpackChunkName: "chunk-app" */ '@/core/App'),
-		import(/* webpackChunkName: "chunk-views" */ '@/views')
-	])
-	/* eslint-disable-next-line */
-	new App.default({
-		// @property {Array} routes - routes object
-		// @property {HTMLElement} rootNode - the root html node
-		// @property {Array} navLinks - an array of links that should update on navigation
-		// @property {Object} classes - clases applied to active links
-		// @property {Function} onExit - called before the dom is updated
-		// @property {Function} function - called after the dom is updated
-
-		router: {
-			routes: routes.default,
-			rootNode: document.getElementById('page-wrapper'),
-			navLinks: [
-				...document.querySelectorAll('header a'),
-				...document.querySelectorAll('footer a')
-			],
-			classes: {
-				match: 'is-current',
-				root: 'is-current-root',
-				parent: 'is-current-parent'
+	const unsubscribe = store.subscribe(
+		render(
+			({ prev, current }) => {
+				log(prev, current)
 			},
-			prefetchTargets: '[data-prefetch]',
-			onExit() {},
-			onEnter() {}
-		},
+			[] // an array of models you want to listen to (see store/index.js)
+		)
+	)
 
-		// @property {Function} routes - dynamic import of modules - function used by the loader
-		chunks: behaviour =>
-			import(/* webpackChunkName: "behaviour-[request]" */ `@/behaviours/${behaviour}`)
-	}).mount()
+	return () => {
+		removeEvents()
+		unsubscribe()
+	}
 }
 
-init()
+sandbox({ node, store, render })
