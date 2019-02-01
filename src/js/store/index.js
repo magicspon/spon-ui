@@ -1,12 +1,19 @@
 import { init } from '@rematch/core'
+import createRematchPersist from '@rematch/persist'
 import sync from 'framesync'
 import { diff } from 'deep-object-diff'
 import { count } from './models'
 
+const persistPlugin = createRematchPersist({
+	whitelist: ['count'],
+	throttle: 1000
+})
+
 const store = init({
 	models: {
 		count
-	}
+	},
+	plugins: [persistPlugin]
 })
 
 let prevState = store.getState()

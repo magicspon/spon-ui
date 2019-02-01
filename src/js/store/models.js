@@ -1,5 +1,3 @@
-import * as R from 'ramda'
-
 export const count = {
 	state: {
 		items: []

@@ -5,8 +5,7 @@ import mitt from 'mitt'
 
 const camelCased = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase())
 
-const getRefs = node => {
-	const elements = [...node.querySelectorAll('[data-ref]')]
+const getRefs = (node, elements) => {
 	const emitter = mitt()
 
 	const refs = elements.reduce((acc, node) => {
@@ -53,7 +52,7 @@ const getRefs = node => {
 	}
 
 	const callback = mutationsList => {
-		const mutations = Object.entries(mutationsList)
+		Object.entries(mutationsList)
 			.filter(([, mutation]) => {
 				const {
 					target: {
@@ -91,7 +90,7 @@ const getRefs = node => {
 				}
 			})
 
-		emitter.emit('dom:update', mutations)
+		// emitter.emit('dom:update', mutations)
 	}
 
 	// Create an observer instance linked to the callback function
@@ -100,7 +99,7 @@ const getRefs = node => {
 	// Start observing the target node for configured mutations
 	observer.observe(node, config)
 
-	return { refs, emitter, observer }
+	return { refs, observer }
 }
 
 export default getRefs
