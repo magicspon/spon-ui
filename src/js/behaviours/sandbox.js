@@ -9,36 +9,38 @@
  *
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
-import sync from 'framesync'
+// import sync from 'framesync'
 
-function mango({ node, store, render, domEvents, refs }) {
-	// store, render, domEvents, getRefs
+function mango({ store, render, domEvents, refs }) {
 	const { dispatch } = store
-	const { button, data } = refs
-	const { addEvents, removeEvents } = domEvents(node)
+	const { button } = refs
+	const { addEvents, removeEvents } = domEvents()
 
-	// initial dispatches should be wrapper in a sync
-	sync.update(() => {
-		dispatch.count.addGroup(button.data.get('key'))
-	})
+	const actions = key =>
+		({
+			'37': { x: -50 },
+			'38': { y: -50 },
+			'39': { x: 50 },
+			'40': { y: 50 }
+		}[key] || false)
 
 	addEvents({
-		[`click ${button.selector}`]: () => {
-			dispatch.count.addItemGroup({ key: '10', value: 'hello' })
-			button.data.set('thing', 500)
+		keydown: e => {
+			const state = actions(e.keyCode)
+			if (state) {
+				dispatch.move.move(state)
+			}
 		}
-	})
-
-	button.on('data:update', ({ prev, current }) => {
-		log('hello', prev, current)
 	})
 
 	const unsubscribe = store.subscribe(
 		render(
 			({ current }) => {
-				data.node.textContent = current.count.items['10'].count
+				const { move } = current
+
+				button.style.set({ ...move })
 			},
-			['count']
+			['move']
 		)
 	)
 

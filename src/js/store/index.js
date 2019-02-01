@@ -2,7 +2,7 @@ import { init } from '@rematch/core'
 import createRematchPersist from '@rematch/persist'
 import sync from 'framesync'
 import { diff } from 'deep-object-diff'
-import { count } from './models'
+import { count, move } from './models'
 
 const persistPlugin = createRematchPersist({
 	whitelist: ['count'],
@@ -11,7 +11,8 @@ const persistPlugin = createRematchPersist({
 
 const store = init({
 	models: {
-		count
+		count,
+		move
 	},
 	plugins: [persistPlugin]
 })

@@ -32,7 +32,7 @@ const getRefs = (node, elements) => {
 					return node.dataset[key]
 				}
 			},
-			styler: styler(node),
+			style: styler(node),
 			emit: (event, ...args) => {
 				emitter.emit(`${ref}:${event}`, ...args)
 			},
