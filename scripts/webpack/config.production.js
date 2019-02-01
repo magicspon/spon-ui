@@ -17,23 +17,23 @@ module.exports = {
 				NODE_ENV: '"production"'
 			}
 		}),
-		new webpack.NoEmitOnErrorsPlugin(),
-		new InjectManifest({
-			globDirectory: path.resolve(process.env.PWD, global.PATHS.public, 'dist'),
-			globPatterns: ['**/*.{html,js,css,svg,png}'],
-			swDest: path.resolve(process.env.PWD, global.PATHS.public, 'sw.js'),
-			swSrc: path.resolve(
-				process.env.PWD,
-				global.PATHS.src,
-				global.PATHS.js.src,
-				'service-worker.js'
-			),
-			modifyUrlPrefix: {
-				// Remove a '/dist' prefix from the URLs:
-				'css/': '/dist/css/',
-				'js/': '/dist/js/',
-				'images/': '/dist/images/'
-			}
-		})
+		new webpack.NoEmitOnErrorsPlugin()
+		// new InjectManifest({
+		// 	globDirectory: path.resolve(process.env.PWD, global.PATHS.public, 'dist'),
+		// 	globPatterns: ['**/*.{html,js,css,svg,png}'],
+		// 	swDest: path.resolve(process.env.PWD, global.PATHS.public, 'sw.js'),
+		// 	swSrc: path.resolve(
+		// 		process.env.PWD,
+		// 		global.PATHS.src,
+		// 		global.PATHS.js.src,
+		// 		'service-worker.js'
+		// 	),
+		// 	modifyUrlPrefix: {
+		// 		// Remove a '/dist' prefix from the URLs:
+		// 		'css/': '/dist/css/',
+		// 		'js/': '/dist/js/',
+		// 		'images/': '/dist/images/'
+		// 	}
+		// })
 	]
 }

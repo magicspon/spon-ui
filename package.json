@@ -75,6 +75,7 @@
 		"dom-delegate": "^2.2.0",
 		"fg-loadcss": "^2.1.0",
 		"framesync": "^4.0.1",
+		"htm": "^2.0.0",
 		"loadjs": "^3.5.4",
 		"mitt": "^1.1.3",
 		"picturefill": "^3.0.3",

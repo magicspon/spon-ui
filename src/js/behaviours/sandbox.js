@@ -17,7 +17,7 @@ function mango({ node, store, render, domEvents, refs }) {
 	const { button, data } = refs
 	const { addEvents, removeEvents } = domEvents(node)
 
-	// wrap batch calls in a sync update to ensue call order
+	// initial dispatches should be wrapper in a sync
 	sync.update(() => {
 		dispatch.count.addGroup(button.data.get('key'))
 	})
