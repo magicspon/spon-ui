@@ -15,8 +15,6 @@ function trackMove({ store, render, node }) {
 		render(
 			({ current }) => {
 				const { move } = current
-				log('trackMove')
-
 				node.textContent = JSON.stringify(move, null, 2)
 			},
 			['move']

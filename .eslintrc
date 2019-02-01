@@ -19,7 +19,7 @@
 		"jsx-a11y/mouse-events-have-key-events": "off",
 		"no-lonely-if": "off",
 		"no-nested-ternary": "off",
-		"no-param-reassign": "warn",
+		"no-param-reassign": "off",
 		"no-shadow": "off",
 		"no-underscore-dangle": "off",
 		"no-unneeded-ternary": "warn",

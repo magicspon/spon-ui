@@ -71,7 +71,9 @@ function loader(context) {
 					killList[name] = { module: destroyModule, observer, name }
 				}
 				// update the loader store forcing a render
-				store.dispatch.loader.setLoad()
+				sync.postRender(() => {
+					store.dispatch.loader.setLoad()
+				})
 			}
 		})
 	}
