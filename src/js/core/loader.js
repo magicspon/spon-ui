@@ -70,6 +70,8 @@ function loader(context) {
 				if (!keepAlive) {
 					killList[name] = { module: destroyModule, observer, name }
 				}
+				// update the loader store forcing a render
+				store.dispatch.loader.setLoad()
 			}
 		})
 	}

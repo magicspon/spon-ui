@@ -10,44 +10,26 @@
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
 
-function mango({ store, render, domEvents, refs }) {
+function clock({ store, render, node }) {
 	const { dispatch } = store
-	const { button } = refs
-	const { addEvents, removeEvents } = domEvents()
-
-	const actions = key =>
-		({
-			'37': { x: -50 },
-			'38': { y: -50 },
-			'39': { x: 50 },
-			'40': { y: 50 }
-		}[key] || false)
-
-	addEvents({
-		keydown: e => {
-			const state = actions(e.keyCode)
-			if (state) {
-				dispatch.move.move(state)
-			}
-		}
-	})
+	dispatch.loader.setLoadAsync()
 
 	const unsubscribe = store.subscribe(
 		render(
 			({ current }) => {
-				const { move } = current
-				log('sandbox')
-
-				button.style.set({ ...move })
+				const {
+					loader: { loaded }
+				} = current
+				log('loaded')
+				node.textContent = loaded
 			},
-			['move']
+			['loader']
 		)
 	)
 
 	return () => {
-		removeEvents()
 		unsubscribe()
 	}
 }
 
-export default mango
+export default clock
