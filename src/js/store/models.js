@@ -65,8 +65,7 @@ export const move = {
 
 export const loader = {
 	state: {
-		loaded: 0,
-		gary: 0
+		loaded: 0
 	},
 	reducers: {
 		setLoad: state => {
@@ -75,20 +74,6 @@ export const loader = {
 				...state,
 				loaded: loaded + 1
 			}
-		},
-		setGary: (state, gary) => {
-			return {
-				...state,
-				gary
-			}
 		}
-	},
-
-	effects: dispatch => ({
-		async setLoadAsync(payload) {
-			await setTimeout(() => {
-				dispatch.loader.setGary(payload)
-			}, 1000)
-		}
-	})
+	}
 }

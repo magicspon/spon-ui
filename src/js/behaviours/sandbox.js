@@ -36,7 +36,7 @@ function mango({ store, render, domEvents, refs }) {
 		render(
 			({ current }) => {
 				const { move } = current
-				log('sandbox')
+				log('render:sandbox')
 
 				button.style.set({ ...move })
 			},

@@ -4,9 +4,77 @@ import domEvents from './domEvents'
 import getRefs from './refs'
 import store, { render } from '@/store'
 
+let hasDispatched = false
+
+const cache = new Map()
+const killList = {}
+
+function createRefs(node) {
+	let refs
+	// a noop fallback
+	let observer = false
+	const refNodes = [...node.querySelectorAll('[data-ref]')]
+	if (refNodes.length) {
+		const refOb = getRefs(node, refNodes)
+		refs = refOb.refs
+		observer = refOb.observer
+	}
+
+	return { refs, observer }
+}
+
+export function cloneModule(module, { node, name, keepAlive = false }) {
+	const { refs, observer } = createRefs(node)
+
+	const destroyModule = module({
+		node,
+		domEvents,
+		store,
+		render,
+		refs
+	})
+
+	cache.set(name, {
+		node,
+		module: destroyModule,
+		observer,
+		hasLoaded: true
+	})
+
+	if (!keepAlive) {
+		killList[name] = { module: destroyModule, observer, name }
+	}
+}
+
+function loadModule(module, node, name, item, keepAlive, query) {
+	const { refs, observer } = createRefs(node)
+	// call it, and assign it to the cache
+	// so that it can be called to unmoumt
+	const destroyModule = module({
+		node,
+		domEvents,
+		store,
+		render,
+		refs
+	})
+
+	if (typeof query === 'undefined') {
+		cache.delete(name)
+	} else {
+		cache.set(name, {
+			...item,
+			module: destroyModule,
+			observer,
+			hasLoaded: true
+		})
+	}
+
+	if (!keepAlive) {
+		killList[name] = { module: destroyModule, observer, name }
+	}
+}
+
 function loader(context) {
-	const cache = new Map()
-	const killList = {}
 	let handle
 
 	const scan = () => {
@@ -19,11 +87,14 @@ function loader(context) {
 				if (query && !window.matchMedia(query).matches) {
 					// remove it from the kill list
 
+					log('hello', name)
 					// call the module, it has already been called
 					// once so this will be the returned function
 					// that should remove any custom event handlers
 					module()
-					observer.disconnect()
+					if (observer) {
+						observer.disconnect()
+					}
 					// update the cache
 					cache.set(name, {
 						...item,
@@ -39,41 +110,17 @@ function loader(context) {
 				// fetch the behaviour
 				const resp = await import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
 				const { default: module } = resp
-				// we might not have any refs... if we try and get some with none there...
-				// the world will end
-				// refs can be undefined
-				let refs
-				// a noop fallback
-				let observer = () => {}
-				const refNodes = [...node.querySelectorAll('[data-ref]')]
-				if (refNodes.length) {
-					const refOb = getRefs(node, refNodes)
-					refs = refOb.refs
-					observer = refOb.observer
-				}
 
-				// call it, and assign it to the cache
-				// so that it can be called to unmoumt
-				const destroyModule = module({ node, domEvents, store, render, refs })
+				loadModule(module, node, name, item, keepAlive, query)
 
-				if (typeof query === 'undefined') {
-					cache.delete(name)
-				} else {
-					cache.set(name, {
-						...item,
-						module: destroyModule,
-						observer,
-						hasLoaded: true
+				// update the loader store forcing a render
+				// we only
+				if (!hasDispatched) {
+					hasDispatched = true
+					sync.postRender(() => {
+						store.dispatch.loader.setLoad()
 					})
 				}
-
-				if (!keepAlive) {
-					killList[name] = { module: destroyModule, observer, name }
-				}
-				// update the loader store forcing a render
-				sync.postRender(() => {
-					store.dispatch.loader.setLoad()
-				})
 			}
 		})
 	}
@@ -110,7 +157,9 @@ function loader(context) {
 		window.removeEventListener('resize', handle)
 		Object.values(killList).forEach(({ module, observer, name }) => {
 			module()
-			observer.disconnect()
+			if (observer) {
+				observer.disconnect()
+			}
 			cache.delete(name)
 		})
 	}

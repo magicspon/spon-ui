@@ -40,6 +40,8 @@ export const render = (fn, listen = []) => () => {
 		current,
 		listen
 	)
+	// i need to know if the changes have been applied to the current call
+	// this code won't work as is....
 	const changes = diff(prev, newState)
 	sync.render(() => {
 		if (Object.keys(changes).length) {

@@ -10,11 +10,14 @@
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
 
+import { cloneModule } from '@/core/loader'
+
 function trackMove({ store, render, node }) {
 	const unsubscribe = store.subscribe(
 		render(
 			({ current }) => {
 				const { move } = current
+				log('render:trackMove')
 				node.textContent = JSON.stringify(move, null, 2)
 			},
 			['move']
@@ -23,7 +26,15 @@ function trackMove({ store, render, node }) {
 
 	return () => {
 		unsubscribe()
+		log('kill track move')
 	}
 }
+
+// you can only have one data-spon="trackMove" per page...
+// but you can clone behaviours and attach to other nodes
+cloneModule(trackMove, {
+	node: document.getElementById('clone'),
+	name: 'trackMove-2'
+})
 
 export default trackMove

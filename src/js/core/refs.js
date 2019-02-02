@@ -98,7 +98,6 @@ const getRefs = (node, elements) => {
 
 	// Start observing the target node for configured mutations
 	observer.observe(node, config)
-
 	return { refs, observer }
 }
 

@@ -12,24 +12,11 @@
 
 function clock({ store, render, node }) {
 	const { dispatch } = store
-	dispatch.loader.setLoadAsync()
+	// dispatch.loader.setLoadAsync()
 
-	const unsubscribe = store.subscribe(
-		render(
-			({ current }) => {
-				const {
-					loader: { loaded }
-				} = current
-				log('loaded')
-				node.textContent = loaded
-			},
-			['loader']
-		)
-	)
-
-	return () => {
-		unsubscribe()
-	}
+	// return () => {
+	// 	unsubscribe()
+	// }
 }
 
 export default clock
