@@ -34,7 +34,10 @@ export function cloneModule(module, { node, name, keepAlive = false }) {
 		refs
 	})
 
+	const clone = cache.get(module.name)
+
 	cache.set(name, {
+		...clone,
 		node,
 		module: destroyModule,
 		observer,
@@ -78,16 +81,16 @@ function loader(context) {
 	let handle
 
 	const scan = () => {
+		log(cache.get('trackMove-2'))
 		cache.forEach(async item => {
 			const { query, name, node, hasLoaded, module, keepAlive, observer } = item
 			// has the item already been loaded
 			// and it no longer query object no longer passes
 			if (hasLoaded) {
 				// if the query no longer passes call the unmount method
-				if (query && !window.matchMedia(query).matches) {
+				if (query && !window.matchMedia(query).matches && hasLoaded) {
 					// remove it from the kill list
 
-					log('hello', name)
 					// call the module, it has already been called
 					// once so this will be the returned function
 					// that should remove any custom event handlers
@@ -141,7 +144,7 @@ function loader(context) {
 						)
 					}
 
-					const item = { name: spon, node, data: rest, hasMounted: false }
+					const item = { name: spon, node, data: rest, hasLoaded: false }
 					if (typeof keepAlive !== 'undefined') item.keepAlive = true
 					if (query) item.query = query
 					cache.set(spon, item)

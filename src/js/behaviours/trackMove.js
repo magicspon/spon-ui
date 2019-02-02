@@ -26,7 +26,6 @@ function trackMove({ store, render, node }) {
 
 	return () => {
 		unsubscribe()
-		log('kill track move')
 	}
 }
 
