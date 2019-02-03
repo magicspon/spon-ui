@@ -35,7 +35,17 @@ export const createStore = () => {
 export const mapStateToRenderHelper = (state, watch) =>
 	watch.length > 0
 		? watch.reduce((acc, key) => {
-			acc[key] = state[key]
+			const path = key.split('/')
+			if (path.length > 1) {
+				const [root, ...rest] = path
+				// log(acc[root])
+
+				acc[root] = {
+					[[...rest]]: state[root][[[...rest]]]
+				}
+			} else {
+				acc[path[0]] = state[path[0]]
+			}
 			return acc
 		  }, {})
 		: state

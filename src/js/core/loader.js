@@ -5,6 +5,7 @@ import store from '@/store'
 import domEvents from './domEvents'
 import getRefs from './refs'
 import { createStore, mapStateToRender } from './utils'
+import h from './dom'
 
 const cache = createStore()
 const killList = {}
@@ -21,6 +22,7 @@ function bindStoreToRender(store) {
 		const changes = diff(prev, newState)
 		sync.render(() => {
 			if (Object.keys(changes).length) {
+				log('render')
 				fn({ prev, current: newState })
 			}
 			prevState = current
@@ -41,6 +43,7 @@ function loadModule({ module, node, name, keepAlive, query }) {
 		domEvents,
 		store,
 		render,
+		h,
 		refs
 	})
 	if (typeof query === 'undefined') {

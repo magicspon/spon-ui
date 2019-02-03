@@ -3,13 +3,11 @@
 {# @sandbox #}
 
 <div data-spon="cart">
-  <div>
-    <button data-button data-id="items-1">Group 1</button>
+  <div class="flex mb-2">
+    <button class="p-1 mr-1 border" data-button data-id="items-1">Group 1</button>
+    <button class="p-1 border" data-button data-id="items-2">Group 2</button>
   </div>
-  <div>
-    <button data-button data-id="items-2">Group 2</button>
-  </div>
-  <div data-ref="product"></div>
+  <div class="flex flex-wrap" data-ref="product"></div>
 </div>
 
 <div data-spon="basket">

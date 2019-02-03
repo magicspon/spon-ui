@@ -3,7 +3,7 @@ import createRematchPersist from '@rematch/persist'
 import * as models from './models/index'
 
 const persistPlugin = createRematchPersist({
-	whitelist: ['move'],
+	whitelist: ['cart'],
 	throttle: 1000
 })
 

@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-expressions */
-
-import h from '@/core/dom'
-
+import { createNode } from '@/core/refs'
 /**
  * @namespace
  * @property {object} spon
@@ -14,14 +11,17 @@ import h from '@/core/dom'
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
 
-function clock({ store, render, domEvents, node, refs }) {
-	const { addEvents } = domEvents()
+function clock({ store, render, h, domEvents, refs, node }) {
+	const { addEvents } = domEvents(node)
 	const { dispatch } = store
 	const { product } = refs
+
+	const buttons = [...node.querySelectorAll('[data-button]')].map(createNode)
 
 	addEvents({
 		'click [data-button]': (e, elm) => {
 			e.preventDefault()
+
 			const { id } = elm.dataset
 			const {
 				cart: { items }
@@ -50,19 +50,24 @@ function clock({ store, render, domEvents, node, refs }) {
 		render(
 			({ current }) => {
 				const { cart } = current
-				const { items } = cart.currentView
+				const { items, id } = cart.currentView
+
+				buttons.forEach(node => {
+					node.className = node.id === id ? 'text-red' : ''
+				})
 
 				if (items) {
 					h(
-						product.node,
-						items,
-						item => `
-								<div class="flex justify-between">
-									${item.title}
-									<button class="ml-2" data-product data-id="${item.id}">
+						items.map(
+							item => `
+								<div class="mx-1 border p-1">
+									<div class="text-ms-4 mb-1">${item.title}</div>
+									<button class="border p-0-5" data-product data-id="${item.id}">
 										add to cart
 									</button>
 								</div>`
+						),
+						product.node
 					)
 				}
 			},

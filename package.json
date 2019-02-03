@@ -70,6 +70,7 @@
 	"dependencies": {
 		"@rematch/core": "^1.0.6",
 		"@rematch/persist": "^1.1.5",
+		"classnames": "^2.2.6",
 		"debug": "^4.1.1",
 		"deep-object-diff": "^1.1.0",
 		"dom-delegate": "^2.2.0",

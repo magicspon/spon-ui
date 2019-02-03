@@ -3,8 +3,8 @@
 import hyperHTML from 'hyperhtml'
 const { bind } = hyperHTML
 
-const h = (node, items, template) => {
-	bind(node)`${items.map(template)}`
+const h = (template, node) => {
+	bind(node)`${template}`
 }
 
 export default h

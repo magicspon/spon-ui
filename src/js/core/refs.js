@@ -2,8 +2,23 @@
 import styler from 'stylefire'
 import sync from 'framesync'
 import mitt from 'mitt'
+import classNames from 'classnames'
 
 const camelCased = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase())
+
+export const createNode = node => {
+	const { className } = node
+	const { id } = node.dataset
+
+	return {
+		node,
+		id,
+		style: styler(node),
+		set className(name) {
+			node.className = classNames(className, name)
+		}
+	}
+}
 
 const getRefs = (node, elements) => {
 	if (!elements.length) return
@@ -20,7 +35,7 @@ const getRefs = (node, elements) => {
 		}
 
 		acc[ref] = {
-			node,
+			...createNode(node),
 			name: ref,
 			selector: `[data-ref="${ref}"]`,
 			data: {
@@ -34,7 +49,6 @@ const getRefs = (node, elements) => {
 					return node.dataset[key]
 				}
 			},
-			style: styler(node),
 			emit: (event, ...args) => {
 				emitter.emit(`${ref}:${event}`, ...args)
 			},
