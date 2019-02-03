@@ -1,56 +1,39 @@
 import sync from 'framesync'
+import { diff } from 'deep-object-diff'
 import throttle from 'raf-throttle'
+import store from '@/store'
 import domEvents from './domEvents'
 import getRefs from './refs'
-import store, { render } from '@/store'
+import { createStore, mapStateToRender } from './utils'
 
-let hasDispatched = false
-
-const cache = new Map()
+const cache = createStore()
 const killList = {}
 
-function createRefs(node) {
-	let refs
-	// a noop fallback
-	let observer = false
-	const refNodes = [...node.querySelectorAll('[data-ref]')]
-	if (refNodes.length) {
-		const refOb = getRefs(node, refNodes)
-		refs = refOb.refs
-		observer = refOb.observer
-	}
-
-	return { refs, observer }
-}
-
-export function cloneModule(module, { node, name, keepAlive = false }) {
-	const { refs, observer } = createRefs(node)
-
-	const destroyModule = module({
-		node,
-		domEvents,
-		store,
-		render,
-		refs
-	})
-
-	const clone = cache.get(module.name)
-
-	cache.set(name, {
-		...clone,
-		node,
-		module: destroyModule,
-		observer,
-		hasLoaded: true
-	})
-
-	if (!keepAlive) {
-		killList[name] = { module: destroyModule, observer, name }
+function bindStoreToRender(store) {
+	let prevState = store.getState()
+	return (fn, listen = []) => () => {
+		const current = store.getState()
+		const { prev, current: newState } = mapStateToRender(
+			prevState,
+			current,
+			listen
+		)
+		const changes = diff(prev, newState)
+		sync.render(() => {
+			if (Object.keys(changes).length) {
+				fn({ prev, current: newState })
+			}
+			prevState = current
+		})
 	}
 }
 
-function loadModule(module, node, name, item, keepAlive, query) {
-	const { refs, observer } = createRefs(node)
+const render = bindStoreToRender(store)
+
+function loadModule({ module, node, name, keepAlive, query }) {
+	if (cache.get(name) && cache.get(name).hasLoaded) return
+	const { refs, observer } =
+		getRefs(node, [...node.querySelectorAll('[data-ref]')]) || {}
 	// call it, and assign it to the cache
 	// so that it can be called to unmoumt
 	const destroyModule = module({
@@ -60,12 +43,10 @@ function loadModule(module, node, name, item, keepAlive, query) {
 		render,
 		refs
 	})
-
 	if (typeof query === 'undefined') {
 		cache.delete(name)
 	} else {
 		cache.set(name, {
-			...item,
 			module: destroyModule,
 			observer,
 			hasLoaded: true
@@ -77,12 +58,17 @@ function loadModule(module, node, name, item, keepAlive, query) {
 	}
 }
 
-function loader(context) {
+export function cloneModule(module, { node, name, keepAlive = false }) {
+	loadModule({ module, node, name, keepAlive })
+}
+
+function loadApp(context) {
 	let handle
 
-	const scan = () => {
-		log(cache.get('trackMove-2'))
-		cache.forEach(async item => {
+	function scan() {
+		const list = cache.store
+
+		Object.entries(list).forEach(async ([key, item]) => {
 			const { query, name, node, hasLoaded, module, keepAlive, observer } = item
 			// has the item already been loaded
 			// and it no longer query object no longer passes
@@ -99,10 +85,11 @@ function loader(context) {
 						observer.disconnect()
 					}
 					// update the cache
-					cache.set(name, {
-						...item,
+					cache.set(key, {
 						hasLoaded: false
 					})
+
+					store.dispatch.loader.removeModule(name)
 				}
 				// quit the function
 				return
@@ -114,16 +101,10 @@ function loader(context) {
 				const resp = await import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
 				const { default: module } = resp
 
-				loadModule(module, node, name, item, keepAlive, query)
-
-				// update the loader store forcing a render
-				// we only
-				if (!hasDispatched) {
-					hasDispatched = true
-					sync.postRender(() => {
-						store.dispatch.loader.setLoad()
-					})
-				}
+				loadModule({ module, node, name, keepAlive, query })
+				sync.postRender(() => {
+					store.dispatch.loader.addModule(name)
+				})
 			}
 		})
 	}
@@ -173,4 +154,4 @@ function loader(context) {
 	}
 }
 
-export default loader
+export default loadApp

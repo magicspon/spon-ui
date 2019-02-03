@@ -6,6 +6,8 @@ import mitt from 'mitt'
 const camelCased = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase())
 
 const getRefs = (node, elements) => {
+	if (!elements.length) return
+
 	const emitter = mitt()
 
 	const refs = elements.reduce((acc, node) => {

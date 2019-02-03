@@ -30,18 +30,15 @@ export default (node = document.body) => {
 		})
 	}
 
-	const removeEvents = () => {
-		Object.entries(eventStore.store).forEach(([key, fn]) => {
-			const [event, selector] = key.split(' ')
-			eventStore.delete(`${event} ${selector}`)
-			root.off(event, selector, fn)
-		})
-	}
-
 	const removeEvent = key => {
 		const [event, selector] = key.split(' ')
 		const fn = eventStore.store[key]
+
 		root.off(event, selector, fn)
+	}
+
+	const removeEvents = () => {
+		root.destroy()
 	}
 
 	return {

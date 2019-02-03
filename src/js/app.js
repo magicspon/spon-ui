@@ -1,6 +1,6 @@
 import '@/plugins/logger'
-import loader from '@/core/loader'
+import run from '@/core/loader'
 
-const app = loader(document)
+const app = run(document)
 
 app.hydrate()

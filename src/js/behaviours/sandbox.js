@@ -7,12 +7,12 @@
  * @property {object} spon.domEvents - module to handle event delegation with three methods, addEvents, removeEvent, removeEvents
  * @property {object} spon.getRefs - module used to create dom references, returns an object of dom elements with special powers
  *
- * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
+ * @return {fn} - a function to remove any event handlers. this function is called when the behaviour is destroyed
  */
 
 function mango({ store, render, domEvents, refs }) {
 	const { dispatch } = store
-	const { button } = refs
+	const { button, box } = refs
 	const { addEvents, removeEvents } = domEvents()
 
 	const actions = key =>
@@ -26,9 +26,13 @@ function mango({ store, render, domEvents, refs }) {
 	addEvents({
 		keydown: e => {
 			const state = actions(e.keyCode)
+			log('keydown')
 			if (state) {
 				dispatch.move.move(state)
 			}
+		},
+		[`click ${box.selector}`]: () => {
+			log('click')
 		}
 	})
 
