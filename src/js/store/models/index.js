@@ -70,9 +70,15 @@ export const cart = {
 		deleteItemFromCart(state, payload) {
 			const { basket } = state
 
-			const newBasket = Object.entries(basket).filter(([, value]) => {
-				return value.id !== payload
-			})
+			const newBasket = Object.entries(basket).reduce((acc, [, value]) => {
+				const { id } = value
+
+				if (id !== payload) {
+					acc[id] = value
+				}
+
+				return acc
+			}, {})
 
 			return {
 				...state,
