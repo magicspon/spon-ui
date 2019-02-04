@@ -7,6 +7,7 @@ import { html } from 'lit-html'
  * @property {HTMLElement} spon.node - the dom node with the matching data-spon
  * @property {object} spon.store - the redux store object
  * @property {function} spon.render - the render method to be used by the store subscription
+ * @property {function} spon.h - hyperhtml wrapper function
  * @property {object} spon.domEvents - module to handle event delegation with three methods, addEvents, removeEvent, removeEvents
  * @property {object} spon.getRefs - module used to create dom references, returns an object of dom elements with special powers
  *

@@ -1,3 +1,5 @@
+import { html } from 'lit-html'
+
 /**
  * @namespace
  * @property {object} spon
@@ -10,8 +12,6 @@
  *
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
-
-import { html } from 'lit-html'
 
 function basket({ store, render, domEvents, h, node, refs }) {
 	const { addEvents } = domEvents(node)
