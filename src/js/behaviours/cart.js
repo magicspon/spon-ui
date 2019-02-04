@@ -58,7 +58,7 @@ function clock({ store, render, h, domEvents, refs, node }) {
 					node.className = node.id === id ? 'text-red' : ''
 				})
 
-				if (items) {
+				if (items && items.length) {
 					h(
 						items.map(
 							item => html`

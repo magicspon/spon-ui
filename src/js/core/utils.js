@@ -37,15 +37,16 @@ export const mapStateToRenderHelper = (state, watch) =>
 		? watch.reduce((acc, key) => {
 			const path = key.split('/')
 			if (path.length > 1) {
-				const [root, ...rest] = path
+				const [root, child] = path
 				// log(acc[root])
 
 				acc[root] = {
-					[[...rest]]: state[root][[[...rest]]]
+					[child]: state[root][[child]]
 				}
 			} else {
 				acc[path[0]] = state[path[0]]
 			}
+
 			return acc
 		  }, {})
 		: state

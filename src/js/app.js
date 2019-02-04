@@ -8,5 +8,3 @@ if (module.hot) {
 }
 
 app.hydrate()
-
-log(app.a)
