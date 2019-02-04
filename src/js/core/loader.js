@@ -1,33 +1,13 @@
 import sync from 'framesync'
-import { diff } from 'deep-object-diff'
 import throttle from 'raf-throttle'
 import store from '@/store'
 import domEvents from './domEvents'
 import getRefs from './refs'
-import { createStore, mapStateToRender } from './utils'
+import { createStore, bindStoreToRender } from './utils'
 import h from './dom'
 
 const cache = createStore()
 const killList = {}
-
-function bindStoreToRender(store) {
-	let prevState = store.getState()
-	return (fn, listen = []) => () => {
-		const current = store.getState()
-		const { prev, current: newState } = mapStateToRender(
-			prevState,
-			current,
-			listen
-		)
-		const changes = diff(prev, newState)
-		sync.render(() => {
-			if (Object.keys(changes).length) {
-				fn({ prev, current: newState })
-			}
-			prevState = current
-		})
-	}
-}
 
 const render = bindStoreToRender(store)
 

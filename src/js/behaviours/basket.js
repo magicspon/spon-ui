@@ -14,7 +14,7 @@ import { html } from 'lit-html'
  */
 
 function basket({ store, render, domEvents, h, node, refs }) {
-	const { addEvents } = domEvents(node)
+	const { addEvents, removeEvents } = domEvents(node)
 	const { dispatch } = store
 	const { list } = refs
 
@@ -56,6 +56,7 @@ function basket({ store, render, domEvents, h, node, refs }) {
 
 	return () => {
 		unsubscribe()
+		removeEvents()
 	}
 }
 

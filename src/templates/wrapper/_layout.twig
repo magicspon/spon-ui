@@ -1,10 +1,14 @@
 
-{% include '@header' %}
+{# {% include '@header' %} #}
+<ul>
+  <li><a href="/components/preview/sandbox">page 1</a></li>
+  <li><a href="/components/preview/sandbox--2">page 2</a></li>
+</ul>
 <div id="page-wrapper">
-  <div class="page-child">
+  <div {% block route %}{% endblock %} class="page-child">
     {% block content %}
     {% endblock %}
   </div>
 </div>
-{% include '@footer' %}
-{% include '@modal' %}
+{# {% include '@footer' %}
+{% include '@modal' %} #}

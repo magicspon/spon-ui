@@ -1,6 +1,7 @@
 import { init } from '@rematch/core'
 import createRematchPersist from '@rematch/persist'
 import * as models from './models/index'
+import router from './models/router'
 
 const persistPlugin = createRematchPersist({
 	whitelist: ['cart'],
@@ -10,6 +11,7 @@ const persistPlugin = createRematchPersist({
 const store = init({
 	models: {
 		...models,
+		router: router(),
 		loader: {
 			state: {
 				store: {}
@@ -31,8 +33,8 @@ const store = init({
 				}
 			}
 		}
-	},
-	plugins: [persistPlugin]
+	}
+	// plugins: [persistPlugin]
 })
 
 export default store

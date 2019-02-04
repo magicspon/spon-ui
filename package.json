@@ -83,9 +83,11 @@
 		"loadjs": "^3.5.4",
 		"mitt": "^1.1.3",
 		"picturefill": "^3.0.3",
+		"quicklink": "^1.0.0",
 		"raf-throttle": "^2.0.3",
 		"ramda": "^0.26.1",
-		"stylefire": "^2.4.0"
+		"stylefire": "^2.4.0",
+		"url-parse": "^1.4.4"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.0.1",

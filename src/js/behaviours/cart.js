@@ -14,7 +14,7 @@ import { html } from 'lit-html'
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
 
-function clock({ store, render, h, domEvents, refs, node }) {
+function cart({ store, render, h, domEvents, refs, node }) {
 	const { addEvents } = domEvents(node)
 	const { dispatch } = store
 	const { product } = refs
@@ -88,4 +88,4 @@ function clock({ store, render, h, domEvents, refs, node }) {
 	}
 }
 
-export default clock
+export default cart

@@ -5,6 +5,44 @@ import mitt from 'mitt'
 
 const camelCased = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase())
 
+const createDataRefs = node => {
+	const item = {
+		add(key, value) {
+			sync.render(() => {
+				node.dataset[key] = value
+			})
+		},
+
+		has(key) {
+			return !!node.dataset[key]
+		},
+
+		delete(key) {
+			node.removeAttribbute(key)
+		}
+	}
+
+	return Object.entries(node.dataset).reduce((acc, [key]) => {
+		Object.defineProperties(acc, {
+			[key]: {
+				set(value) {
+					sync.render(() => {
+						node.dataset[key] = value
+					})
+				},
+				get() {
+					return node.dataset[key]
+				},
+				add(key, value) {
+					node.dataset[key] = value
+				}
+			}
+		})
+
+		return acc
+	}, item)
+}
+
 export const createNode = node => {
 	const { className: baseClass } = node
 	const { id } = node.dataset
@@ -12,6 +50,7 @@ export const createNode = node => {
 	return {
 		node,
 		id,
+		data: createDataRefs(node),
 		style: styler(node),
 		set className(className) {
 			node.className = `${baseClass} ${className}`
@@ -32,28 +71,15 @@ const getRefs = (node, elements) => {
 
 	const refs = elements.reduce((acc, node) => {
 		const { ref } = node.dataset
-
 		if (acc[ref]) {
 			throw new Error(
 				`multiple nodes with data-${ref} attribute have been found, all data-refs must be unique`
 			)
 		}
-
 		acc[ref] = {
 			...createNode(node),
 			name: ref,
 			selector: `[data-ref="${ref}"]`,
-			data: {
-				set: (key, value) => {
-					sync.update(() => {
-						node.dataset[key] = value
-					})
-				},
-
-				get: key => {
-					return node.dataset[key]
-				}
-			},
 			emit: (event, ...args) => {
 				emitter.emit(`${ref}:${event}`, ...args)
 			},
@@ -61,18 +87,11 @@ const getRefs = (node, elements) => {
 				emitter.on(`${ref}:${event}`, fn)
 			}
 		}
-
 		return acc
 	}, {})
 
-	const config = {
-		attributes: true,
-		childList: true,
-		subtree: true,
-		attributeOldValue: true
-	}
-
-	const callback = mutationsList => {
+	// Create an observer instance linked to the callback function
+	const observer = new MutationObserver(mutationsList => {
 		Object.entries(mutationsList)
 			.filter(([, mutation]) => {
 				const {
@@ -110,13 +129,15 @@ const getRefs = (node, elements) => {
 					ref: refs[ref]
 				}
 			})
-	}
-
-	// Create an observer instance linked to the callback function
-	const observer = new MutationObserver(callback)
+	})
 
 	// Start observing the target node for configured mutations
-	observer.observe(node, config)
+	observer.observe(node, {
+		attributes: true,
+		childList: true,
+		subtree: true,
+		attributeOldValue: true
+	})
 	return { refs, observer }
 }
 

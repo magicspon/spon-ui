@@ -1,3 +1,6 @@
+import { diff } from 'deep-object-diff'
+import sync from 'framesync'
+
 export const createStore = () => {
 	const store = {}
 
@@ -32,13 +35,12 @@ export const createStore = () => {
 	}
 }
 
-export const mapStateToRenderHelper = (state, watch) =>
+const mapStateToRenderHelper = (state, watch) =>
 	watch.length > 0
 		? watch.reduce((acc, key) => {
 			const path = key.split('/')
 			if (path.length > 1) {
 				const [root, child] = path
-				// log(acc[root])
 
 				acc[root] = {
 					[child]: state[root][[child]]
@@ -51,7 +53,26 @@ export const mapStateToRenderHelper = (state, watch) =>
 		  }, {})
 		: state
 
-export const mapStateToRender = (prevState, current, watch) => ({
+const mapStateToRender = (prevState, current, watch) => ({
 	prev: mapStateToRenderHelper(prevState, watch),
 	current: mapStateToRenderHelper(current, watch)
 })
+
+export function bindStoreToRender(store) {
+	let prevState = store.getState()
+	return (fn, listen = []) => () => {
+		const current = store.getState()
+		const { prev, current: newState } = mapStateToRender(
+			prevState,
+			current,
+			listen
+		)
+		const changes = diff(prev, newState)
+		sync.render(() => {
+			if (Object.keys(changes).length) {
+				fn({ prev, current: newState })
+			}
+			prevState = current
+		})
+	}
+}
