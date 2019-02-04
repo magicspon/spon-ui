@@ -1,7 +1,6 @@
 const webpack = require('webpack')
 const DashboardPlugin = require('webpack-dashboard/plugin')
 
-
 module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),

@@ -96,10 +96,10 @@ export const cart = {
 		}
 	},
 	effects: dispatch => ({
-		async fetchItems({ id, callback }) {
+		async fetchItems(id) {
 			const resp = await fetch(`/api/${id}.json`).then(resp => resp.json())
-			dispatch.cart.addItems(resp)
-			callback(resp)
+			dispatch({ type: 'cart/addItems', payload: resp })
+			dispatch({ type: 'cart/setCurrentView', payload: resp })
 		}
 	})
 }

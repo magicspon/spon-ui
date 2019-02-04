@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-
 /**
  * @namespace
  * @property {object} spon
@@ -13,6 +11,8 @@
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
 
+import { html } from 'lit-html'
+
 function basket({ store, render, domEvents, h, node, refs }) {
 	const { addEvents } = domEvents(node)
 	const { dispatch } = store
@@ -22,7 +22,7 @@ function basket({ store, render, domEvents, h, node, refs }) {
 		'click [data-basket-item]': (e, elm) => {
 			e.preventDefault()
 			const { id } = elm.dataset
-			dispatch.cart.deleteItemFromCart(id)
+			dispatch({ type: 'cart/deleteItemFromCart', payload: id })
 		}
 	})
 
@@ -31,14 +31,21 @@ function basket({ store, render, domEvents, h, node, refs }) {
 			({ current }) => {
 				const { cart } = current
 				const { basket } = cart
+
 				h(
 					Object.values(basket).map(
-						item => `<div class="flex">
-											<div class="mr-2" data-basket-item data-id="${item.id}">
-												${item.title} x${item.quantity}
-											</div>
-											<button data-basket-item data-id="${item.id}">Remove</button>
-										</div>`
+						item => html`
+							<div
+								style="transition-duration: 1000ms"
+								class="flex trans"
+								data-flip-key="${item.id}"
+							>
+								<div class="mr-2" data-basket-item data-id="${item.id}">
+									${item.title} x${item.quantity}
+								</div>
+								<button data-basket-item data-id="${item.id}">Remove</button>
+							</div>
+						`
 					),
 					list.node
 				)

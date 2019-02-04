@@ -1,10 +1,7 @@
-/* eslint-disable no-unused-expressions */
-
-import hyperHTML from 'hyperhtml'
-const { bind } = hyperHTML
+import { render } from 'lit-html'
 
 const h = (template, node) => {
-	bind(node)`${template}`
+	render(template, node)
 }
 
 export default h

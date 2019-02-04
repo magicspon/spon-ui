@@ -8,8 +8,8 @@
 				},
 				"modules": false
 			}
-		],
-		"@babel/preset-react"
+		]
+		// "@babel/preset-react"
 	],
 	"plugins": [
 		"@babel/plugin-syntax-dynamic-import",
@@ -17,7 +17,38 @@
 		"@babel/plugin-transform-runtime",
 		"@babel/plugin-transform-async-to-generator",
 		"ramda",
-		"lodash"
+		"lodash",
+		[
+			"template-html-minifier",
+			{
+				"modules": {
+					"lit-html": ["html"],
+					"lit-element": [
+						"html",
+						{
+							"name": "css",
+							"encapsulation": "style"
+						}
+					],
+					"choo/html": [null],
+					"hyperhtml": [
+						{
+							"name": "bind",
+							"type": "factory"
+						}
+					],
+					"hyperhtml-element": [
+						{
+							"name": null,
+							"member": "html"
+						}
+					]
+				},
+				"htmlMinifier": {
+					"collapseWhitespace": true
+				}
+			}
+		]
 	],
 	"env": {
 		"test": {

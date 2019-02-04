@@ -2,20 +2,25 @@
 import styler from 'stylefire'
 import sync from 'framesync'
 import mitt from 'mitt'
-import classNames from 'classnames'
 
 const camelCased = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase())
 
 export const createNode = node => {
-	const { className } = node
+	const { className: baseClass } = node
 	const { id } = node.dataset
 
 	return {
 		node,
 		id,
 		style: styler(node),
-		set className(name) {
-			node.className = classNames(className, name)
+		set className(className) {
+			node.className = `${baseClass} ${className}`
+		},
+		addClass(...className) {
+			node.classList.add(...className)
+		},
+		removeClass(...className) {
+			node.classList.remove(...className)
 		}
 	}
 }
@@ -105,8 +110,6 @@ const getRefs = (node, elements) => {
 					ref: refs[ref]
 				}
 			})
-
-		// emitter.emit('dom:update', mutations)
 	}
 
 	// Create an observer instance linked to the callback function

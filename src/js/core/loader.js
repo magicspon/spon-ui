@@ -22,7 +22,6 @@ function bindStoreToRender(store) {
 		const changes = diff(prev, newState)
 		sync.render(() => {
 			if (Object.keys(changes).length) {
-				log('render')
 				fn({ prev, current: newState })
 			}
 			prevState = current

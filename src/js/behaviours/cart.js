@@ -1,4 +1,6 @@
 import { createNode } from '@/core/refs'
+import { html } from 'lit-html'
+
 /**
  * @namespace
  * @property {object} spon
@@ -21,20 +23,20 @@ function clock({ store, render, h, domEvents, refs, node }) {
 	addEvents({
 		'click [data-button]': (e, elm) => {
 			e.preventDefault()
-
 			const { id } = elm.dataset
 			const {
 				cart: { items }
 			} = store.getState()
 
 			if (items[id]) {
-				dispatch.cart.setCurrentView(id)
+				dispatch({
+					type: 'cart/setCurrentView',
+					payload: id
+				})
 			} else {
-				dispatch.cart.fetchItems({
-					id,
-					callback: ({ id }) => {
-						dispatch.cart.setCurrentView(id)
-					}
+				dispatch({
+					type: 'cart/fetchItems',
+					payload: id
 				})
 			}
 		},
@@ -42,7 +44,7 @@ function clock({ store, render, h, domEvents, refs, node }) {
 		'click [data-product]': (e, elm) => {
 			e.preventDefault()
 			const { id } = elm.dataset
-			dispatch.cart.addToCart(id)
+			dispatch({ type: 'cart/addToCart', payload: id })
 		}
 	})
 
@@ -59,13 +61,18 @@ function clock({ store, render, h, domEvents, refs, node }) {
 				if (items) {
 					h(
 						items.map(
-							item => `
-								<div class="mx-1 border p-1">
+							item => html`
+								<div class="mx-1 mb-1 border p-1 trans">
 									<div class="text-ms-4 mb-1">${item.title}</div>
-									<button class="border p-0-5" data-product data-id="${item.id}">
-										add to cart
+									<button
+										class="border p-0-5"
+										data-product
+										data-id="${item.id}"
+									>
+										buy thing
 									</button>
-								</div>`
+								</div>
+							`
 						),
 						product.node
 					)
