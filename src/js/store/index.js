@@ -1,38 +1,19 @@
 import { init } from '@rematch/core'
-import createRematchPersist from '@rematch/persist'
+// import createRematchPersist from '@rematch/persist'
 import * as models from './models/index'
-import router from './models/router'
+import route from '@/core/models/route'
+import loader from '@/core/models/loader'
 
-const persistPlugin = createRematchPersist({
-	whitelist: ['cart'],
-	throttle: 1000
-})
+// const persistPlugin = createRematchPersist({
+// 	whitelist: ['cart'],
+// 	throttle: 1000
+// })
 
 const store = init({
 	models: {
 		...models,
-		router: router(),
-		loader: {
-			state: {
-				store: {}
-			},
-			reducers: {
-				addModule: (state, key) => {
-					const { store } = state
-					return {
-						...state,
-						store: {
-							...store,
-							[key]: key
-						}
-					}
-				},
-				removeModule: (state, key) => {
-					delete state.store[key]
-					return state
-				}
-			}
-		}
+		router: route(),
+		loader
 	}
 	// plugins: [persistPlugin]
 })

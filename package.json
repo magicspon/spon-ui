@@ -79,6 +79,7 @@
 		"flipping": "^1.1.0",
 		"flippy.js": "^1.0.4",
 		"framesync": "^4.0.1",
+		"history": "^4.7.2",
 		"lit-html": "^1.0.0-rc.2",
 		"loadjs": "^3.5.4",
 		"mitt": "^1.1.3",

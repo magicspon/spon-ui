@@ -4,7 +4,9 @@ import store from '@/store'
 import domEvents from './domEvents'
 import getRefs from './refs'
 import { createStore, bindStoreToRender } from './utils'
+import router from './router'
 import h from './dom'
+import eventBus from './eventBus'
 
 const cache = createStore()
 const killList = {}
@@ -91,7 +93,7 @@ function loadApp(context) {
 		})
 	}
 
-	function hydrate() {
+	function hydrate(context) {
 		sync.read(() => {
 			const nodes = [...context.querySelectorAll('*[data-spon]')]
 			nodes
@@ -130,9 +132,13 @@ function loadApp(context) {
 		})
 	}
 
+	hydrate(context)
+
 	return {
 		hydrate,
-		destroy
+		destroy,
+		router: router(store),
+		...eventBus
 	}
 }
 

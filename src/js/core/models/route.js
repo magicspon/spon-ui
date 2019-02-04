@@ -1,26 +1,34 @@
 import url from 'url-parse'
 
+const getKey = context => {
+	const target = context.querySelector('[data-route]')
+	if (!target) return false
+
+	const { route: transitionName } = target.dataset
+	const key = transitionName.length > 0 ? transitionName : false
+	return key
+}
+
 export default () => {
 	const initialHref = window.location.href
 	const params = url(initialHref)
 
 	return {
 		state: {
-			prev: {},
-			current: {
-				params,
-				html: document.body
-			},
-			cache: {}
+			params,
+			html: null,
+			key: getKey(document.body),
+			cache: {},
+			prevUrl: window.location.href
 		},
 		reducers: {
 			setPage: (state, payload) => {
-				const { current, cache } = state
+				const { cache, params } = state
 
 				return {
 					...state,
-					prev: current,
-					current: payload,
+					...payload,
+					prevUrl: params.href,
 					cache: {
 						...cache,
 						[payload.params.href]: payload
@@ -30,7 +38,7 @@ export default () => {
 		},
 		effects: dispatch => ({
 			async fetchPage(params, { router: currentState }) {
-				const { href } = params
+				const { href, key } = params
 				const cached = currentState.cache[href]
 
 				if (cached) {
@@ -45,6 +53,7 @@ export default () => {
 				const resp = await fetch(href).then(resp => resp.text())
 				const data = {
 					html: resp,
+					key,
 					params
 				}
 				dispatch({

@@ -5,10 +5,17 @@
   <li><a href="/components/preview/sandbox--2">page 2</a></li>
 </ul>
 <div id="page-wrapper">
-  <div {% block route %}{% endblock %} class="page-child">
+  <div {% block route %}{% endblock %} class="trans page-child">
     {% block content %}
     {% endblock %}
   </div>
 </div>
+{# <pre id="debug"></pre> #}
+
+<div data-spon="basket">
+  <h1>basket</h1>
+  <div data-ref="list"></div>
+</div>
+
 {# {% include '@footer' %}
 {% include '@modal' %} #}
