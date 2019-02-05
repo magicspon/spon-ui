@@ -127,3 +127,34 @@ export const preventClick = (e, node) => {
 
 	return true
 }
+
+export const diffNodes = (oldNode, newNode) => {
+	const getKeys = node =>
+		[...node.querySelectorAll('[data-route-key]')].reduce((acc, curr) => {
+			const { routeKey: key } = curr.dataset
+			acc[key] = {
+				node: curr,
+				html: curr.outerHTML
+			}
+			return acc
+		}, {})
+
+	const oldKeys = getKeys(oldNode)
+	const newKeys = getKeys(newNode)
+
+	return {
+		changes: diff(oldKeys, newKeys),
+		oldKeys,
+		newKeys
+	}
+}
+
+export const injectNodes = (changes, oldKeys, newKeys) => {
+	Object.keys(changes).forEach(key => {
+		const oldNode = oldKeys[key]
+		const newNode = newKeys[key]
+
+		const parent = oldNode.node.parentNode
+		parent.replaceChild(newNode.node, oldNode.node)
+	})
+}

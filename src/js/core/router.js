@@ -26,43 +26,54 @@ const update = fn => {
 	})
 }
 
+const getTransition = transitions => {
+	return (key, pathname) => {
+		return transitions[key || pathname] || transitions.default
+	}
+}
+
+const transitions = {
+	default: {
+		name: 'default',
+		container: createNode(document.getElementById('page-wrapper')),
+
+		async clearDom(html) {
+			const { node, style, addEvent } = html
+			return addEvent('transitionend', () => {
+				style.set({ opacity: 0 })
+			}).then(() => {
+				node.parentNode.removeChild(node)
+			})
+		},
+
+		async onExit({ update, prevHtml }) {
+			await update(({ next }) => {
+				this.clearDom(prevHtml).then(() => {
+					next()
+				})
+			})
+		},
+
+		async onEnter({ update, newHtml }) {
+			const { node, style, addEvent } = newHtml
+			style.set({ opacity: 0 })
+			this.container.node.appendChild(node)
+			await update(({ next }) => {
+				addEvent('transitionend', () => {
+					style.set({ opacity: 1 })
+				}).then(() => {
+					next()
+				})
+			})
+		}
+	}
+}
+
 const router = store => {
 	const history = createHistory()
 	// const debug = document.getElementById('debug')
-	const transitions = {
-		default: {
-			container: createNode(document.getElementById('page-wrapper')),
-
-			async onExit({ update, rootNode }) {
-				const { node, style, addEvent } = rootNode
-				await update(({ next }) => {
-					addEvent('transitionend', () => {
-						style.set({ opacity: 0 })
-					}).then(() => {
-						node.parentNode.removeChild(node)
-						next()
-					})
-				})
-			},
-
-			async onEnter({ update, newHtml }) {
-				const { node, style, addEvent } = newHtml
-				style.set({ opacity: 0 })
-				this.container.node.appendChild(node)
-				await update(({ next }) => {
-					addEvent('transitionend', () => {
-						style.set({ opacity: 1 })
-					}).then(() => {
-						next()
-					})
-				})
-			}
-		}
-	}
-
 	const render = bindStoreToRender(store)
 	const del = domEvents(document.body)
-
 	let prevHtml = null
 	let action
 
@@ -125,11 +136,9 @@ const router = store => {
 				const { cache, html, params } = state
 				const { pathname } = params
 				const doc = parser.parseFromString(html, 'text/html')
-				const newKey = getKey(doc)
-				const prevTransition =
-					transitions[state.key || prev.params.pathname] || transitions.default
-				const transition =
-					transitions[newKey || pathname] || transitions.default
+				const getTrans = getTransition(transitions)
+				const prevTransition = getTrans(state.key, prev.params.pathname)
+				const nextTransition = getTrans(getKey(doc), pathname)
 				const newHtml = createNode(doc.querySelector('[data-route]'))
 
 				quicklink({
@@ -140,10 +149,12 @@ const router = store => {
 					]
 				})
 
-				await prevTransition.onExit({
-					rootNode: prevHtml,
+				await Object.assign({}, transitions.default, prevTransition).onExit({
+					prevHtml,
+					newHtml,
 					params,
-					update
+					update,
+					prev
 				})
 
 				if (action !== 'POP') {
@@ -151,12 +162,13 @@ const router = store => {
 				}
 				eventBus.emit('route:before/onEnter')
 
-				await transition.onEnter({
+				await Object.assign({}, transitions.default, nextTransition).onEnter({
 					html: doc,
 					params,
 					newHtml,
 					prevHtml,
-					update
+					update,
+					prev
 				})
 				eventBus.emit('route:after/onEnter')
 			},
@@ -171,7 +183,7 @@ const router = store => {
 				{
 					container: createNode(document.getElementById('page-wrapper'))
 				},
-				fn({ store })
+				fn({ store, transitions })
 			)
 		}
 	}

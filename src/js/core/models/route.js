@@ -9,6 +9,27 @@ const getKey = context => {
 	return key
 }
 
+const fetcher = async path => {
+	const arr = []
+
+	await fetch(path)
+		.then(resp => {
+			if (!resp.ok) {
+				arr[1] = resp.status
+			}
+			return resp
+		})
+		.then(resp => resp.text())
+		.then(resp => {
+			arr[0] = resp
+		})
+		.catch(e => {
+			log('error:', e)
+		})
+
+	return arr
+}
+
 export default () => {
 	const initialHref = window.location.href
 	const params = url(initialHref)
@@ -50,16 +71,20 @@ export default () => {
 					return
 				}
 
-				const resp = await fetch(href).then(resp => resp.text())
-				const data = {
-					html: resp,
-					key,
-					params
+				const [resp] = await fetcher(href)
+				if (resp.length === 1) {
+					const data = {
+						html: resp,
+						key,
+						params
+					}
+					dispatch({
+						type: 'router/setPage',
+						payload: data
+					})
+				} else {
+					window.location = href
 				}
-				dispatch({
-					type: 'router/setPage',
-					payload: data
-				})
 			}
 		})
 	}
