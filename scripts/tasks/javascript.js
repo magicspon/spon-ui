@@ -9,9 +9,11 @@ const merge = require('webpack-merge')
 const { logger } = require('../utils/logger')
 const productionConfig = require('../webpack/config.production')
 const argList = require('../utils/argv')
-const { getSrcPaths } = require('../utils/paths')
+const { getSrcPaths, getCraftPath } = require('../utils/paths')
 
 const {
+	env,
+	config,
 	PATHS: {
 		js: { inline }
 	}
@@ -33,9 +35,14 @@ const bundle = callback => {
 	})
 }
 
-const inlineScripts = () =>
-	gulp
-		.src(getSrcPaths(`${inline.dir}/${inline.file}`))
+const inlineScripts = () => {
+	const dest =
+		config === 'cms' ? getCraftPath(inline.dir) : getSrcPaths(inline.dir)
+	const src =
+		config === 'cms' ? `${dest}/${inline.file}` : `${dest}/${inline.file}`
+
+	return gulp
+		.src(src)
 		.pipe(
 			inject(
 				gulp.src(inline.scripts).pipe(concat('FILE_WILL_NEVER_EXIST.js')),
@@ -46,7 +53,8 @@ const inlineScripts = () =>
 				}
 			)
 		)
-		.pipe(gulp.dest(getSrcPaths(inline.dir)))
+		.pipe(gulp.dest(dest))
+}
 
 module.exports = {
 	bundle,

@@ -6,7 +6,7 @@ const {
 	postBuildFractalClean,
 	buildComponets
 } = require('../fractal/build')
-const staticFiles = require('./static')
+const assets = require('./assets')
 const scss = require('./scss')
 const { bundle, inlineScripts } = require('./javascript')
 const purge = require('./purge')
@@ -18,7 +18,7 @@ const criticalCSS = require('./critical')
 const server = global.config === 'cms' ? serverProxy : fractalServer
 const defaultTask = gulp.series(
 	clean,
-	staticFiles,
+	assets,
 	inlineScripts,
 	scss,
 	watch,
@@ -29,7 +29,7 @@ const cmsTask = gulp.series(
 	buildComponets,
 	syncPartials,
 	cacheTags,
-	staticFiles,
+	assets,
 	inlineScripts,
 	scss,
 	watch,
@@ -40,7 +40,7 @@ const buildStatic = require('../fractal/static')
 
 const build = gulp.series(
 	clean,
-	gulp.parallel(buildComponets, syncPartials, cacheTags, staticFiles, bundle),
+	gulp.parallel(buildComponets, syncPartials, cacheTags, assets, bundle),
 	scss,
 	purge,
 	criticalCSS,
@@ -50,7 +50,7 @@ const build = gulp.series(
 const buildLibrary = gulp.series(
 	clean,
 	buildFractal,
-	gulp.parallel(postBuildFractalClean, cacheTags, staticFiles),
+	gulp.parallel(postBuildFractalClean, cacheTags, assets),
 	gulp.parallel(scss, bundle),
 	gulp.parallel(purge, validateHtml),
 	sizeReport

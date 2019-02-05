@@ -21,7 +21,7 @@ const getKey = context => {
 const update = fn => {
 	return new Promise(resolve => {
 		sync.render(() => {
-			fn({ next: resolve })
+			fn(resolve)
 		})
 	})
 }
@@ -47,7 +47,7 @@ const transitions = {
 		},
 
 		async onExit({ update, prevHtml }) {
-			await update(({ next }) => {
+			await update(next => {
 				this.clearDom(prevHtml).then(() => {
 					next()
 				})
@@ -58,7 +58,7 @@ const transitions = {
 			const { node, style, addEvent } = newHtml
 			style.set({ opacity: 0 })
 			this.container.node.appendChild(node)
-			await update(({ next }) => {
+			await update(next => {
 				addEvent('transitionend', () => {
 					style.set({ opacity: 1 })
 				}).then(() => {

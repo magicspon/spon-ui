@@ -1,13 +1,13 @@
 {
 	"public": "./deploy/public/",
-	"proxy": "http://local.islington.com",
+	"proxy": "http://craft-demo.spon",
 
 	"critical": [{ "url": "/", "css": "home-page" }],
 
 	"js": {
 		"inline": {
-			"file": "layout.twig",
-			"dir": "deplay/templates/wrapper"
+			"file": "_layout.twig",
+			"dir": "/templates/wrapper"
 		}
 	}
 }

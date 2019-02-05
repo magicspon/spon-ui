@@ -21,11 +21,11 @@ module.exports = (env, prefixUrls) => ({
 					ignored: '**/*.hot-update.json'
 				}
 			}
-		],
-		https: {
-			key: path.resolve(process.env.PWD, 'private', 'key.pem'),
-			cert: path.resolve(process.env.PWD, 'private', 'cert.pem')
-		}
+		]
+		// https: {
+		// 	key: path.resolve(process.env.PWD, 'private', 'key.pem'),
+		// 	cert: path.resolve(process.env.PWD, 'private', 'cert.pem')
+		// }
 	},
 
 	js: {

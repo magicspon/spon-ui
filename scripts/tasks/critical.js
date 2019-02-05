@@ -1,5 +1,4 @@
 const critical = require('critical')
-const path = require('path')
 const del = require('del')
 const { getCraftPath, getPublicPath } = require('../utils/paths')
 
@@ -22,10 +21,7 @@ const criticalCSS = async () => {
 							inline: false,
 							src: `${proxy}${url}`,
 							css: [getPublicPath(`dist/css/style.${global.TASK.stamp}.css`)],
-							dest: path.resolve(
-								process.env.PWD,
-								`./deploy/templates/inline-css/${css}.css`
-							),
+							dest: getCraftPath(`templates/inline-css/${css}.css`),
 							...options
 						})
 						.catch(e => {

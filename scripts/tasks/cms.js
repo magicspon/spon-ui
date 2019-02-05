@@ -70,12 +70,7 @@ const serverProxy = done => {
 	browserSync.init({
 		...middleware(compiler),
 		proxy,
-		...server,
-		files: [
-			{
-				match: [getCraftPath('templates/**/**/*.twig')]
-			}
-		]
+		...server
 	})
 
 	done()

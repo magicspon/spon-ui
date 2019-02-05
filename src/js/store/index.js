@@ -1,8 +1,8 @@
 import { init } from '@rematch/core'
 // import createRematchPersist from '@rematch/persist'
 import * as models from './models/index'
-import route from '@/core/models/route'
-import loader from '@/core/models/loader'
+import route from '../core/models/route'
+import loader from '../core/models/loader'
 
 // const persistPlugin = createRematchPersist({
 // 	whitelist: ['cart'],

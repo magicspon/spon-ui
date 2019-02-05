@@ -18,9 +18,7 @@ function cart({ store, render, h, domEvents, refs, node }) {
 	const { addEvents } = domEvents(node)
 	const { dispatch } = store
 	const { product } = refs
-
 	const buttons = [...node.querySelectorAll('[data-button]')].map(createNode)
-
 	addEvents({
 		'click [data-button]': (e, elm) => {
 			e.preventDefault()
@@ -41,14 +39,12 @@ function cart({ store, render, h, domEvents, refs, node }) {
 				})
 			}
 		},
-
 		'click [data-product]': (e, elm) => {
 			e.preventDefault()
 			const { id } = elm.dataset
 			dispatch({ type: 'cart/addToCart', payload: id })
 		}
 	})
-
 	const unsubscribe = store.subscribe(
 		render(
 			({ current }) => {
@@ -82,7 +78,6 @@ function cart({ store, render, h, domEvents, refs, node }) {
 			['cart']
 		)
 	)
-
 	return () => {
 		unsubscribe()
 	}

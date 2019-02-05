@@ -7,7 +7,7 @@ export const sandbox = () => {
 		async onExit({ update, prevHtml }) {
 			const { node, style, addEvent } = prevHtml
 
-			await update(({ next }) => {
+			await update(next => {
 				addEvent('transitionend', () => {
 					style.set({ opacity: 0 })
 				}).then(() => {
@@ -24,7 +24,7 @@ export const sandbox = () => {
 			style.render()
 			this.container.node.appendChild(node)
 
-			await update(({ next }) => {
+			await update(next => {
 				addEvent('transitionend', () => {
 					style.set({ opacity: 1 })
 				}).then(() => {
@@ -35,7 +35,7 @@ export const sandbox = () => {
 	}
 }
 
-export const terry = ({ transitions, store }) => {
+export const terry = ({ transitions }) => {
 	return {
 		name: 'terry',
 		async onExit(props) {
@@ -43,7 +43,7 @@ export const terry = ({ transitions, store }) => {
 			try {
 				const { node } = newHtml
 				diffNodes(prevHtml.node, node)
-				update(({ next }) => next())
+				update(next => next())
 			} catch {
 				transitions.default.onExit(props)
 			}
@@ -53,7 +53,7 @@ export const terry = ({ transitions, store }) => {
 			try {
 				const { node } = newHtml
 				const { changes, oldKeys, newKeys } = diffNodes(prevHtml.node, node)
-				await update(({ next }) => {
+				await update(next => {
 					injectNodes(changes, oldKeys, newKeys)
 					next()
 				})

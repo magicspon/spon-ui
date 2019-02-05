@@ -1,18 +1,24 @@
 const gulp = require('gulp')
-const staticFiles = require('./static')
+const browserSync = require('browser-sync')
+const assets = require('./assets')
 const scss = require('./scss')
-const { getStaticPaths, getSrcPaths } = require('../utils/paths')
+const { getStaticPaths, getSrcPaths, getCraftPath } = require('../utils/paths')
 const { syncPartials } = require('./cms')
 
 const watch = done => {
-	gulp.watch(getStaticPaths('**/**'), gulp.series(staticFiles))
+	gulp.watch(getStaticPaths('**/**'), gulp.series(assets))
 	gulp.watch(getSrcPaths(global.PATHS.scss.src), gulp.series(scss))
 
 	if (global.config === 'cms') {
 		gulp.watch(
-			getSrcPaths(global.PATHS.fractal.templates),
+			[getSrcPaths(global.PATHS.fractal.templates)],
 			gulp.series(syncPartials)
 		)
+
+		gulp.watch(getCraftPath('templates/**/**/*.twig'), done => {
+			browserSync.reload()
+			done()
+		})
 	}
 
 	done()

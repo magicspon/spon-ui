@@ -27,6 +27,7 @@ const scss = () => {
 
 	return gulp
 		.src(getSrcPaths(src))
+		.pipe(cache('css'))
 		.pipe(
 			styleLint({
 				debug: true,
