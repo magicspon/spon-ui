@@ -18,23 +18,27 @@ const createStore = () => {
 	}
 }
 
-export default (node = document.body) => {
+function domEvents(node = document.body) {
 	const root = delegate(node)
 	const eventStore = createStore()
 
-	const addEvents = events => {
+	const addEvents = (...args) => {
+		const withRoot = args.length > 1
+		const events = withRoot ? args[1] : args[0]
+		const rootNode = withRoot ? delegate(args[0]) : root
+
 		Object.entries(events).forEach(([key, fn]) => {
 			const [event, selector] = key.split(' ')
-			eventStore.add(`${event} ${selector}`, fn)
-			root.on(event, selector, fn)
+			eventStore.add(`${event} ${selector}`, { fn, rootNode })
+			rootNode.on(event, selector, fn)
 		})
 	}
 
 	const removeEvent = key => {
 		const [event, selector] = key.split(' ')
-		const fn = eventStore.store[key]
+		const { fn, rootNode } = eventStore.store[key]
 
-		root.off(event, selector, fn)
+		rootNode.off(event, selector, fn)
 	}
 
 	const removeEvents = () => {
@@ -47,3 +51,11 @@ export default (node = document.body) => {
 		removeEvent
 	}
 }
+
+export function withDomEvents({ node, register }) {
+	const events = domEvents(node)
+	register(events.removeEvents)
+	return events
+}
+
+export default domEvents

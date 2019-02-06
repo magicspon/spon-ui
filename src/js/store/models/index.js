@@ -27,7 +27,6 @@ export const cart = {
 	reducers: {
 		addItems(state, payload) {
 			const { items } = state
-
 			return {
 				...state,
 				items: {

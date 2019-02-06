@@ -1,6 +1,5 @@
 import { diff } from 'deep-object-diff'
 import sync from 'framesync'
-import { render, html } from 'lit-html'
 
 export const createStore = () => {
 	const store = {}
@@ -80,7 +79,21 @@ export function bindStoreToRender(state, store) {
 	}
 }
 
-export const addEventPromise = (event, element, callback) => {
+export function bindStoreToRouter(store) {
+	return bindStoreToRender({ router: 'yup' }, store)
+}
+
+export function registerPlugins(cache, name) {
+	return plugin => {
+		const { plugins = [] } = cache.get(name)
+
+		cache.set(name, {
+			plugins: [...plugins, plugin]
+		})
+	}
+}
+
+export function addEventPromise(event, element, callback) {
 	let complete = false
 
 	const done = (resolve, e) => {
@@ -98,7 +111,7 @@ export const addEventPromise = (event, element, callback) => {
 	})
 }
 
-export const preventClick = (e, node) => {
+export function preventClick(e, node) {
 	if (!window.history.pushState) return false
 
 	const { href } = node
@@ -131,7 +144,7 @@ export const preventClick = (e, node) => {
 	return true
 }
 
-export const diffNodes = (oldNode, newNode) => {
+export function diffNodes(oldNode, newNode) {
 	const getKeys = node =>
 		[...node.querySelectorAll('[data-route-key]')].reduce((acc, curr) => {
 			const { routeKey: key } = curr.dataset
@@ -152,7 +165,7 @@ export const diffNodes = (oldNode, newNode) => {
 	}
 }
 
-export const injectNodes = (changes, oldKeys, newKeys) => {
+export function injectNodes(changes, oldKeys, newKeys) {
 	Object.keys(changes).forEach(key => {
 		const oldNode = oldKeys[key]
 		const newNode = newKeys[key]

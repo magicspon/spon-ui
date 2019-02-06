@@ -67,7 +67,8 @@ export const createNode = node => {
 	}
 }
 
-const getRefs = (node, elements) => {
+function getRefs(node) {
+	const elements = [...node.querySelectorAll('*[data-ref]')]
 	if (!elements.length) return
 
 	const emitter = mitt()
@@ -142,6 +143,14 @@ const getRefs = (node, elements) => {
 		attributeOldValue: true
 	})
 	return { refs, observer }
+}
+
+export function withRefs({ register, node }) {
+	const { refs, observer } = getRefs(node)
+	register(() => {
+		observer.disconnect()
+	})
+	return { refs }
 }
 
 export default getRefs

@@ -1,5 +1,3 @@
-import { html } from 'lit-html'
-
 /**
  * @namespace
  * @property {object} spon
@@ -13,18 +11,18 @@ import { html } from 'lit-html'
  * @return {fn} - a function to remove any custom event handlers. this function is called when the behaviour is destroyed
  */
 
-function basket({ store, render, domEvents, h, node, refs }) {
-	const { addEvents, removeEvents } = domEvents(node)
+function basket() {
+	// const { addEvents, removeEvents } = domEvents(node)
 	// const { dispatch } = store
-	const { list } = refs
+	// const { list } = refs
 
-	addEvents({
-		'click [data-basket-item]': (e, elm) => {
-			e.preventDefault()
-			const { id } = elm.dataset
-			// dispatch({ type: 'cart/deleteItemFromCart', payload: id })
-		}
-	})
+	// addEvents({
+	// 	'click [data-basket-item]': (e, elm) => {
+	// 		e.preventDefault()
+	// 		const { id } = elm.dataset
+	// 		// dispatch({ type: 'cart/deleteItemFromCart', payload: id })
+	// 	}
+	// })
 
 	// const unsubscribe = store.subscribe(
 	// 	render(
@@ -56,7 +54,7 @@ function basket({ store, render, domEvents, h, node, refs }) {
 
 	return () => {
 		// unsubscribe()
-		removeEvents()
+		// removeEvents()
 	}
 }
 

@@ -4,7 +4,7 @@ import createHistory from 'history/createBrowserHistory'
 import sync from 'framesync'
 import domEvents from './domEvents'
 import { createNode } from './refs'
-import { bindStoreToRender, preventClick } from './utils'
+import { bindStoreToRouter, preventClick } from './utils'
 import eventBus from './eventBus'
 
 const parser = new DOMParser()
@@ -72,10 +72,12 @@ const transitions = {
 const router = store => {
 	const history = createHistory()
 	// const debug = document.getElementById('debug')
-	const render = bindStoreToRender(store)
+	const render = bindStoreToRouter(store)
 	const del = domEvents(document.body)
 	let prevHtml = null
 	let action
+
+	log(store)
 
 	quicklink({
 		origins: ['localhost']

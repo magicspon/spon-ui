@@ -72,7 +72,7 @@ export default () => {
 				}
 
 				const [resp] = await fetcher(href)
-				if (resp.length === 1) {
+				if (resp) {
 					const data = {
 						html: resp,
 						key,
