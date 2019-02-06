@@ -4,14 +4,33 @@ import store from '@/store'
 import domEvents from './domEvents'
 import getRefs from './refs'
 import { createStore, bindStoreToRender } from './utils'
-import router from './router'
+// import router from './router'
 import h from './dom'
 import eventBus from './eventBus'
 
 const cache = createStore()
 const killList = {}
 
-const render = bindStoreToRender(store)
+export const connect = (state, dispatch, ...fns) => {
+	const localState = state(store.getState())
+	const render = bindStoreToRender(localState, store)
+	return module => {
+		return props => {
+			return module({
+				...props,
+				render(fn) {
+					module.subsciption = store.subscribe(render(fn))
+				},
+				...localState,
+				...dispatch(store.dispatch),
+				...fns.reduce(
+					(acc, curr) => ({ ...acc, ...curr({ store, ...props }) }),
+					{}
+				)
+			})
+		}
+	}
+}
 
 function loadModule({ module, node, name, keepAlive, query }) {
 	if (cache.get(name) && cache.get(name).hasLoaded) return
@@ -22,8 +41,8 @@ function loadModule({ module, node, name, keepAlive, query }) {
 	const destroyModule = module({
 		node,
 		domEvents,
-		store,
-		render,
+		// store,
+		// render,
 		h,
 		refs
 	})
@@ -73,7 +92,7 @@ function loadApp(context) {
 						hasLoaded: false
 					})
 
-					store.dispatch.loader.removeModule(name)
+					// store.dispatch.loader.removeModule(name)
 				}
 				// quit the function
 				return
@@ -86,9 +105,9 @@ function loadApp(context) {
 				const { default: module } = resp
 
 				loadModule({ module, node, name, keepAlive, query })
-				sync.postRender(() => {
-					store.dispatch.loader.addModule(name)
-				})
+				// sync.postRender(() => {
+				// 	store.dispatch.loader.addModule(name)
+				// })
 			}
 		})
 	}
@@ -123,7 +142,10 @@ function loadApp(context) {
 
 	function destroy() {
 		window.removeEventListener('resize', handle)
-		Object.values(killList).forEach(({ module, observer, name }) => {
+		Object.values(killList).forEach(({ module, observer, name, ...rest }) => {
+			if (module.subsciption) {
+				module.subsciption()
+			}
 			module()
 			if (observer) {
 				observer.disconnect()
@@ -137,7 +159,7 @@ function loadApp(context) {
 	return {
 		hydrate,
 		destroy,
-		router: router(store),
+		// router: router(store),
 		...eventBus
 	}
 }

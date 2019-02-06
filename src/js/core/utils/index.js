@@ -1,5 +1,6 @@
 import { diff } from 'deep-object-diff'
 import sync from 'framesync'
+import { render, html } from 'lit-html'
 
 export const createStore = () => {
 	const store = {}
@@ -58,9 +59,11 @@ const mapStateToRender = (prevState, current, watch) => ({
 	current: mapStateToRenderHelper(current, watch)
 })
 
-export function bindStoreToRender(store) {
+export function bindStoreToRender(state, store) {
 	let prevState = store.getState()
-	return (fn, listen = []) => () => {
+	const listen = Object.keys(state)
+
+	return fn => () => {
 		const current = store.getState()
 		const { prev, current: newState } = mapStateToRender(
 			prevState,
