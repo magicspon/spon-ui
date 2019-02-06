@@ -25,17 +25,19 @@ export function connect(STATE, DISPATCH, ...fns) {
 					...localState,
 					...dispatch(store.dispatch)
 				},
-				...plugins.reduce(
-					(acc, curr) => ({
-						...acc,
-						...curr({
-							register: registerPlugins(cache, name),
-							store,
-							...props
-						})
-					}),
-					{}
-				)
+				plugins: {
+					...plugins.reduce(
+						(acc, curr) => ({
+							...acc,
+							...curr({
+								register: registerPlugins(cache, name),
+								store,
+								...props
+							})
+						}),
+						{}
+					)
+				}
 			})
 		}
 	}

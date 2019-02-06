@@ -5,10 +5,9 @@ import { withDomEvents } from '@/core/domEvents'
 
 function Cart(props) {
 	const {
-		addEvents,
-		refs,
-		node,
+		plugins: { addEvents, refs },
 		store: { cart, addToCart, fetchItems, setCurrentView },
+		node,
 		render
 	} = props
 
