@@ -137,8 +137,12 @@ function loadApp(context) {
 
 		// destroy each module and any plugins attached
 		killList
-			.map(({ plugins }) => plugins)
-			.reduce((acc, plugin) => [...acc, ...plugin], [])
+			.reduce((acc, { plugins }) => {
+				if (plugins) {
+					acc.push(...plugins)
+				}
+				return acc
+			}, [])
 			.forEach((destroy = () => {}) => destroy())
 
 		// remove the item from the store
