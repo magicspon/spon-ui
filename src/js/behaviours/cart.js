@@ -14,7 +14,6 @@ function Cart(props) {
 	const { product } = refs
 	const buttons = [...node.querySelectorAll('[data-button]')].map(createNode)
 
-	// bound no node
 	addEvents({
 		'click [data-button]': (e, elm) => {
 			e.preventDefault()

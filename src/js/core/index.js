@@ -15,11 +15,11 @@ export function connect(STATE, DISPATCH, ...fns) {
 	const render = bindStoreToRender(localState, store)
 
 	return module => {
-		return ({ name, ...props }) => {
+		return ({ key, ...props }) => {
 			return module({
 				...props,
 				render: fn => {
-					registerPlugins(cache, name)(store.subscribe(render(fn)))
+					registerPlugins(cache, key)(store.subscribe(render(fn)))
 				},
 				store: {
 					...localState,
@@ -30,7 +30,7 @@ export function connect(STATE, DISPATCH, ...fns) {
 						(acc, curr) => ({
 							...acc,
 							...curr({
-								register: registerPlugins(cache, name),
+								register: registerPlugins(cache, key),
 								store,
 								...props
 							})
@@ -46,13 +46,15 @@ export function connect(STATE, DISPATCH, ...fns) {
 function loadApp(context) {
 	let handle
 
-	function loadModule({ module, node, name, keepAlive }) {
+	function loadModule({ module, node, name, keepAlive, key }) {
 		// call it, and assign it to the cache
 		// so that it can be called to unmoumt
-		const register = registerPlugins(cache, name)
+		const register = registerPlugins(cache, key)
+
 		const destroyModule = module({
 			node,
-			name
+			name,
+			key
 		})
 
 		cache.set(name, {
@@ -84,11 +86,11 @@ function loadApp(context) {
 			}
 			// if there is a query and it matches, or if there is no query at all
 			if (window.matchMedia(query).matches || typeof query === 'undefined') {
-				if (cache.get(name) && cache.get(name).hasLoaded) return
+				if (cache.get(key) && cache.get(key).hasLoaded) return
 				// fetch the behaviour
 				const resp = await import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
 				const { default: module } = resp
-				loadModule({ module, node, name, keepAlive, query })
+				loadModule({ module, node, name, keepAlive, query, key })
 			}
 		})
 	}
@@ -100,18 +102,25 @@ function loadApp(context) {
 				.filter(({ dataset: { keepAlive, spon } }) => {
 					return keepAlive === 'true' || !cache.has(spon)
 				})
-				.forEach(node => {
+				.forEach((node, index) => {
 					const { spon, query, keepAlive, ...rest } = node.dataset
 					if (spon.split(' ').length > 1) {
 						throw new Error(
 							'you are only allowed to use on behaviour per dom node'
 						)
 					}
+					const key = `${spon}-${index}`
 
-					const item = { name: spon, node, data: rest, hasLoaded: false }
+					const item = {
+						key,
+						name: spon,
+						node,
+						data: rest,
+						hasLoaded: false
+					}
 					if (typeof keepAlive !== 'undefined') item.keepAlive = true
 					if (query) item.query = query
-					cache.set(spon, item)
+					cache.set(key, item)
 				})
 
 			scan()
@@ -129,7 +138,7 @@ function loadApp(context) {
 		// destroy each module and any plugins attached
 		killList
 			.map(({ plugins }) => plugins)
-			.flatMap(plugin => plugin)
+			.reduce((acc, plugin) => [...acc, ...plugin], [])
 			.forEach((destroy = () => {}) => destroy())
 
 		// remove the item from the store

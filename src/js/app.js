@@ -15,6 +15,7 @@ const loadViews = async () => {
 	const {
 		sandbox
 	} = await import(/* webpackChunkName: "spon-view" */ './views')
+
 	app.router.add('/components/preview/sandbox', sandbox)
 }
 
