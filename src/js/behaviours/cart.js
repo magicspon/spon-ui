@@ -1,6 +1,6 @@
 import { render as h, html } from 'lit-html'
-import { withRefs, withDomEvents, createNode } from '@/spon'
-import { connect } from '@/core'
+import { withRefs, withDomEvents, createNode } from '@/core'
+import { connect } from '@/store'
 
 function Cart(props) {
 	const {

@@ -1,6 +1,6 @@
-import { loadApp, connect as bindConnect, registerPlugin } from '@/spon'
-import store from '@/store'
-
-export const connect = bindConnect(store, registerPlugin)
-
-export default loadApp
+export { default as connect } from './connect'
+export { default as domEvents, withDomEvents } from './modules/domEvents'
+export { default as eventBus } from './modules/eventBus'
+export { default as refs, withRefs, createNode } from './modules/refs'
+export { default as loadApp, cache, registerPlugin } from './app'
+export { default as router } from './router'

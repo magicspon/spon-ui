@@ -1,9 +1,8 @@
-import '@/plugins/logger'
-import run from '@/core/'
 import NProgress from 'nprogress'
-import router from './router'
+import '@/plugins/logger'
+import { loadApp, router } from '@/core'
 
-const app = run(document)
+const app = loadApp(document)
 
 app.use('routes', router, {
 	test: 10
