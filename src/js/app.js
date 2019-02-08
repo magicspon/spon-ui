@@ -4,9 +4,7 @@ import { loadApp, router } from '@/core'
 
 const app = loadApp(document)
 
-app.use('routes', router, {
-	test: 10
-})
+app.use('routes', router)
 
 const { routes } = app.plugins
 
@@ -25,10 +23,7 @@ app.on('route:after/onEnter', () => {
 })
 
 const loadViews = async () => {
-	const {
-		sandbox
-	} = await import(/* webpackChunkName: "spon-view" */ './views')
-
+	const { sandbox } = await import('./views')
 	routes.add('/components/preview/sandbox', sandbox)
 }
 
