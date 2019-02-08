@@ -35,6 +35,37 @@ export const sandbox = () => {
 	}
 }
 
+// export function diffNodes(oldNode, newNode) {
+// 	const getKeys = node =>
+// 		[...node.querySelectorAll('[data-route-key]')].reduce((acc, curr) => {
+// 			const { routeKey: key } = curr.dataset
+// 			acc[key] = {
+// 				node: curr,
+// 				html: curr.outerHTML
+// 			}
+// 			return acc
+// 		}, {})
+
+// 	const oldKeys = getKeys(oldNode)
+// 	const newKeys = getKeys(newNode)
+
+// 	return {
+// 		changes: diff(oldKeys, newKeys),
+// 		oldKeys,
+// 		newKeys
+// 	}
+// }
+
+// export function injectNodes(changes, oldKeys, newKeys) {
+// 	Object.keys(changes).forEach(key => {
+// 		const oldNode = oldKeys[key]
+// 		const newNode = newKeys[key]
+
+// 		const parent = oldNode.node.parentNode
+// 		parent.replaceChild(newNode.node, oldNode.node)
+// 	})
+// }
+
 // export const terry = ({ transitions }) => {
 // 	return {
 // 		name: 'terry',
