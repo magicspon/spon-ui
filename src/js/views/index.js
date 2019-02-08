@@ -1,4 +1,4 @@
-import { diffNodes, injectNodes } from '@/core/utils'
+// import { diffNodes, injectNodes } from '@/core/utils'
 
 export const sandbox = () => {
 	return {
@@ -35,32 +35,31 @@ export const sandbox = () => {
 	}
 }
 
-export const terry = ({ transitions }) => {
-	return {
-		name: 'terry',
-		async onExit(props) {
-			const { update, newHtml, prevHtml } = props
-			try {
-				const { node } = newHtml
-				diffNodes(prevHtml.node, node)
-				update(next => next())
-			} catch {
-				transitions.default.onExit(props)
-			}
-		},
-		async onEnter(props) {
-			const { update, newHtml, prevHtml } = props
-			try {
-				const { node } = newHtml
-				const { changes, oldKeys, newKeys } = diffNodes(prevHtml.node, node)
-				await update(next => {
-					injectNodes(changes, oldKeys, newKeys)
-					next()
-				})
-			} catch {
-				log(transitions)
-				transitions.default.onEnter(props)
-			}
-		}
-	}
-}
+// export const terry = ({ transitions }) => {
+// 	return {
+// 		name: 'terry',
+// 		async onExit(props) {
+// 			const { update, newHtml, prevHtml } = props
+// 			try {
+// 				const { node } = newHtml
+// 				diffNodes(prevHtml.node, node)
+// 				update(next => next())
+// 			} catch {
+// 				transitions.default.onExit(props)
+// 			}
+// 		},
+// 		async onEnter(props) {
+// 			const { update, newHtml, prevHtml } = props
+// 			try {
+// 				const { node } = newHtml
+// 				const { changes, oldKeys, newKeys } = diffNodes(prevHtml.node, node)
+// 				await update(next => {
+// 					injectNodes(changes, oldKeys, newKeys)
+// 					next()
+// 				})
+// 			} catch {
+// 				transitions.default.onEnter(props)
+// 			}
+// 		}
+// 	}
+// }
