@@ -1,9 +1,30 @@
 module.exports = {
 	status: 'test',
 
-	context: {},
+	context: {
+		title: 'Page 1'
+	},
 
-	variants: []
+	variants: [
+		{
+			name: '2',
+			context: {
+				title: 'Page 2'
+			}
+		},
+		{
+			name: '3',
+			context: {
+				title: 'Page 3'
+			}
+		},
+		{
+			name: '4',
+			context: {
+				title: 'Page 4'
+			}
+		}
+	]
 }
 
 /*

@@ -1,11 +1,13 @@
 import url from 'url-parse'
 import quicklink from 'quicklink/dist/quicklink.mjs'
 import createHistory from 'history/createBrowserHistory'
+import sync from 'framesync'
 import {
 	preventClick,
 	getKey,
 	getTransition,
-	createStore
+	createStore,
+	createStack
 } from './router.utils'
 
 /**
@@ -15,6 +17,7 @@ import {
  * @param {*} param0
  */
 function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
+	const historyStack = createStack()
 	const store = createStore({
 		prevUrl: window.location.href,
 		current: {
@@ -25,7 +28,9 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	const parser = new DOMParser()
 	const update = fn => {
 		return new Promise(resolve => {
-			fn(resolve)
+			sync.render(() => {
+				fn(resolve)
+			})
 		})
 	}
 
@@ -127,14 +132,13 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 			},
 			...commonProps
 		}
+		if (action !== 'POP') {
+			history.push(params.pathname, params)
+		}
 
 		await Object.assign({}, transitions.default, prevTransition).onExit(
 			exitProps
 		)
-
-		if (action !== 'POP') {
-			history.push(params.pathname, params)
-		}
 
 		eventBus.emit('route:before/onEnter', exitProps)
 
@@ -159,12 +163,21 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 
 	history.listen(async (location, event) => {
 		const { state: params } = location
+
 		action = event
 		if (event === 'POP') {
-			goTo({
-				...params,
-				href: store.getState().prev.params.href
-			})
+			historyStack.pop()
+			if (!historyStack.isEmpty()) {
+				goTo({
+					...params,
+					href: historyStack.peek()
+				})
+			} else {
+				goTo({
+					...params,
+					href: window.location.href
+				})
+			}
 		}
 	})
 
@@ -179,6 +192,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 					Promise.resolve()
 					return
 				}
+				historyStack.push(href)
 				goTo(params)
 			}
 		}
