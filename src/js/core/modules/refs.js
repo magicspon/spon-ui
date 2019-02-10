@@ -50,6 +50,7 @@ function createDataRefs(node) {
 
 		delete(key) {
 			node.removeAttribute(key)
+			delete node.dataset[key]
 		}
 	}
 
@@ -135,6 +136,7 @@ function getRefs(node) {
 
 	const refs = elements.reduce((acc, /** @type {HTMLElement} */ node) => {
 		const { ref } = node.dataset
+		const { className: baseClass } = node
 		if (acc[ref]) {
 			throw new Error(
 				`multiple nodes with data-${ref} attribute have been found, all data-refs must be unique`

@@ -2,7 +2,7 @@ import { createNode } from '../../src/js/core/modules/refs'
 
 describe('test createNode', () => {
 	document.body.innerHTML =
-		'<div style="transition: all 300ms ease" id="test" class="base-class" data-test="20" data-other="40"></div>'
+		'<div style="transition: all 300ms ease" id="test" class="base-class" data-remove="a" data-test="20" data-other="40"></div>'
 
 	it('should be a function', () => {
 		expect(createNode).toBeInstanceOf(Function)
@@ -49,9 +49,14 @@ describe('test createNode', () => {
 	it('should be able to read and write data-attributes', () => {
 		const elm = document.getElementById('test')
 		const ref = createNode(document.getElementById('test'))
-
+		ref.data.add('onions')
 		ref.data.test = 21
 
+		expect(elm.hasAttribute('data-onions')).toBe(true)
+		expect(elm.hasAttribute('data-remove')).toBe(true)
+		ref.data.delete('remove')
+		expect(ref.data.has('test')).toBe(true)
+		expect(ref.data.has('remove')).toBe(false)
 		expect(elm.getAttribute('data-test')).toBe('21')
 		expect(ref.data.other).toBe('40')
 	})
