@@ -210,7 +210,7 @@ export function createStore(
  */
 
 /**
- * @fucntion createStack
+ * @function createStack
  * @return {Stack}
  */
 export function createStack() {

@@ -51,6 +51,7 @@ function loadModule({ module, node, name, keepAlive, key }) {
 }
 
 /**
+ * @memberof loadApp
  * @function scan
  * @description function used to fetch required modules, watch for window size changes
  * and destory modules that fail media query returns
@@ -139,7 +140,7 @@ function use(plugins, hydrate, destroy) {
  */
 
 /**
- * @functiom loadApp
+ * @function loadApp
  * @namespace loadApp
  * @param {HTMLElement} context the root html element to query from
  * @return {App}
@@ -149,7 +150,9 @@ export default function loadApp(context) {
 	const plugins = {}
 
 	/**
-	 *
+	 * @function getNodes
+	 * @memberof loadApp
+	 * @inner
 	 * @param {HTMLElement} node
 	 * @return {Array}
 	 */
@@ -160,6 +163,7 @@ export default function loadApp(context) {
 	/**
 	 * @method hydrate
 	 * @memberof loadApp
+	 * @inner
 	 * @description queries the given context for elements with data-spon attributes
 	 * any matches are added to the cache.
 	 * the scan function is then called, as well as a window resize event is added
@@ -203,6 +207,7 @@ export default function loadApp(context) {
 	/**
 	 * @method destroy
 	 * @memberof loadApp
+	 * @inner
 	 * @description loops through the cache, destroying any modules on the killList
 	 * @returns {void}
 	 */

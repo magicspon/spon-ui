@@ -62,6 +62,7 @@ function bindStoreToRender(state, store) {
 }
 
 /**
+ * @namespace connect
  * @function bindConnect
  * @description returns connect function that hooks up any plugins with a bound behaviour
  * @param {object} store the rematch store object
@@ -71,6 +72,8 @@ function bindStoreToRender(state, store) {
 export default function bindConnect(store, registerPlugins) {
 	/**
 	 * @function connect
+	 * @memberOf connect
+	 * @inner
 	 * @param {object|function} STATE either the mapState function or an object with state/dispatch methods
 	 * @param {object|function} DISPATCH either the mapDispatch function or an object of plugins
 	 * @param {array|undefined} fns any remaining plugins
@@ -85,11 +88,13 @@ export default function bindConnect(store, registerPlugins) {
 
 		/**
 		 * @param {function} module the module to bind to
+		 * @memberOf connect
 		 * @return {function}
 		 */
 		return module => {
 			/**
-			 * @namespace module
+			 * @memberOf connect
+			 * @inner
 			 * @property {object} props the module argument object
 			 * @property {object} props.key the module name
 			 * @property {object} props.[...props] any other props
@@ -97,7 +102,8 @@ export default function bindConnect(store, registerPlugins) {
 			 */
 			return ({ key, ...props }) => {
 				/**
-				 * @namespace func
+				 * @memberOf connect
+				 * @inner
 				 * @property {object} props the module argument object
 				 * @property {object} props.[...props] any other props
 				 * @property {object} props.render the store render function
