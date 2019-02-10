@@ -98,7 +98,8 @@ function createDataRefs(node) {
  * @return {Node}
  */
 export function createNode(node) {
-	const { className: baseClass } = node
+	if (!node) return
+	let { className: baseClass } = node
 	const { id } = node.dataset
 
 	return {
@@ -111,9 +112,11 @@ export function createNode(node) {
 		},
 		addClass(...className) {
 			node.classList.add(...className)
+			baseClass = node.className
 		},
 		removeClass(...className) {
 			node.classList.remove(...className)
+			baseClass = node.className
 		},
 		addEvent(event, fn) {
 			return addEventPromise(event, node, fn)

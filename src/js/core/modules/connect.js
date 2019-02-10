@@ -65,26 +65,34 @@ function bindStoreToRender(state, store) {
  * @namespace connect
  * @function bindConnect
  * @description returns connect function that hooks up any plugins with a bound behaviour
- * @param {object} store the rematch store object
+ * @param {object} globalStore the rematch store object
  * @param {function} registerPlugins fn(str) -> fn(fn). used to track which modules are active
  * @return {function}
  */
-export default function bindConnect(store, registerPlugins) {
+export default function bindConnect(globalStore, registerPlugins) {
 	/**
 	 * @function connect
 	 * @memberOf connect
 	 * @inner
-	 * @param {object|function} STATE either the mapState function or an object with state/dispatch methods
-	 * @param {object|function} DISPATCH either the mapDispatch function or an object of plugins
+	 * @param {object} STATE either the mapState function or an object with state/dispatch methods
+	 * @param {object} DISPATCH either the mapDispatch function or an object of plugins
 	 * @param {array|undefined} fns any remaining plugins
 	 * @return {function}
 	 */
-	return function connect(STATE, DISPATCH, ...fns) {
-		const asObject = typeof STATE !== 'function'
-		const [state, dispatch] = asObject ? STATE.store : [STATE, DISPATCH]
-		const localState = state(store.getState())
-		const plugins = (asObject ? STATE.plugins : fns) || []
-		const render = bindStoreToRender(localState, store)
+	return function connect({ store, plugins = [] }) {
+		let render
+		let localState
+		let storeItem
+		if (store) {
+			const [state, dispatch] = store
+			localState = state(globalStore.getState())
+			render = bindStoreToRender(localState, globalStore)
+
+			storeItem = {
+				...localState,
+				...dispatch(globalStore.dispatch)
+			}
+		}
 
 		/**
 		 * @param {function} module the module to bind to
@@ -117,19 +125,16 @@ export default function bindConnect(store, registerPlugins) {
 					render: fn => {
 						// add the current modules subscription function
 						// to the function cache used by the core app loader
-						registerPlugins(key)(store.subscribe(render(fn)))
+						registerPlugins(key)(globalStore.subscribe(render(fn)))
 					},
-					store: {
-						...localState,
-						...dispatch(store.dispatch)
-					},
+					store: { ...storeItem },
 					plugins: {
 						...plugins.reduce((acc, curr) => {
 							return {
 								...acc,
 								...curr({
 									register: registerPlugins(key),
-									store,
+									globalStore,
 									...props
 								})
 							}

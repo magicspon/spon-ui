@@ -8,9 +8,7 @@ function basket(props) {
 		store: { deleteItemFromCart },
 		render
 	} = props
-
 	const { list } = refs
-
 	addEvents({
 		'click [data-basket-item]': (e, elm) => {
 			e.preventDefault()
@@ -18,7 +16,6 @@ function basket(props) {
 			deleteItemFromCart(id)
 		}
 	})
-
 	render(({ current }) => {
 		const { cart } = current
 		const { basket } = cart
@@ -42,7 +39,7 @@ function basket(props) {
 	})
 }
 
-// get the cart state
+// // get the cart state
 const mapState = ({ cart }) => ({ cart })
 // get all of the cart actions
 const mapDispatch = ({ cart }) => ({ ...cart })
