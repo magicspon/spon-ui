@@ -1,5 +1,7 @@
+// @ts-check
+
 import url from 'url-parse'
-import quicklink from 'quicklink/dist/quicklink.mjs'
+// import quicklink from 'quicklink/dist/quicklink.mjs'
 import createHistory from 'history/createBrowserHistory'
 import sync from 'framesync'
 import {
@@ -11,22 +13,43 @@ import {
 } from './router.utils'
 
 /**
+ * @typedef {object} PageTransitionManager
+ * @property {function} add add a page transition
+ * @property {function} delete remove a page transition
+ */
+
+/**
  * @function router
  * @description this is a sponjs plugin. When it's called with the use function
  * a number of methods and event hooks are supplied
- * @param {*} param0
+ * @param {object} props
+ * @param {function} props.domEvents
+ * @param {function} props.createNode
+ * @param {function} props.hydrateApp
+ * @param {function} props.destroyApp
+ * @param {object} props.eventBus
+ * @return {PageTransitionManager}
  */
 function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	const historyStack = createStack()
+
 	const store = createStore({
-		prevUrl: window.location.href,
 		current: {
-			key: getKey(document.body),
-			params: url(window.location.href)
-		}
+			key: getKey(/** @type {HTMLElement} */ document.body),
+			params: url(window.location.href),
+			html: ''
+		},
+		prev: {}
 	})
 	const parser = new DOMParser()
-	const update = fn => {
+
+	/**
+	 * @function update
+	 * @description wrap a function in a promise and call during the render phases of sync
+	 * @param {function} fn
+	 * @return {Promise}
+	 */
+	function update(fn) {
 		return new Promise(resolve => {
 			sync.render(() => {
 				fn(resolve)
@@ -35,8 +58,6 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	}
 
 	const history = createHistory()
-	// const debug = document.getElementById('debug')
-	// const render = bindStoreToRouter(store)
 	const del = domEvents(document.body)
 	const transitions = {
 		default: {
@@ -77,32 +98,42 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	let prevHtml = null
 	let action
 
-	quicklink({
-		origins: ['localhost']
-	})
+	// quicklink({
+	// 	origins: ['localhost']
+	// })
 
-	async function start({ prev, cache, current: state }) {
+	/**
+	 * @function start
+	 * @description start the page transition
+	 * @param {Object} props
+	 * @param {Object} props.prev the previous route store object
+	 * @param {Object} props.current the current route store object
+	 * @return {Promise}
+	 */
+	async function start({ prev, current: state }) {
 		const { html, params } = state
 		const { pathname } = params
-		const doc = parser.parseFromString(html, 'text/html')
 		const getTrans = getTransition(transitions)
 		const { transition: prevTransition, name: prevName } = getTrans(
 			state.key,
 			prev.params.pathname
 		)
+
+		/** @type {any} */
+		const doc = parser.parseFromString(html, 'text/html')
 		const { transition: nextTransition, name: nextName } = getTrans(
 			getKey(doc),
 			pathname
 		)
 		const newHtml = createNode(doc.querySelector('[data-route]'))
 
-		quicklink({
-			ignores: [
-				uri => {
-					return !Object.keys(cache).includes(uri)
-				}
-			]
-		})
+		// quicklink({
+		// 	ignores: [
+		// 		uri => {
+		// 			return !Object.keys(cache).includes(uri)
+		// 		}
+		// 	]
+		// })
 
 		const commonProps = {
 			prevHtml, // old wrapper
@@ -149,8 +180,14 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		eventBus.emit('route:after/onEnter', enterProps)
 	}
 
+	/**
+	 * @function goTo
+	 * @description make a fetch request for the next page, and start the transition process
+	 * @param {Object} params
+	 * @return {Promise}
+	 */
 	async function goTo(params) {
-		const key = getKey(document)
+		const key = getKey(document.body)
 		const rootNode = createNode(document.querySelector('[data-route]'))
 		prevHtml = rootNode
 		eventBus.emit('route:before/onExit')
@@ -161,9 +198,8 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		eventBus.emit('route:after/onExit')
 	}
 
-	history.listen(async (location, event) => {
+	history.listen((location, event) => {
 		const { state: params } = location
-
 		action = event
 		if (event === 'POP') {
 			historyStack.pop()
@@ -181,24 +217,36 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		}
 	})
 
-	del.addEvents({
-		'click a': async (e, elm) => {
-			if (preventClick(e, elm)) {
-				// if (preventClick(e, elm)) return
-				e.preventDefault()
-				const { href } = elm
-				const params = url(href)
-				if (history.location.pathname === params.pathname) {
-					Promise.resolve()
-					return
-				}
-				historyStack.push(href)
-				goTo(params)
+	/**
+	 * @function clickHandle
+	 * @description delegate a click event on all of the dom anchors
+	 * @param {MouseEvent} e
+	 * @param {HTMLAnchorElement} elm
+	 * @return {void}
+	 */
+	function clickHandle(e, elm) {
+		if (preventClick(e, elm)) {
+			e.preventDefault()
+			const { href } = elm
+			const params = url(href)
+			if (history.location.pathname === params.pathname) {
+				return
 			}
+			historyStack.push(href)
+			goTo(params)
 		}
-	})
+	}
+
+	del.addEvents({ 'click a': clickHandle })
 
 	return {
+		/**
+		 * @method add
+		 * @description add a new page transition
+		 * @param {string} path
+		 * @param {function} fn
+		 * @return {void}
+		 */
 		add(path, fn) {
 			transitions[path] = Object.assign(
 				{},
@@ -209,6 +257,12 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 			)
 		},
 
+		/**
+		 * @method delete
+		 * @description delete an existing page transition
+		 * @param {string} path
+		 * @return {void}
+		 */
 		delete(path) {
 			delete transitions[path]
 		}

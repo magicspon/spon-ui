@@ -1,10 +1,11 @@
+// @ts-check
 import { diff } from 'deep-object-diff'
 import sync from 'framesync'
 
 /**
  * @function mapStateToRenderHelper
- * @param {object} state - the current state object
- * @param {array} watch - array of keys to map to the given state
+ * @param {object} state the current state object
+ * @param {array} watch array of keys to map to the given state
  * @return {object}
  */
 function mapStateToRenderHelper(state, watch) {
@@ -18,9 +19,9 @@ function mapStateToRenderHelper(state, watch) {
 
 /**
  * @function mapStateToRender
- * @param {object} prevState - the previous store state
- * @param {object} current - the current store state
- * @param {array} watch - an array of state keys to listen to
+ * @param {object} prevState the previous store state
+ * @param {object} current the current store state
+ * @param {array} watch an array of state keys to listen to
  * @return {object}
  */
 function mapStateToRender(prevState, current, watch) {
@@ -32,8 +33,8 @@ function mapStateToRender(prevState, current, watch) {
 
 /**
  * @function bindStoreToRender
- * @param {object} state - the request state object
- * @param {object} store - the rematch store object
+ * @param {object} state the request state object
+ * @param {object} store the rematch store object
  * @return {function}
  */
 function bindStoreToRender(state, store) {
@@ -61,12 +62,20 @@ function bindStoreToRender(state, store) {
 }
 
 /**
- * @function connect
- * @param {object} store - the rematch store object
- * @param {function} registerPlugins - fn(str) -> fn(fn). - used to track which modules are active
- * @param {function}
+ * @function bindConnect
+ * @description returns connect function that hooks up any plugins with a bound behaviour
+ * @param {object} store the rematch store object
+ * @param {function} registerPlugins fn(str) -> fn(fn). used to track which modules are active
+ * @return {function}
  */
-export default function connect(store, registerPlugins) {
+export default function bindConnect(store, registerPlugins) {
+	/**
+	 * @function connect
+	 * @param {object|function} STATE either the mapState function or an object with state/dispatch methods
+	 * @param {object|function} DISPATCH either the mapDispatch function or an object of plugins
+	 * @param {array|undefined} fns any remaining plugins
+	 * @return {function}
+	 */
 	return function connect(STATE, DISPATCH, ...fns) {
 		const asObject = typeof STATE !== 'function'
 		const [state, dispatch] = asObject ? STATE.store : [STATE, DISPATCH]
@@ -74,8 +83,29 @@ export default function connect(store, registerPlugins) {
 		const plugins = (asObject ? STATE.plugins : fns) || []
 		const render = bindStoreToRender(localState, store)
 
+		/**
+		 * @param {function} module the module to bind to
+		 * @return {function}
+		 */
 		return module => {
+			/**
+			 * @namespace module
+			 * @property {object} props the module argument object
+			 * @property {object} props.key the module name
+			 * @property {object} props.[...props] any other props
+			 * @return {function}
+			 */
 			return ({ key, ...props }) => {
+				/**
+				 * @namespace func
+				 * @property {object} props the module argument object
+				 * @property {object} props.[...props] any other props
+				 * @property {object} props.render the store render function
+				 * @property {object} props.store the store methods and state props
+				 * @property {object} props.plugins any custom plugins
+				 *
+				 * @return {function}
+				 */
 				return module({
 					...props,
 					render: fn => {

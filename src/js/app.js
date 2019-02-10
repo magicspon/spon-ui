@@ -1,8 +1,9 @@
+// @ts-check
 import NProgress from 'nprogress'
 import '@/plugins/logger'
 import { loadApp, router } from '@/core'
 
-const app = loadApp(document)
+const app = loadApp(document.body)
 
 app.use('routes', router)
 

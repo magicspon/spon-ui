@@ -1,28 +1,33 @@
+// @ts-check
+
 import delegate from 'dom-delegate'
+import { createStore } from '../utils'
 
-const createStore = () => {
-	const store = {}
+/**
+ * @typedef {Object} EventDelegator
+ * @property {function} addEvents add delegated events
+ * @property {function} removeEvents remove all events
+ * @property {function} removeEvent remove event by key
+ */
 
-	return {
-		add(key, value) {
-			store[key] = value
-		},
-
-		delete(key) {
-			delete store[key]
-		},
-
-		get store() {
-			return store
-		}
-	}
-}
-
+/**
+ * @namespace
+ * @function domEvents
+ * @param {HTMLElement} node
+ * @return {EventDelegator}
+ */
 function domEvents(node = document.body) {
 	const root = delegate(node)
 	const eventStore = createStore()
 
-	const addEvents = (...args) => {
+	/**
+	 * @memberof domEvents
+	 * @function addEvents
+	 * @description key/values to delegated events
+	 * @param  {...any} args
+	 * @return {void}
+	 */
+	function addEvents(...args) {
 		const withRoot = args.length > 1
 		const events = withRoot ? args[1] : args[0]
 		const rootNode = withRoot ? delegate(args[0]) : root
@@ -34,14 +39,27 @@ function domEvents(node = document.body) {
 		})
 	}
 
-	const removeEvent = key => {
+	/**
+	 * @memberof domEvents
+	 * @function removeEvent
+	 * @description unbind an event by key
+	 * @param {string} key
+	 * @return {void}
+	 */
+	function removeEvent(key) {
 		const [event, selector] = key.split(' ')
 		const { fn, rootNode } = eventStore.store[key]
 
 		rootNode.off(event, selector, fn)
 	}
 
-	const removeEvents = () => {
+	/**
+	 * @memberof domEvents
+	 * @function removeEvents
+	 * @description Remove all the events
+	 * @return {void}
+	 */
+	function removeEvents() {
 		root.destroy()
 	}
 
@@ -52,6 +70,13 @@ function domEvents(node = document.body) {
 	}
 }
 
+/**
+ * @namespace withDomEvents
+ * @property {object} props
+ * @property {HTMLElement} props.node the root node to attach events to
+ * @property {function} props.register a function used to store the destroy method
+ * @return {object}
+ */
 export function withDomEvents({ node, register }) {
 	const events = domEvents(node)
 	register(events.removeEvents)

@@ -1,6 +1,13 @@
-/* eslint-disable no-param-reassign */
+// @ts-check
 import styler from 'stylefire'
 
+/**
+ * @function addEventPromise
+ * @param {string} event
+ * @param {HTMLElement} element
+ * @param {function} callback
+ * @return {Promise}
+ */
 function addEventPromise(event, element, callback) {
 	let complete = false
 
@@ -19,7 +26,19 @@ function addEventPromise(event, element, callback) {
 	})
 }
 
-const createDataRefs = node => {
+/**
+ * @typedef {Object} DataRefs
+ * @property {function} add add delegated events
+ * @property {function} has remove event by key
+ * @property {function} delete remove event by key
+ */
+
+/**
+ * @function createDataRefs
+ * @param {HTMLElement} node
+ * @return {DataRefs}
+ */
+function createDataRefs(node) {
 	const item = {
 		add(key, value) {
 			node.dataset[key] = value
@@ -30,21 +49,29 @@ const createDataRefs = node => {
 		},
 
 		delete(key) {
-			node.removeAttribbute(key)
+			node.removeAttribute(key)
 		}
 	}
 
-	return Object.entries(node.dataset).reduce((acc, [key]) => {
+	const data = Object.entries(node.dataset)
+
+	return data.reduce((acc, [key]) => {
 		Object.defineProperties(acc, {
 			[key]: {
+				/**
+				 * @method set
+				 * @param {string} value
+				 * @return {void}
+				 */
 				set(value) {
 					node.dataset[key] = value
 				},
+				/**
+				 * @method get
+				 * @return {string}
+				 */
 				get() {
 					return node.dataset[key]
-				},
-				add(key, value) {
-					node.dataset[key] = value
 				}
 			}
 		})
@@ -53,7 +80,24 @@ const createDataRefs = node => {
 	}, item)
 }
 
-export const createNode = node => {
+/**
+ * @typedef {Object} Node
+ * @property {HTMLElement} node
+ * @property {string} id
+ * @property {object} data
+ * @property {object} style
+ * @property {function} className
+ * @property {function} addClass
+ * @property {function} removeClass
+ * @property {function} addEvent
+ */
+
+/**
+ * @function createNode
+ * @param {HTMLElement} node
+ * @return {Node}
+ */
+export function createNode(node) {
 	const { className: baseClass } = node
 	const { id } = node.dataset
 
@@ -77,11 +121,16 @@ export const createNode = node => {
 	}
 }
 
+/**
+ * @function createNode
+ * @param {HTMLElement} node the root node to query from
+ * @return {Object}
+ */
 function getRefs(node) {
 	const elements = [...node.querySelectorAll('*[data-ref]')]
 	if (!elements.length) return
 
-	const refs = elements.reduce((acc, node) => {
+	const refs = elements.reduce((acc, /** @type {HTMLElement} */ node) => {
 		const { ref } = node.dataset
 		if (acc[ref]) {
 			throw new Error(
@@ -105,6 +154,13 @@ function getRefs(node) {
 // i.e. anything properties returned from this
 // function will be added to the props provided
 // to the behaviour
+/**
+ * @namespace withRefs
+ * @property {object} props
+ * @property {HTMLElement} props.node the root node to query from
+ * @property {function} props.register a function used to store the destroy method
+ * @return {object}
+ */
 export function withRefs({ register, node }) {
 	const refs = getRefs(node)
 	register(() => {

@@ -22,7 +22,6 @@ function basket(props) {
 	render(({ current }) => {
 		const { cart } = current
 		const { basket } = cart
-
 		h(
 			Object.values(basket).map(
 				item => html`

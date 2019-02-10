@@ -1,3 +1,4 @@
+// @ts-check
 import sync from 'framesync'
 import throttle from 'raf-throttle'
 import { createStore, registerPlugins } from '../utils'
@@ -5,67 +6,170 @@ import eventBus from '../modules/eventBus'
 import domEvents from '../modules/domEvents'
 import { createNode } from '../modules/refs'
 
+// create a cache object
+// this is used to store any active modules
 export const cache = createStore()
 
+// return a registerPlugin function, this is used to
+// add plugins to the cache
 export const registerPlugin = registerPlugins(cache)
 
+/**
+ * @function loadModule
+ * @description function used to load modules and add to the cache
+ * @namespace
+ * @param {object} config deconstructed object
+ * @param {function} config.module the module to load
+ * @param {HTMLElement} config.node the html element to bind the module to
+ * @param {string} config.name the data-spon value
+ * @param {boolean} config.keepAlive should the module be destroyed between page transitions
+ * @param {string} config.key a unique key, used as a cache reference
+ * @return {void}
+ */
+function loadModule({ module, node, name, keepAlive, key }) {
+	// bind the regsiter plugin function to the current key
+	const register = registerPlugin(key)
+
+	// call the function, returning the result to destroyModule
+	// this function will be called when the module is destroyed
+	const destroyModule = module({
+		node,
+		name,
+		key
+	})
+
+	// set the cache props
+	cache.set(key, {
+		hasLoaded: true,
+		keepAlive
+	})
+
+	// if the function should not be kept alive, register the module for destruction
+	if (!keepAlive) {
+		register(destroyModule)
+	}
+}
+
+/**
+ * @function scan
+ * @description function used to fetch required modules, watch for window size changes
+ * and destory modules that fail media query returns
+ * @return {void}
+ */
+function scan() {
+	const list = cache.store
+
+	Object.entries(list).forEach(async ([key, item]) => {
+		const { query, name, node, hasLoaded, module, keepAlive } = item
+		// if the module has loaded
+		if (hasLoaded) {
+			// if the query has failed
+			if (query && !window.matchMedia(query).matches) {
+				module()
+				// update the cache
+				cache.set(key, {
+					hasLoaded: false
+				})
+			}
+			return
+		}
+		// if there is a query and it matches, or if there is no query at all
+		if (window.matchMedia(query).matches || typeof query === 'undefined') {
+			if (cache.get(key) && cache.get(key).hasLoaded) return
+			// fetch the behaviour
+			const resp = await import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
+			const { default: module } = resp
+			loadModule({ module, node, name, keepAlive, key })
+		}
+	})
+}
+
+/**
+ * @typedef {function} Use
+ * @property {string} key the plugin name
+ * @property {function} func the plugin function
+ * @property {object} options the plugins options
+ * @return {function}
+ */
+
+/**
+ * @description returns a factory function used to add plugins to the app
+ * A function is returned that when called will with the following props
+ * app.use('routes', (options) => {console.log(options.a)}, {a: 10})
+ * will add a routes item to the plugins cache
+ * @function use
+ * @param {object} plugins an array to store the plugins in
+ * @param {function} hydrate the app hydrate function
+ * @param {function} destroy the app destroy function
+ * @return {Use}
+ */
+function use(plugins, hydrate, destroy) {
+	/**
+	 * @function addPlugin
+	 * @param {string} key
+	 * @param {function} func
+	 * @param {object} options
+	 * @return {void}
+	 */
+	function addPlugin(key, func, options = {}) {
+		const plug = func({
+			domEvents,
+			createNode,
+			hydrateApp: hydrate,
+			destroyApp: destroy,
+			eventBus,
+			...options
+		})
+
+		plugins[key] = plug
+	}
+
+	return addPlugin
+}
+
+/**
+ * @typedef {Object} App
+ * @property {function} hydrate finds modules and calls them
+ * @property {function} destroy destroys any valid modules
+ * @property {function} on the mitt on method
+ * @property {function} off the mitt off method
+ * @property {function} emit the mitt emit method
+ * @property {Use} use the use function
+ * @property {object} plugins the plugins object
+ */
+
+/**
+ * @functiom loadApp
+ * @namespace loadApp
+ * @param {HTMLElement} context the root html element to query from
+ * @return {App}
+ */
 export default function loadApp(context) {
 	let handle
 	const plugins = {}
 
-	function loadModule({ module, node, name, keepAlive, key }) {
-		// call it, and assign it to the cache
-		// so that it can be called to unmoumt
-		const register = registerPlugin(key)
-
-		const destroyModule = module({
-			node,
-			name,
-			key
-		})
-
-		cache.set(name, {
-			hasLoaded: true,
-			keepAlive
-		})
-
-		if (!keepAlive) {
-			register(destroyModule)
-		}
+	/**
+	 *
+	 * @param {HTMLElement} node
+	 * @return {Array}
+	 */
+	function getNodes(node) {
+		return [...node.querySelectorAll('*[data-spon]')]
 	}
 
-	function scan() {
-		const list = cache.store
-
-		Object.entries(list).forEach(async ([key, item]) => {
-			const { query, name, node, hasLoaded, module, keepAlive } = item
-			// if the module has loaded
-			if (hasLoaded) {
-				// if the query has failed
-				if (query && !window.matchMedia(query).matches) {
-					module()
-					// update the cache
-					cache.set(key, {
-						hasLoaded: false
-					})
-				}
-				return
-			}
-			// if there is a query and it matches, or if there is no query at all
-			if (window.matchMedia(query).matches || typeof query === 'undefined') {
-				if (cache.get(key) && cache.get(key).hasLoaded) return
-				// fetch the behaviour
-				const resp = await import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
-				const { default: module } = resp
-				loadModule({ module, node, name, keepAlive, query, key })
-			}
-		})
-	}
-
+	/**
+	 * @method hydrate
+	 * @memberof loadApp
+	 * @description queries the given context for elements with data-spon attributes
+	 * any matches are added to the cache.
+	 * the scan function is then called, as well as a window resize event is added
+	 * which also calls the scan function
+	 * @param {HTMLElement} context the node to query from
+	 * @return {void}
+	 */
 	function hydrate(context) {
 		sync.read(() => {
-			const nodes = [...context.querySelectorAll('*[data-spon]')]
-			nodes
+			getNodes(context)
 				.filter(({ dataset: { keepAlive, spon } }) => {
 					return keepAlive === 'true' || !cache.has(spon)
 				})
@@ -96,6 +200,12 @@ export default function loadApp(context) {
 		})
 	}
 
+	/**
+	 * @method destroy
+	 * @memberof loadApp
+	 * @description loops through the cache, destroying any modules on the killList
+	 * @returns {void}
+	 */
 	function destroy() {
 		window.removeEventListener('resize', handle)
 		const killList = Object.values(cache.store).filter(
@@ -116,26 +226,14 @@ export default function loadApp(context) {
 		killList.forEach(({ name }) => cache.delete(name))
 	}
 
+	// hydate the world
 	hydrate(context)
-
-	function use(key, func, options = {}) {
-		const plug = func({
-			domEvents,
-			createNode,
-			hydrateApp: hydrate,
-			destroyApp: destroy,
-			eventBus,
-			...options
-		})
-
-		plugins[key] = plug
-	}
 
 	return {
 		hydrate,
 		destroy,
 		...eventBus,
-		use,
+		use: use(plugins, hydrate, destroy),
 		get plugins() {
 			return plugins
 		}
