@@ -181,7 +181,7 @@ export default function loadApp(context) {
 				.forEach((node, index) => {
 					const { spon, query, keepAlive, ...rest } = node.dataset
 					if (spon.split(' ').length > 1) {
-						throw new Error(
+						throw new TypeError(
 							'you are only allowed to use on behaviour per dom node'
 						)
 					}
@@ -229,7 +229,7 @@ export default function loadApp(context) {
 			.forEach((destroy = () => {}) => destroy())
 
 		// remove the item from the store
-		killList.forEach(({ name }) => cache.delete(name))
+		killList.forEach(({ key }) => cache.delete(key))
 	}
 
 	// hydate the world

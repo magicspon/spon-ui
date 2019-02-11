@@ -3,7 +3,7 @@ import { loadApp, cache } from '../../src/js/core'
 
 describe('test loadApp', () => {
 	document.body.innerHTML = `<div id="root">
-															<div data-spon="sandbox"></div>
+															<div data-keep-alive data-spon="sandbox"></div>
 															<div data-spon="sandbox" data-query="(min-width: 1000px)"></div>
 															<div data-spon="sandbox"></div>
 														</div>`
@@ -29,6 +29,11 @@ describe('test loadApp', () => {
 
 	beforeAll(() => {
 		app = loadApp(document.getElementById('root'))
+	})
+
+	afterAll(() => {
+		document.body.innerHTML = ''
+		app.destroy()
 	})
 
 	it('should be a function', () => {
@@ -73,6 +78,44 @@ describe('test loadApp', () => {
 
 		await wait(() => {
 			expect(cache.get('sandbox-1').hasLoaded).toBe(false)
+		})
+	})
+
+	it('should remove modules from the cache when destroy is called', () => {
+		app.destroy()
+
+		expect(cache.has('sandbox-0')).toBe(true)
+		expect(cache.has('sandbox-1')).toBe(false)
+		expect(cache.has('sandbox-2')).toBe(false)
+	})
+
+	describe('the use function', () => {
+		it('should be a function', () => {
+			expect(app.use).toBeInstanceOf(Function)
+		})
+
+		it('should add plugins to the app', () => {
+			app.use('fn', () => {})
+			expect(app.plugins).toBeInstanceOf(Object)
+			expect(Object.keys(app.plugins)[0]).toBe('fn')
+		})
+
+		it('plugins should recieve some props', () => {
+			app.use('fn', props => {
+				expect(props.hydrateApp).toBeInstanceOf(Function)
+				expect(props.destroyApp).toBeInstanceOf(Function)
+				expect(props.eventBus).toBeInstanceOf(Object)
+			})
+		})
+
+		it('recieve any props passed from the third argument', () => {
+			app.use(
+				'fn',
+				props => {
+					expect(props.hello).toBe(2000)
+				},
+				{ hello: 2000 }
+			)
 		})
 	})
 })
