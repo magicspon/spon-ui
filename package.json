@@ -70,7 +70,8 @@
 		"lint:scss": "stylelint src/**/*.scss --syntax scss",
 		"pretty": "prettier 'src/**/*.{js,jsx,scss}' --write",
 		"generate-docs": "npx jsdoc -c jsdoc.json",
-		"deploy-docs": "npx jsdoc -c jsdoc.json && cd docs && netlify deploy"
+		"deploy-docs": "npx jsdoc -c jsdoc.json && cd docs && netlify deploy",
+		"cy:run": "cypress run"
 	},
 	"dependencies": {
 		"@rematch/core": "^1.0.6",

@@ -19,6 +19,7 @@ app.on('route:before/onExit', () => {
 })
 
 app.on('route:after/onEnter', () => {
+	log('on enter')
 	app.hydrate(document)
 	NProgress.done()
 })

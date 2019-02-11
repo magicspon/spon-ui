@@ -97,6 +97,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	}
 	let prevHtml = null
 	let action
+	let running = false
 
 	// quicklink({
 	// 	origins: ['localhost']
@@ -178,6 +179,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		)
 
 		eventBus.emit('route:after/onEnter', enterProps)
+		running = false
 	}
 
 	/**
@@ -187,6 +189,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	 * @return {Promise}
 	 */
 	async function goTo(params) {
+		running = true
 		const key = getKey(document.body)
 		const rootNode = createNode(document.querySelector('[data-route]'))
 		prevHtml = rootNode
@@ -232,8 +235,10 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 			if (history.location.pathname === params.pathname) {
 				return
 			}
-			historyStack.push(href)
-			goTo(params)
+			if (!running) {
+				historyStack.push(href)
+				goTo(params)
+			}
 		}
 	}
 

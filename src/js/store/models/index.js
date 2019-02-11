@@ -71,7 +71,7 @@ export const cart = {
 
 			return {
 				...state,
-				currentView: items[payload]
+				currentView: payload ? items[payload] : false
 			}
 		}
 	},

@@ -54,6 +54,10 @@ function Cart(props) {
 			product.node
 		)
 	})
+
+	return () => {
+		setCurrentView(null)
+	}
 }
 
 // get the cart state
