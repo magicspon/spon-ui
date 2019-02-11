@@ -35,7 +35,7 @@ function Cart(props) {
 	render(({ current }) => {
 		const { cart } = current
 		const { items = [], id } = cart.currentView
-
+		const { basket } = cart
 		buttons.forEach(node => {
 			node.className = node.id === id ? 'text-red' : ''
 		})
@@ -44,7 +44,16 @@ function Cart(props) {
 			items.map(
 				item => html`
 					<div class="mx-1 mb-1 border p-1 trans">
-						<div class="text-ms-4 mb-1">${item.title}</div>
+						<div class="text-ms-4 flex mb-1">
+							${item.title}
+							<span style="font-size: 10px">
+								${basket[item.id] &&
+									html`
+										<div>${basket[item.id].quantity}</div>
+									`}
+							</span>
+						</div>
+
 						<button class="border p-0-5" data-product data-id="${item.id}">
 							buy thing
 						</button>

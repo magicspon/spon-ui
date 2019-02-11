@@ -19,21 +19,29 @@ function basket(props) {
 	render(({ current }) => {
 		const { cart } = current
 		const { basket } = cart
-		h(
-			Object.values(basket).map(
-				item => html`
-					<div
-						style="transition-duration: 1000ms"
-						class="flex trans"
-						data-flip-key="${item.id}"
-					>
-						<div class="mr-2" data-basket-item data-id="${item.id}">
-							${item.title} x${item.quantity}
-						</div>
-						<button data-basket-item data-id="${item.id}">Remove</button>
+		const items = Object.values(basket)
+		const total = items.reduce((acc, { quantity }) => acc + quantity, 0)
+
+		const basketList = items.map(
+			item => html`
+				<div
+					style="transition-duration: 1000ms"
+					class="flex trans"
+					data-flip-key="${item.id}"
+				>
+					<div class="mr-2" data-basket-item data-id="${item.id}">
+						${item.title} x${item.quantity}
 					</div>
-				`
-			),
+					<button data-basket-item data-id="${item.id}">Remove</button>
+				</div>
+			`
+		)
+
+		h(
+			html`
+				<h1>${items.length} - ${total}</h1>
+				<div>${basketList}</div>
+			`,
 			list.node
 		)
 	})
