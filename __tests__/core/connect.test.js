@@ -41,7 +41,7 @@ describe('connect', () => {
 		expect(connect).toBeInstanceOf(Function)
 	})
 
-	it('should compose modules with store and plugin props, via object', () => {
+	it('should compose modules with store and plugin props', () => {
 		const connect = bindConnect(store, registerPlugin)
 		const node = document.getElementById('test')
 		// get the cart state
@@ -75,7 +75,7 @@ describe('connect', () => {
 		expect(node.classList.contains('test')).toBe(true)
 	})
 
-	it('should compose modules with just plugin props, via object', () => {
+	it('should compose modules with just plugin props', () => {
 		const connect = bindConnect(store, registerPlugin)
 
 		let result = 0
@@ -96,7 +96,7 @@ describe('connect', () => {
 		expect(result).toBe(12)
 	})
 
-	it('should compose modules with just store props, via object', () => {
+	it('should compose modules with just store props', () => {
 		const connect = bindConnect(store, registerPlugin)
 		// get the cart state
 		const mapState = ({ point }) => ({ point })

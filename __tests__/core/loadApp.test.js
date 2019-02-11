@@ -50,6 +50,7 @@ describe('test loadApp', () => {
 	})
 
 	it('should have eventBus events', () => {
+		// these are mitt functions... no need to go test mental
 		expect(app.on).toBeInstanceOf(Function)
 		expect(app.off).toBeInstanceOf(Function)
 		expect(app.emit).toBeInstanceOf(Function)
