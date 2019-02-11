@@ -11,7 +11,8 @@
         /if/,
         /else/,
         /return/,
-        /function/
+        /function/,
+				/debug/
       ]
     }],
     "declaration-block-trailing-semicolon": null,

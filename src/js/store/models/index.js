@@ -1,22 +1,3 @@
-export const move = {
-	state: {
-		x: 0,
-		y: 0
-	},
-	reducers: {
-		move: (state, payload) => {
-			const { x, y } = state
-			const { x: nx = 0, y: ny = 0 } = payload
-			return {
-				...state,
-				x: x + nx,
-				y: y + ny
-			}
-		}
-	},
-	effects: {}
-}
-
 export const cart = {
 	state: {
 		basket: [],

@@ -13,7 +13,7 @@ function Cart(props) {
 	const { product } = refs
 	const buttons = [...node.querySelectorAll('[data-button]')].map(createNode)
 
-	addEvents(document.getElementById('inner'), {
+	addEvents({
 		'click [data-button]': (e, elm) => {
 			e.preventDefault()
 			const { id } = elm.dataset

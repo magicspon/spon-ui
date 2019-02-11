@@ -1,4 +1,4 @@
-import domEvents from '../../src/js/core/modules/domEvents'
+import { domEvents } from '../../src/js/core'
 
 describe('test domEvents', () => {
 	document.body.innerHTML = `<div id="test">

@@ -26,13 +26,6 @@ global.requestAnimationFrame = function(callback) {
 	setTimeout(callback, 0)
 }
 
-// global.document.createElement = jest.fn(() => ({
-// 	style: {
-// 		transition: 'opacity 300ms ease',
-// 		animation: 'test 300ms'
-// 	}
-// }))
-
 Object.defineProperty(document, 'currentStyle', {
 	value: document.createElement('style')
 })
@@ -51,10 +44,12 @@ if (window.Element && !Element.prototype.closest) {
 	}
 }
 
-Object.defineProperty(window, 'matchMedia', {
-	value: jest.fn(a => ({
-		matches: global.innerWidth > parseInt(a.match(/\d+/)[0], 10)
-	}))
+window.matchMedia = jest.fn().mockImplementation(query => {
+	return {
+		matches: false,
+		media: query,
+		onchange: null,
+		addListener: jest.fn(),
+		removeListener: jest.fn()
+	}
 })
-
-window.log = console.log // eslint-disable-line

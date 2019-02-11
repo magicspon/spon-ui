@@ -50,7 +50,7 @@ const build = gulp.series(
 const buildLibrary = gulp.series(
 	clean,
 	buildFractal,
-	gulp.parallel(postBuildFractalClean, cacheTags, assets),
+	gulp.parallel(postBuildFractalClean, assets),
 	gulp.parallel(scss, bundle),
 	gulp.parallel(purge, validateHtml),
 	sizeReport

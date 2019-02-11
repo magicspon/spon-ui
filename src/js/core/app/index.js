@@ -41,7 +41,8 @@ function loadModule({ module, node, name, keepAlive, key }) {
 	// set the cache props
 	cache.set(key, {
 		hasLoaded: true,
-		keepAlive
+		keepAlive,
+		module: destroyModule
 	})
 
 	// if the function should not be kept alive, register the module for destruction
@@ -78,7 +79,7 @@ function scan() {
 		if (window.matchMedia(query).matches || typeof query === 'undefined') {
 			if (cache.get(key) && cache.get(key).hasLoaded) return
 			// fetch the behaviour
-			const resp = await import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
+			const resp = await import(/* webpackChunkName: "spon-[request]" */ `../../behaviours/${name}`)
 			const { default: module } = resp
 			loadModule({ module, node, name, keepAlive, key })
 		}
