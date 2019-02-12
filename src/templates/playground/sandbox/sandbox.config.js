@@ -2,26 +2,34 @@ module.exports = {
 	status: 'test',
 
 	context: {
-		title: 'Page 1'
+		title: 'Page 1',
+		className: 'pin-t pin-l',
+		color: 'blue-dark'
 	},
 
 	variants: [
 		{
 			name: '2',
 			context: {
-				title: 'Page 2'
+				title: 'Page 2',
+				className: 'pin-t pin-r',
+				color: 'red-dark'
 			}
 		},
 		{
 			name: '3',
 			context: {
-				title: 'Page 3'
+				title: 'Page 3',
+				className: 'pin-b pin-l',
+				color: 'green-dark'
 			}
 		},
 		{
 			name: '4',
 			context: {
-				title: 'Page 4'
+				title: 'Page 4',
+				className: 'pin-b pin-r',
+				color: 'yellow-dark'
 			}
 		}
 	]

@@ -1,35 +1,57 @@
 // import { diffNodes, injectNodes } from '@/core/utils'
+import { createNode } from '@/core'
 
-export const sandbox = () => {
+export const boxes = () => {
 	return {
-		name: 'sandbox',
+		name: 'boxs',
 
-		async onExit({ update, prevHtml }) {
-			const { node, style, addEvent } = prevHtml
+		oldBox: null,
+
+		async onExit({ update, prevHtml, newHtml }) {
+			const { node } = prevHtml
+			const oldBox = createNode(
+				node.querySelector('[data-box="a"]').cloneNode(true)
+			)
+			this.container.node.appendChild(newHtml.node)
+			node.parentNode.removeChild(node)
+			newHtml.node.appendChild(oldBox.node)
+
+			const box = createNode(newHtml.node.querySelector('[data-box="a"]'))
+			box.node.style.opacity = 0
+
+			const {
+				top: fromTop,
+				left: fromLeft
+			} = oldBox.node.getBoundingClientRect()
+			const { top: toTop, left: toLeft } = box.node.getBoundingClientRect()
+
+			const xDiff = toLeft - fromLeft
+			const yDiff = toTop - fromTop
+
+			await oldBox.addEvent('transitionend', () => {
+				oldBox.style.set({
+					x: xDiff,
+					y: yDiff,
+					backgroundColor: box.style.get('background-color'),
+					zIndex: -1
+				})
+			})
+
+			await oldBox.addEvent('transitionend', () => {
+				box.node.style.opacity = 1
+			})
 
 			await update(next => {
-				addEvent('transitionend', () => {
-					style.set({ opacity: 0 })
-				}).then(() => {
-					node.parentNode.removeChild(node)
+				setTimeout(() => {
+					oldBox.node.parentNode.removeChild(oldBox.node)
 					next()
-				})
+				}, 300)
 			})
 		},
 
-		async onEnter({ update, newHtml }) {
-			const { node, style, addEvent } = newHtml
-
-			style.set({ opacity: 0 })
-			style.render()
-			this.container.node.appendChild(node)
-
+		async onEnter({ update }) {
 			await update(next => {
-				addEvent('transitionend', () => {
-					style.set({ opacity: 1 })
-				}).then(() => {
-					next()
-				})
+				next()
 			})
 		}
 	}

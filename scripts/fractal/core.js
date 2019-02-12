@@ -27,9 +27,9 @@ fractal.components.set('default.context', context)
 fractal.components.set('statuses', statuses)
 fractal.components.set('label', 'Library')
 
-fractal.docs.engine(require('@frctl/nunjucks')(templateEngine()))
-fractal.docs.set('ext', '.md')
-fractal.docs.set('path', getSrcPaths('docs'))
+// fractal.docs.engine(require('@frctl/nunjucks')(templateEngine()))
+// fractal.docs.set('ext', '.md')
+// fractal.docs.set('path', getSrcPaths('docs'))
 
 fractal.web.theme(
 	require('@frctl/mandelbrot')({

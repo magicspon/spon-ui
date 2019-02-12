@@ -1,18 +1,15 @@
 body {
 	&::after {
 		@if $env == 'development' {
-			@apply bg-black-80 text-white p-0-25;
+			@apply bg-black text-white p-1;
 
 			position: fixed;
 			bottom: 0;
 			left: 0;
 			font-size: 12px;
 			display: block;
-			padding: gutter(0.25);
 			z-index: 100001;
-		}
-
- @else {
+		} @else {
 			display: none;
 		}
 

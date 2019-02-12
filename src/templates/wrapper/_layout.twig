@@ -1,16 +1,17 @@
 
-<ul class="flex list-reset">
-  <li class="mr-1"><a href="/components/preview/sandbox">page 1</a></li>
-  <li class="mr-1"><a href="/components/preview/sandbox--2">page 2</a></li>
-  <li class="mr-1"><a href="/components/preview/sandbox--3">page 3</a></li>
-  <li class="mr-1"><a href="/components/preview/sandbox--4">page 4</a></li>
+<ul class="flex justify-center pt-4 mb-4 list-reset">
+  <li class="mx-4"><a class="no-underline uppercase block" href="/components/preview/sandbox">page 1</a></li>
+  <li class="mx-4"><a class="no-underline uppercase block" href="/components/preview/sandbox--2">page 2</a></li>
+  <li class="mx-4"><a class="no-underline uppercase block" href="/components/preview/sandbox--3">page 3</a></li>
+  <li class="mx-4"><a class="no-underline uppercase block" href="/components/preview/sandbox--4">page 4</a></li>
 </ul>
-<div id="page-wrapper">
-  <div {% block route %}{% endblock %} class="trans page-child">
+<div id="page-wrapper" class="relative h-screen">
+  <div data-route="boxes" class="trans page-child">
     {% block content %}
     {% endblock %}
   </div>
 </div>
+
 
 
 

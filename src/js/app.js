@@ -25,8 +25,8 @@ app.on('route:after/onEnter', () => {
 })
 
 const loadViews = async () => {
-	const { sandbox } = await import('./views')
-	routes.add('/components/preview/sandbox', sandbox)
+	const { boxes } = await import('./views')
+	routes.add('boxes', boxes)
 }
 
 loadViews()

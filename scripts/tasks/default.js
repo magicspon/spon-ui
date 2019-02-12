@@ -52,7 +52,7 @@ const buildLibrary = gulp.series(
 	buildFractal,
 	gulp.parallel(postBuildFractalClean, assets),
 	gulp.parallel(scss, bundle),
-	gulp.parallel(purge, validateHtml),
+	gulp.parallel(validateHtml),
 	sizeReport
 )
 

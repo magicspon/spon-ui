@@ -1,7 +1,7 @@
 // @ts-check
 
 import url from 'url-parse'
-// import quicklink from 'quicklink/dist/quicklink.mjs'
+import quicklink from 'quicklink/dist/quicklink.mjs'
 import createHistory from 'history/createBrowserHistory'
 import sync from 'framesync'
 import {
@@ -99,9 +99,9 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	let action
 	let running = false
 
-	// quicklink({
-	// 	origins: ['localhost']
-	// })
+	quicklink({
+		origins: ['localhost']
+	})
 
 	/**
 	 * @function start
@@ -112,7 +112,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	 * @return {Promise}
 	 */
 	async function start({ prev, current: state }) {
-		const { html, params } = state
+		const { html, params, cache } = state
 		const { pathname } = params
 		const getTrans = getTransition(transitions)
 		const { transition: prevTransition, name: prevName } = getTrans(
