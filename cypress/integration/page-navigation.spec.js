@@ -14,5 +14,7 @@ describe('page navigation', () => {
 		cy.wait(600)
 		cy.url().should('include', '/components/preview/sandbox--4')
 		cy.go('back')
+
+		cy.url().should('include', '/components/preview/sandbox--3')
 	})
 })

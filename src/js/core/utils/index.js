@@ -19,21 +19,21 @@ export const createStore = () => {
 
 	return {
 		/**
-		 * @function add
-		 * @param {string} key
-		 * @param {object} value
-		 * @return {void}
-		 */
+         * @function add
+         * @param {string} key
+         * @param {object} value
+         * @return {void}
+         */
 		add(key, value) {
 			store[key] = value
 		},
 
 		/**
-		 * @function set
-		 * @param {string} key
-		 * @param {object} value
-		 * @return {void}
-		 */
+         * @function set
+         * @param {string} key
+         * @param {object} value
+         * @return {void}
+         */
 		set(key, value) {
 			const item = store[key]
 			store[key] = {
@@ -43,28 +43,28 @@ export const createStore = () => {
 		},
 
 		/**
-		 * @function get
-		 * @param {string} key
-		 * @return {object}
-		 */
+         * @function get
+         * @param {string} key
+         * @return {object}
+         */
 		get(key) {
 			return store[key]
 		},
 
 		/**
-		 * @function has
-		 * @param {string} key
-		 * @return {boolean}
-		 */
+         * @function has
+         * @param {string} key
+         * @return {boolean}
+         */
 		has(key) {
 			return !!store[key]
 		},
 
 		/**
-		 * @function delete
-		 * @param {string} key
-		 * @return {void}
-		 */
+         * @function delete
+         * @param {string} key
+         * @return {void}
+         */
 		delete(key) {
 			delete store[key]
 		},
@@ -82,16 +82,16 @@ export const createStore = () => {
  */
 export function registerPlugins(cache) {
 	/**
-	 * @function setCacheKey
-	 * @param {string} name
-	 * @return {function}
-	 */
+     * @function setCacheKey
+     * @param {string} name
+     * @return {function}
+     */
 	function setCacheKey(name) {
 		/**
-		 * @function setPlugin
-		 * @param {object} plugin
-		 * @return {void}
-		 */
+         * @function setPlugin
+         * @param {object} plugin
+         * @return {void}
+         */
 		function setPlugin(plugin) {
 			const { plugins = [] } = cache.get(name)
 

@@ -19,7 +19,6 @@ function basket(props) {
 	})
 
 	render(({ current }) => {
-		log('render')
 		const { cart } = current
 		const { basket } = cart
 		const items = Object.values(basket)
@@ -35,7 +34,9 @@ function basket(props) {
 					<div class="mr-2" data-basket-item data-id="${item.id}">
 						${item.title} x${item.quantity}
 					</div>
-					<button data-basket-item data-id="${item.id}">Remove</button>
+					<button data-basket-item data-id="${item.id}">
+						Remove
+					</button>
 				</div>
 			`
 		)
