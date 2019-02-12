@@ -40,7 +40,6 @@ function mapStateToRender(prevState, current, watch) {
 function bindStoreToRender(state, store) {
 	let prevState = store.getState()
 	const listen = Object.keys(state)
-
 	// return a function, that when called
 	// will return a new function that when
 	// called will run any valid render methods
@@ -52,6 +51,7 @@ function bindStoreToRender(state, store) {
 			listen
 		)
 		const changes = diff(prev, newState)
+
 		sync.render(() => {
 			if (Object.keys(changes).length) {
 				fn({ prev, current: newState })
@@ -80,26 +80,25 @@ export default function bindConnect(globalStore, registerPlugins) {
 	 * @return {function}
 	 */
 	return function connect({ store, plugins = [] }) {
-		let render
-		let localState
-		let storeItem
-		if (store) {
-			const [state, dispatch] = store
-			localState = state(globalStore.getState())
-			render = bindStoreToRender(localState, globalStore)
-
-			storeItem = {
-				...localState,
-				...dispatch(globalStore.dispatch)
-			}
-		}
-
 		/**
 		 * @param {function} module the module to bind to
 		 * @memberOf connect
 		 * @return {function}
 		 */
 		return module => {
+			let render
+			let localState
+			let storeItem
+			if (store) {
+				const [state, dispatch] = store
+				localState = state(globalStore.getState())
+				render = bindStoreToRender(localState, globalStore)
+
+				storeItem = {
+					...localState,
+					...dispatch(globalStore.dispatch)
+				}
+			}
 			/**
 			 * @memberOf connect
 			 * @inner

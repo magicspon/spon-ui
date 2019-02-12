@@ -9,6 +9,7 @@ function basket(props) {
 		render
 	} = props
 	const { list } = refs
+
 	addEvents({
 		'click [data-basket-item]': (e, elm) => {
 			e.preventDefault()
@@ -16,7 +17,9 @@ function basket(props) {
 			deleteItemFromCart(id)
 		}
 	})
+
 	render(({ current }) => {
+		log('render')
 		const { cart } = current
 		const { basket } = cart
 		const items = Object.values(basket)
