@@ -48,7 +48,7 @@
 			{% include '@symbols' %}
 			<script>
 				loadjs([
-					'//polyfill.io/v3/polyfill.min.js?features=default%2CArray.from%2CArray.isArray%2CArray.prototype.filter%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.forEach%2CArray.prototype.includes%2CArray.prototype.indexOf%2CArray.prototype.keys%2CArray.prototype.map%2CArray.prototype.reduce%2CArray.prototype.values%2CCustomEvent%2CDocumentFragment%2CDocumentFragment.prototype.append%2CDocumentFragment.prototype.prepend%2CElement%2CElement.prototype.matches%2CElement.prototype.closest%2CElement.prototype.classList%2CMap%2CObject.create%2CObject.assign%2CObject.entries%2CObject.keys%2CObject.values%2CPromise%2CSet%2CSymbol%2CWeakSet%2CWeakMap%2CSymbol.hasInstance%2CSymbol.isConcatSpreadable%2CSymbol.match%2CSymbol.iterator%2CSymbol.replace%2CSymbol.search%2CSymbol.species%2CSymbol.split%2CSymbol.toPrimitive%2CSymbol.toStringTag%2CSymbol.unscopables%2CmatchMedia', 
+					'https://polyfill.io/v3/polyfill.min.js?features=default%2CArray.from%2CElement.prototype.closest%2CElement.prototype.matches%2CIntersectionObserver%2CObject.assign%2CObject.entries%2CURL%2Cfetch%2CmatchMedia%2CrequestAnimationFrame%2CWeakSet%2CArray.prototype.includes%2CObject.values',
 					'/dist/js/app.bundle{{ stamp }}.js'
 				], {async: false});
 			</script>

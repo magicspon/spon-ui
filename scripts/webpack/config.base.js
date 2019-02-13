@@ -52,7 +52,7 @@ module.exports = {
 			{
 				test: /\.js?$/,
 				loader: ['babel-loader', 'webpack-module-hot-accept'],
-				exclude: /node_modules/
+				exclude: /node_modules\/(?!(lit-html))/
 			},
 			{
 				test: /\.worker\.js$/,

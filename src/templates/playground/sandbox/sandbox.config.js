@@ -3,7 +3,9 @@ module.exports = {
 
 	context: {
 		title: 'Page 1',
-		className: 'pin-t pin-l',
+		className: 'pin-b pin-l',
+		className2: 'pin m-auto',
+		style: 'width: 500px; height: 300px;',
 		color: 'blue-dark'
 	},
 
@@ -13,6 +15,7 @@ module.exports = {
 			context: {
 				title: 'Page 2',
 				className: 'pin-t pin-r',
+				style: 'width: 500px; height: 300px; left: 200px; top: 300px;',
 				color: 'red-dark'
 			}
 		},
@@ -21,6 +24,7 @@ module.exports = {
 			context: {
 				title: 'Page 3',
 				className: 'pin-b pin-l',
+				style: 'width: 500px; height: 300px; left: 500px; top: 200px;',
 				color: 'green-dark'
 			}
 		},
@@ -29,6 +33,7 @@ module.exports = {
 			context: {
 				title: 'Page 4',
 				className: 'pin-b pin-r',
+				style: 'width: 500px; height: 300px; left: 60px; top: 600px;',
 				color: 'yellow-dark'
 			}
 		}

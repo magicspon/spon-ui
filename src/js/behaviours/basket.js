@@ -3,6 +3,7 @@ import { withRefs, withDomEvents } from '@/core'
 import { connect } from '@/store'
 
 function basket(props) {
+	console.log(props)
 	const {
 		plugins: { addEvents, refs },
 		store: { deleteItemFromCart },
@@ -51,7 +52,7 @@ function basket(props) {
 	})
 }
 
-// // get the cart state
+// get the cart state
 const mapState = ({ cart }) => ({ cart })
 // get all of the cart actions
 const mapDispatch = ({ cart }) => ({ ...cart })

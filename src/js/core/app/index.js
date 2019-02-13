@@ -52,41 +52,6 @@ function loadModule({ module, node, name, keepAlive, key }) {
 }
 
 /**
- * @memberof loadApp
- * @function scan
- * @description function used to fetch required modules, watch for window size changes
- * and destory modules that fail media query returns
- * @return {void}
- */
-function scan() {
-	const list = cache.store
-
-	Object.entries(list).forEach(async ([key, item]) => {
-		const { query, name, node, hasLoaded, module, keepAlive } = item
-		// if the module has loaded
-		if (hasLoaded) {
-			// if the query has failed
-			if (query && !window.matchMedia(query).matches) {
-				module()
-				// update the cache
-				cache.set(key, {
-					hasLoaded: false
-				})
-			}
-			return
-		}
-		// if there is a query and it matches, or if there is no query at all
-		if (window.matchMedia(query).matches || typeof query === 'undefined') {
-			if (cache.get(key) && cache.get(key).hasLoaded) return
-			// fetch the behaviour
-			const resp = await import(/* webpackChunkName: "spon-[request]" */ `../../behaviours/${name}`)
-			const { default: module } = resp
-			loadModule({ module, node, name, keepAlive, key })
-		}
-	})
-}
-
-/**
  * @typedef {function} Use
  * @property {string} key the plugin name
  * @property {function} func the plugin function
@@ -97,7 +62,7 @@ function scan() {
 /**
  * @description returns a factory function used to add plugins to the app
  * A function is returned that when called will with the following props
- * app.use('routes', (options) => {console.log(options.a)}, {a: 10})
+ * app.use('routes', (options) => {console.console.log(options.a)}, {a: 10})
  * will add a routes item to the plugins cache
  * @function use
  * @param {object} plugins an array to store the plugins in
@@ -146,9 +111,44 @@ function use(plugins, hydrate, destroy) {
  * @param {HTMLElement} context the root html element to query from
  * @return {App}
  */
-export default function loadApp(context) {
+export default function loadApp(context, { fetch: fetchModule }) {
 	let handle
 	const plugins = {}
+
+	/**
+	 * @memberof loadApp
+	 * @function scan
+	 * @description function used to fetch required modules, watch for window size changes
+	 * and destory modules that fail media query returns
+	 * @return {void}
+	 */
+	function scan() {
+		const list = cache.store
+
+		Object.entries(list).forEach(async ([key, item]) => {
+			const { query, name, node, hasLoaded, module, keepAlive } = item
+			// if the module has loaded
+			if (hasLoaded) {
+				// if the query has failed
+				if (query && !window.matchMedia(query).matches) {
+					module()
+					// update the cache
+					cache.set(key, {
+						hasLoaded: false
+					})
+				}
+				return
+			}
+			// if there is a query and it matches, or if there is no query at all
+			if (window.matchMedia(query).matches || typeof query === 'undefined') {
+				if (cache.get(key) && cache.get(key).hasLoaded) return
+				// fetch the behaviour
+				const resp = await fetchModule(name)
+				const { default: module } = resp
+				loadModule({ module, node, name, keepAlive, key })
+			}
+		})
+	}
 
 	/**
 	 * @function getNodes

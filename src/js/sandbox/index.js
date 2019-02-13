@@ -25,7 +25,7 @@ const base = props => {
 	props // ?
 
 	return () => {
-		console.log('done')
+		console.console.log('done')
 	}
 }
 

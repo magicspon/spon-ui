@@ -1,9 +1,12 @@
 // @ts-check
 import NProgress from 'nprogress'
-import '@/plugins/logger'
+
 import { loadApp, router } from '@/core'
 
-const app = loadApp(document.body)
+const app = loadApp(document.body, {
+	fetch: name =>
+		import(/* webpackChunkName: "spon-[request]" */ `@/behaviours/${name}`)
+})
 
 app.use('routes', router)
 
@@ -19,7 +22,7 @@ app.on('route:before/onExit', () => {
 })
 
 app.on('route:after/onEnter', () => {
-	log('on enter')
+	console.log('on enter')
 	app.hydrate(document)
 	NProgress.done()
 })

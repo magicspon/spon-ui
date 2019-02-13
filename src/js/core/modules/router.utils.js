@@ -78,7 +78,7 @@ export async function fetcher(path) {
 			arr[0] = resp
 		})
 		.catch(e => {
-			log('error:', e)
+			console.log('error:', e)
 		})
 
 	return arr

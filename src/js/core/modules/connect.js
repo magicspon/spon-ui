@@ -107,7 +107,7 @@ export default function bindConnect(globalStore, registerPlugins) {
 			 * @property {object} props.[...props] any other props
 			 * @return {function}
 			 */
-			return ({ key, ...props }) => {
+			return ({ key, ...props }) =>
 				/**
 				 * @memberOf connect
 				 * @inner
@@ -119,7 +119,7 @@ export default function bindConnect(globalStore, registerPlugins) {
 				 *
 				 * @return {function}
 				 */
-				return module({
+				module({
 					...props,
 					render: fn => {
 						// add the current modules subscription function
@@ -128,19 +128,19 @@ export default function bindConnect(globalStore, registerPlugins) {
 					},
 					store: { ...storeItem },
 					plugins: {
-						...plugins.reduce((acc, curr) => {
-							return {
+						...plugins.reduce(
+							(acc, curr) => ({
 								...acc,
 								...curr({
 									register: registerPlugins(key),
 									globalStore,
 									...props
 								})
-							}
-						}, {})
+							}),
+							{}
+						)
 					}
 				})
-			}
 		}
 	}
 }

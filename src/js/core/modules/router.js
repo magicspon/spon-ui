@@ -12,6 +12,8 @@ import {
 	createStack
 } from './router.utils'
 
+const noop = () => {}
+
 /**
  * @typedef {object} PageTransitionManager
  * @property {function} add add a page transition
@@ -31,6 +33,13 @@ import {
  * @return {PageTransitionManager}
  */
 function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
+	const isIE =
+		!!navigator.userAgent.match(/Trident/g) ||
+		!!navigator.userAgent.match(/MSIE/g)
+	if (isIE) {
+		return { add: noop, delete: noop }
+	}
+
 	const historyStack = createStack()
 
 	const store = createStore({
@@ -182,12 +191,15 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		eventBus.emit('route:before/onExit')
 
 		await store.dispatch({ ...params, key: key || null })
+		console.log('start')
 		await start(store.getState())
+		console.log('done')
 
 		eventBus.emit('route:after/onExit')
 	}
 
 	history.listen((location, event) => {
+		console.log('history')
 		const { state: params } = location
 		action = event
 		if (event === 'POP') {
@@ -214,6 +226,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	 * @return {void}
 	 */
 	function clickHandle(e, elm) {
+		console.log('click')
 		if (preventClick(e, elm)) {
 			e.preventDefault()
 			const { href } = elm

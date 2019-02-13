@@ -27,7 +27,7 @@ export const boxes = () => {
 
 			const xDiff = toLeft - fromLeft
 			const yDiff = toTop - fromTop
-
+		
 			await oldBox.addEvent('transitionend', () => {
 				oldBox.style.set({
 					x: xDiff,
@@ -38,12 +38,14 @@ export const boxes = () => {
 			})
 
 			await oldBox.addEvent('transitionend', () => {
-				box.node.style.opacity = 1
+				box.style.set({opacity: 1})
+				box.style.render()
 			})
 
 			await update(next => {
 				setTimeout(() => {
 					oldBox.node.parentNode.removeChild(oldBox.node)
+					console.log('and update')
 					next()
 				}, 300)
 			})

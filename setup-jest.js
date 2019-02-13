@@ -53,3 +53,7 @@ window.matchMedia = jest.fn().mockImplementation(query => {
 		removeListener: jest.fn()
 	}
 })
+
+window.IntersectionObserver = jest.fn(function() {
+	this.observe = jest.fn()
+})
