@@ -3,7 +3,7 @@ module.exports = {
 
 	context: {
 		title: 'Page 1',
-		className: 'pin-b pin-l',
+		className: 'pin-t pin-l',
 		className2: 'pin m-auto',
 		style: 'width: 500px; height: 300px;',
 		color: 'blue-dark'
