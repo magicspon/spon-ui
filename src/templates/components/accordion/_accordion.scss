@@ -1,0 +1,9 @@
+/* no-js version */
+
+body :target[data-accordion] {
+	@apply bg-grey;
+
+	[data-accordion-content] {
+		display: block !important;
+	}
+}

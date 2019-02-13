@@ -1,0 +1,14 @@
+/* @input */
+
+/* stylelint-disable no-eol-whitespace */
+
+.c-input {
+	@apply block
+    w-full
+    px-0-5
+    py-0-5
+    rounded
+    border
+
+    text-grey;
+}

@@ -1,0 +1,27 @@
+[data-slide-item='hide-next'],
+[data-slide-item='hide-prev'] {
+	z-index: 2;
+	animation: fadeOut 4500ms cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
+[data-slide-item='show-prev'],
+[data-slide-item='show-next'] {
+	z-index: 1;
+}
+
+/*
+  In order to fade out properly we need to make sure
+  that the item that is going to be the previous one
+  has a higer z-index that the next one
+ */
+[data-slide-item].is-current {
+	position: relative;
+	visibility: visible;
+}
+
+[data-slide-prev],
+[data-slide-next] {
+	&[disabled] {
+		opacity: 0.5;
+	}
+}
