@@ -1,7 +1,7 @@
 // @ts-check
 
 import url from 'url-parse'
-import quicklink from 'quicklink/dist/quicklink.mjs'
+import quicklink from 'quicklink/dist/quicklink'
 import createHistory from 'history/createBrowserHistory'
 import sync from 'framesync'
 import {
@@ -64,34 +64,17 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 			name: 'default',
 			container: createNode(document.getElementById('page-wrapper')),
 
-			async clearDom(html) {
-				const { node, style, addEvent } = html
-				return addEvent('transitionend', () => {
-					style.set({ opacity: 0 })
-				}).then(() => {
-					node.parentNode.removeChild(node)
-				})
-			},
-
 			async onExit({ update, prevHtml }) {
 				await update(next => {
-					this.clearDom(prevHtml).then(() => {
-						next()
-					})
+					prevHtml.node.parentNode.removeChild(prevHtml.node)
+					next()
 				})
 			},
 
 			async onEnter({ update, newHtml }) {
-				const { node, style, addEvent } = newHtml
-				style.set({ opacity: 0 })
+				const { node } = newHtml
 				this.container.node.appendChild(node)
-				await update(next => {
-					addEvent('transitionend', () => {
-						style.set({ opacity: 1 })
-					}).then(() => {
-						next()
-					})
-				})
+				await update(next => next())
 			}
 		}
 	}
@@ -112,7 +95,7 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 	 * @return {Promise}
 	 */
 	async function start({ prev, current: state }) {
-		const { html, params, cache } = state
+		const { html, params } = state
 		const { pathname } = params
 		const getTrans = getTransition(transitions)
 		const { transition: prevTransition, name: prevName } = getTrans(
@@ -128,13 +111,13 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		)
 		const newHtml = createNode(doc.querySelector('[data-route]'))
 
-		// quicklink({
-		// 	ignores: [
-		// 		uri => {
-		// 			return !Object.keys(cache).includes(uri)
-		// 		}
-		// 	]
-		// })
+		quicklink({
+			ignores: [
+				uri => {
+					return !historyStack.stack.includes(uri)
+				}
+			]
+		})
 
 		const commonProps = {
 			prevHtml, // old wrapper
@@ -192,6 +175,9 @@ function router({ domEvents, createNode, hydrateApp, destroyApp, eventBus }) {
 		running = true
 		const key = getKey(document.body)
 		const rootNode = createNode(document.querySelector('[data-route]'))
+		if (!rootNode) {
+			throw new Error('data-route missing from current page ')
+		}
 		prevHtml = rootNode
 		eventBus.emit('route:before/onExit')
 

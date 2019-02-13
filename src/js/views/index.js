@@ -91,28 +91,34 @@ export const boxes = () => {
 // export const terry = ({ transitions }) => {
 // 	return {
 // 		name: 'terry',
-// 		async onExit(props) {
-// 			const { update, newHtml, prevHtml } = props
-// 			try {
-// 				const { node } = newHtml
-// 				diffNodes(prevHtml.node, node)
-// 				update(next => next())
-// 			} catch {
-// 				transitions.default.onExit(props)
-// 			}
+// 		async clearDom(html) {
+// 			const { node, style, addEvent } = html
+// 			return addEvent('transitionend', () => {
+// 				style.set({ opacity: 0 })
+// 			}).then(() => {
+// 				node.parentNode.removeChild(node)
+// 			})
 // 		},
-// 		async onEnter(props) {
-// 			const { update, newHtml, prevHtml } = props
-// 			try {
-// 				const { node } = newHtml
-// 				const { changes, oldKeys, newKeys } = diffNodes(prevHtml.node, node)
-// 				await update(next => {
-// 					injectNodes(changes, oldKeys, newKeys)
+
+// 		async onExit({ update, prevHtml }) {
+// 			await update(next => {
+// 				this.clearDom(prevHtml).then(() => {
 // 					next()
 // 				})
-// 			} catch {
-// 				transitions.default.onEnter(props)
-// 			}
+// 			})
+// 		},
+
+// 		async onEnter({ update, newHtml }) {
+// 			const { node, style, addEvent } = newHtml
+// 			style.set({ opacity: 0 })
+// 			this.container.node.appendChild(node)
+// 			await update(next => {
+// 				addEvent('transitionend', () => {
+// 					style.set({ opacity: 1 })
+// 				}).then(() => {
+// 					next()
+// 				})
+// 			})
 // 		}
 // 	}
 // }

@@ -206,6 +206,7 @@ export function createStore(
  * @property {function} pop pop off the last item from the stack
  * @property {function} peek return the last item in the stack
  * @property {number} length get the current stack length
+ * @property {array} stack get the current stack
  * @property {function} isEmpty returns a boolean
  */
 
@@ -235,6 +236,10 @@ export function createStack() {
 
 		isEmpty() {
 			return stack.length === 0
+		},
+
+		get stack() {
+			return stack
 		}
 	}
 }
