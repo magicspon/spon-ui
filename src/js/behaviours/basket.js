@@ -3,7 +3,6 @@ import { withRefs, withDomEvents } from '@/core'
 import { connect } from '@/store'
 
 function basket(props) {
-	console.log(props)
 	const {
 		plugins: { addEvents, refs },
 		store: { deleteItemFromCart },

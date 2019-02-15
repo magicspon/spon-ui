@@ -923,10 +923,10 @@
   resolved "https://registry.yarnpkg.com/@snyk/gemfile/-/gemfile-1.1.0.tgz#8c254dfc7739b2e8513c44c976fc41872d5f6af0"
   integrity sha512-mLwF+ccuvRZMS0SxUAxA3dAp8mB3m2FxIsBIUWFTYvzxl+E4XTZb8uFrUqXHbcxhZH1Z8taHohNTbzXZn3M8ag==
 
-"@spon/core@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@spon/core/-/core-0.0.3.tgz#947dc19e5425aa8385d9fb4d9d46005182c64cae"
-  integrity sha512-8nEnFZbMmllCJ1086Kzl/u4f1XLs2deipT5IsQUGbM+hjpqAIhlmyWMnAE3+u1iHS/T6xDqnOp9ONcw50mmRvQ==
+"@spon/core@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@spon/core/-/core-0.0.8.tgz#75330ed124d45a7a11c8b5a12393b4004978479d"
+  integrity sha512-jpnMXFshN6nXZADF56o+KV021m4fNL0TF8MtP3n68XYZEF3LoXFzUPsDBw5EWgad0JT1kszGiiz01TeYMsb2Bg==
   dependencies:
     deep-object-diff "^1.1.0"
     dom-delegate "^2.2.0"
@@ -4694,11 +4694,6 @@ domhandler@^2.3.0:
   integrity sha512-JiK04h0Ht5u/80fdLMCEmV4zkNh2BcoMFBmZ/91WtYZ8qVXSKjiw7fXMgFPnHcSZgOo3XdinHvmnDUeMf5R4wA==
   dependencies:
     domelementtype "1"
-
-domify@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/domify/-/domify-1.4.0.tgz#11483617f764f8695975b4bdc79b14f0803b629b"
-  integrity sha1-EUg2F/dk+GlZdbS9x5sU8IA7Yps=
 
 domutils@1.4:
   version "1.4.3"
