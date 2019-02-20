@@ -1,6 +1,6 @@
 import { init } from '@rematch/core'
 // import createRematchPersist from '@rematch/persist'
-import { connect as bindConnect, registerPlugin } from '@/core'
+import { connectStore } from '@/core'
 import * as models from './models/index'
 
 // const persistPlugin = createRematchPersist({
@@ -16,6 +16,6 @@ const store = init({
 	// plugins: [persistPlugin]
 })
 
-export const connect = bindConnect(store, registerPlugin)
+export const connect = connectStore(store)
 
 export default store

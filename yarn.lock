@@ -923,17 +923,17 @@
   resolved "https://registry.yarnpkg.com/@snyk/gemfile/-/gemfile-1.1.0.tgz#8c254dfc7739b2e8513c44c976fc41872d5f6af0"
   integrity sha512-mLwF+ccuvRZMS0SxUAxA3dAp8mB3m2FxIsBIUWFTYvzxl+E4XTZb8uFrUqXHbcxhZH1Z8taHohNTbzXZn3M8ag==
 
-"@spon/core@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@spon/core/-/core-0.0.8.tgz#75330ed124d45a7a11c8b5a12393b4004978479d"
-  integrity sha512-jpnMXFshN6nXZADF56o+KV021m4fNL0TF8MtP3n68XYZEF3LoXFzUPsDBw5EWgad0JT1kszGiiz01TeYMsb2Bg==
+"@spon/core@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@spon/core/-/core-0.0.12.tgz#9c458c40abcedcaaa52dd802507d8ebf7fb1c0b8"
+  integrity sha512-1C3fqiVj8rJjDp+VGXSb5RjUuFKJhO+Yd9IIMm36VNAPGb47WIcYU5j1NUN1ydbGfgs/6+eufreADfLPodAe5Q==
   dependencies:
     deep-object-diff "^1.1.0"
     dom-delegate "^2.2.0"
     framesync "^4.0.1"
     history "^4.7.2"
     mitt "^1.1.3"
-    quicklink "^1.0.0"
+    path-to-regexp "^3.0.0"
     raf-throttle "^2.0.3"
     stylefire "^2.4.0"
     url-parse "^1.4.4"
@@ -11657,6 +11657,11 @@ path-to-regexp@^1.5.3:
   integrity sha1-Wf3g9DW62suhA6hOnTvGTpa5k30=
   dependencies:
     isarray "0.0.1"
+
+path-to-regexp@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-3.0.0.tgz#c981a218f3df543fa28696be2f88e0c58d2e012a"
+  integrity sha512-ZOtfhPttCrqp2M1PBBH4X13XlvnfhIwD7yCLx+GoGoXRPQyxGOTdQMpIzPSPKXAJT/JQrdfFrgdJOyAzvgpQ9A==
 
 path-type@^1.0.0:
   version "1.1.0"

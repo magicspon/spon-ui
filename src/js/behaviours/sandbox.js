@@ -1,40 +1,21 @@
-/* eslint-disable no-console */
-
-import { connect } from '@/store'
-import resize from '@/plugins/resize'
+import { withRefs, withDomEvents, withPlugins } from '@/core'
 import inview from '@/plugins/inview'
+import device from '@/plugins/device'
 
-function sandbox({ plugins, node }) {
-	const { device, inview } = plugins
-
-	device.at('(min-width: 400px)', {
-		on: () => {
-			console.log('sandbox does')
-		},
-		off: () => {
-			console.log('sandbox does not')
-		}
-	})
-
-	inview.settings = { rootMargin: '0px' }
-
-	inview.observe(node.querySelector('[data-item="terry"]'), {
-		enter: () => {
+function sandbox({ node, plugins: { inview, device } }) {
+	inview.observe(node, {
+		enter() {
 			console.log('enter')
 		},
-
-		exit: () => {
+		exit() {
 			console.log('exit')
-		},
-
-		inview: () => {
-			console.log('i am inview i am')
 		}
 	})
 
-	return () => {}
+	device.resize(() => {
+		console.log('helo')
+	})
 }
 
-export default connect({
-	plugins: [resize, inview]
-})(sandbox)
+// and any custom plugins
+export default withPlugins(withRefs, withDomEvents, inview, device)(sandbox)

@@ -20,15 +20,11 @@ export default function inview({ register, node }) {
 				const target = args.length > 1 ? args[0] : node
 				const fn = args.length > 1 ? args[1] : args[0]
 
-				const { enter, exit, inview } = fn
+				const { enter, exit } = fn
 
 				observer = new IntersectionObserver(
 					(entries, observer) => {
 						entries.forEach(entry => {
-							if (inview) {
-								inview()
-							}
-
 							if (entry.isIntersecting) {
 								enter(entry, observer)
 							} else {
@@ -41,8 +37,13 @@ export default function inview({ register, node }) {
 						...this.settings
 					}
 				)
-
-				observer.observe(target)
+				if (target.length) {
+					;[...target].forEach(node => {
+						observer.observe(node)
+					})
+				} else {
+					observer.observe(target)
+				}
 			},
 
 			disconnect: () => {

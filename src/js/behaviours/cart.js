@@ -1,5 +1,5 @@
 import { render as h, html } from 'lit-html'
-import { withRefs, withDomEvents, createNode } from '@/core'
+import { withRefs, withDomEvents, createNode, withPlugins } from '@/core'
 import { connect } from '@/store'
 
 function Cart(props) {
@@ -77,7 +77,8 @@ const mapState = ({ cart }) => ({ cart })
 const mapDispatch = ({ cart }) => ({ ...cart })
 // export the component wrapped with store values
 // and any custom plugins
+
 export default connect({
-	store: [mapState, mapDispatch],
-	plugins: [withDomEvents, withRefs]
-})(Cart)
+	mapState,
+	mapDispatch
+})(withPlugins(withDomEvents, withRefs)(Cart))

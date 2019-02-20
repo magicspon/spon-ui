@@ -73,13 +73,15 @@
 	"dependencies": {
 		"@rematch/core": "^1.0.6",
 		"@rematch/persist": "^1.1.5",
-		"@spon/core": "0.0.8",
+		"@spon/core": "0.0.12",
 		"debug": "^4.1.1",
 		"fg-loadcss": "^2.1.0",
 		"lit-html": "^1.0.0-rc.2",
 		"loadjs": "^3.5.4",
 		"nprogress": "^0.2.0",
+		"path-to-regexp": "^3.0.0",
 		"picturefill": "^3.0.3",
+		"quicklink": "^1.0.0",
 		"raf-throttle": "^2.0.3",
 		"ramda": "^0.26.1"
 	},

@@ -3,9 +3,19 @@ import { createNode } from '@/core'
 
 export const boxes = () => {
 	return {
-		name: 'boxs',
+		name: 'boxes',
 
 		oldBox: null,
+
+		fetchOptions: {
+			headers: {
+				test: 10
+			}
+		},
+
+		beforeExit() {
+			console.log('hello')
+		},
 
 		async onExit({ update, prevHtml, newHtml }) {
 			const { node } = prevHtml
@@ -27,7 +37,7 @@ export const boxes = () => {
 
 			const xDiff = toLeft - fromLeft
 			const yDiff = toTop - fromTop
-		
+
 			await oldBox.addEvent('transitionend', () => {
 				oldBox.style.set({
 					x: xDiff,
@@ -38,7 +48,7 @@ export const boxes = () => {
 			})
 
 			await oldBox.addEvent('transitionend', () => {
-				box.style.set({opacity: 1})
+				box.style.set({ opacity: 1 })
 				box.style.render()
 			})
 

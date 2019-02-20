@@ -8,15 +8,23 @@
 
 {% block content %}
 
-	<div data-spon="sandbox">
-		hello
-		<div data-item="terry">
-			evening
+	<div data-spon="basket">
+		<h1>basket</h1>
+		<div data-ref="list"></div>
+		<div data-spon="sandbox" data-query="(min-width: 1000px)">
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
+			<div style="height: 200px; margin: 200px; background-color: #4ae;"> </div>
 		</div>
-	</div>
+	</div> 
 
 
-	{# <div data-box="a" class="absolute flex items-center text-white justify-center trans {{ className }} bg-{{ color }} w-64 h-64" style="width: 200px; height:200px;">{{ title }}</div>
 	<div data-spon="cart">
 		<div class="flex mb-2" id="inner">
 			<button class="p-1 mr-1 border" data-button data-id="items-1">Group 1</button>
@@ -24,12 +32,6 @@
 		</div>
 		<div class="flex flex-wrap justify-center" data-ref="product"></div>
 	</div>
-	<div data-spon="basket">
-		<h1>basket</h1>
-		<div data-ref="list"></div>
-		<div data-spon="sandbox" data-query="(min-width: 1000px)">
-			sandbox
-		</div>
-	</div>  #}
+	
 
 {% endblock %}
