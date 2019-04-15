@@ -1,7 +1,22 @@
+// @ts-check
 import throttle from 'raf-throttle'
 
+
+/**
+ * @module plugin/device
+ */
+
+// an object to store all the resize handles
 const handles = {}
 
+/**
+ * @memberOf device
+ * @function addWindowResizeEvent
+ * @description Adds a window resize event, and calls each item in the handles stack
+ * @param {function} fn
+ * @param {string} key
+ * @return {void}
+ */
 function addWindowResizeEvent(fn, key) {
 	if (!handles[key]) {
 		handles[key] = fn
@@ -28,11 +43,40 @@ function addWindowResizeEvent(fn, key) {
 	}
 }
 
+/**
+ *
+ * @property {Boolean} isRunning
+ */
+addWindowResizeEvent.isRunning = false
+
+/**
+ * @memberOf device
+ * @description remove event listeners
+ * @param {Array} fns
+ * @return {void}
+ */
 function removeWindowResizeEvent(fns) {
 	fns.forEach(fn => {
 		delete handles[fn]
 	})
 }
+
+/**
+ * @function device
+ * @property {object} props
+ * @property {string} props.name the module name
+ * @property {function} props.register a function used to store the destroy method
+ * @return {deviceType}
+ */
+
+/**
+ * @typedef {Object} deviceType
+ * @property {Object} device - plugin namespace
+ * @property {Function} device.resize - The resize funciton
+ * @property {function} device.at - The resize funciton
+ * @property {Number} device.width - The resize funciton
+ * @property {Number} device.height - The resize funciton
+ */
 
 export default function device({ register, name }) {
 	const atCache = {}
@@ -44,12 +88,29 @@ export default function device({ register, name }) {
 
 	return {
 		device: {
+			/**
+			 * @memberOf device
+			 * @method rezize
+			 * @param {function} callback
+			 * @return {Object}
+			 */
 			resize(callback) {
 				const key = `${name}-r`
 				localList.push(key)
 				addWindowResizeEvent(callback, key)
+
+				return this
 			},
 
+			/**
+			 * @memberOf device
+			 * @method at
+			 * @param {string} query
+			 * @param {object} actions
+			 * @property {function} actions.on
+			 * @property {function} actions.off
+			 * @return {Object}
+			 */
 			at(query, { on, off }) {
 				const key = `${name}-${query}`
 				if (!localList.includes(key)) {

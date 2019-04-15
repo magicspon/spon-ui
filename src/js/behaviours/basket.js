@@ -1,5 +1,5 @@
 import { render as h, html } from 'lit-html'
-import { withRefs, withDomEvents, withPlugins } from '@/core'
+import { withRefs, withDomEvents, withPlugins } from '@spon/core'
 import { connect } from '@/store'
 
 function basket(props) {

@@ -1,4 +1,4 @@
-import { withRefs, withDomEvents, withPlugins } from '@/core'
+import { withRefs, withDomEvents, withPlugins } from '@spon/core'
 import inview from '@/plugins/inview'
 import device from '@/plugins/device'
 

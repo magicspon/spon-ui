@@ -11,7 +11,7 @@ const scss = require('./scss')
 const { bundle, inlineScripts } = require('./javascript')
 const purge = require('./purge')
 const watch = require('./watch')
-const { syncPartials, cacheTags, serverProxy } = require('./cms')
+const { syncPartials, serverProxy } = require('./cms')
 const { sizeReport } = require('../utils/logger')
 const validateHtml = require('../utils/htmllint')
 const criticalCSS = require('./critical')
@@ -28,7 +28,6 @@ const cmsTask = gulp.series(
 	clean,
 	buildComponets,
 	syncPartials,
-	cacheTags,
 	assets,
 	inlineScripts,
 	scss,
@@ -37,13 +36,15 @@ const cmsTask = gulp.series(
 )
 const regressionTest = require('../backstop')
 const buildStatic = require('../fractal/static')
+const rev = require('./rev')
 
 const build = gulp.series(
 	clean,
-	gulp.parallel(buildComponets, syncPartials, cacheTags, assets, bundle),
+	rev,
+	criticalCSS,
+	gulp.parallel(buildComponets, syncPartials, assets, bundle),
 	scss,
 	purge,
-	criticalCSS,
 	sizeReport
 )
 

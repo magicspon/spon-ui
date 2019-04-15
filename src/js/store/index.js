@@ -1,6 +1,6 @@
 import { init } from '@rematch/core'
 // import createRematchPersist from '@rematch/persist'
-import { connectStore } from '@/core'
+import { connectStore } from '@spon/core'
 import * as models from './models/index'
 
 // const persistPlugin = createRematchPersist({

@@ -16,12 +16,12 @@ module.exports = {
 		return src.map(str => path.join(basePath, global.PATHS.src, str))
 	},
 	/**
-	 * @function getCraftPath
+	 * @function getCMSPath
 	 * @param {String|Aarray} src
 	 * @return {String|Array}
 	 *
 	 */
-	getCraftPath: (src = '') => path.join(basePath, global.PATHS.craft, src),
+	getCMSPath: (src = '') => path.join(basePath, global.PATHS.cms, src),
 
 	/**
 	 * @function getStaticPaths

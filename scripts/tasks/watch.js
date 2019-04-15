@@ -2,7 +2,7 @@ const gulp = require('gulp')
 const browserSync = require('browser-sync')
 const assets = require('./assets')
 const scss = require('./scss')
-const { getStaticPaths, getSrcPaths, getCraftPath } = require('../utils/paths')
+const { getStaticPaths, getSrcPaths, getCMSPath } = require('../utils/paths')
 const { syncPartials } = require('./cms')
 
 const watch = done => {
@@ -15,7 +15,7 @@ const watch = done => {
 			gulp.series(syncPartials)
 		)
 
-		gulp.watch(getCraftPath('templates/**/**/*.twig'), done => {
+		gulp.watch(getCMSPath('templates/**/**/*.twig'), done => {
 			browserSync.reload()
 			done()
 		})

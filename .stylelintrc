@@ -12,7 +12,9 @@
         /else/,
         /return/,
         /function/,
-				/debug/
+				/debug/,
+				/include/,
+				/mixin/
       ]
     }],
     "declaration-block-trailing-semicolon": null,

@@ -3,7 +3,7 @@
 	"static": "./static/",
 	"public": "./tmp/public/",
 	"library": "./deploy/library",
-	"craft": "./deploy/",
+	"cms": "./deploy/",
 
 	"images": "**/*.+(jpg|jpeg|png|gif|webp)",
 	"css": "**/*.css",
@@ -18,7 +18,7 @@
 		"partials": "_partials",
 		"templates": "templates/**/**/**/**/**/**/*.twig",
 		"exclude": ["templates/wrapper/**.twig", "templates/05-pages/**/*.twig"],
-		"craftOutput": "templates/_partials"
+		"cmsOutput": "templates/_partials"
 	},
 
 	"symbols": {

@@ -1,3 +1,23 @@
+// @ts-check
+/**
+ * @module plugin/inview
+ */
+
+/**
+ * @typedef {Object} inviewType
+ * @property {Object} inview - plugin namespace
+ * @property {Object} inview.settings - The resize funciton
+ * @property {Function} inview.observe - The resize funciton
+ * @property {Function} inview.disconnect - The resize funciton
+ */
+
+/**
+ * @function inview
+ * @property {object} props
+ * @property {HTMLElement} props.node the root node to attach events to
+ * @property {function} props.register a function used to store the destroy method
+ * @return {inviewType}
+ */
 export default function inview({ register, node }) {
 	let observer
 
@@ -16,6 +36,12 @@ export default function inview({ register, node }) {
 		inview: {
 			settings: {},
 
+			/**
+			 * @memberof inview
+			 * @method observe
+			 * @param  {...any} args
+			 * @return {void}
+			 */
 			observe(...args) {
 				const target = args.length > 1 ? args[0] : node
 				const fn = args.length > 1 ? args[1] : args[0]
@@ -26,9 +52,13 @@ export default function inview({ register, node }) {
 					(entries, observer) => {
 						entries.forEach(entry => {
 							if (entry.isIntersecting) {
-								enter(entry, observer)
+								if (typeof enter === 'function') {
+									enter(entry, observer)
+								}
 							} else {
-								exit(entry, observer)
+								if (typeof exit === 'function') {
+									exit(entry, observer)
+								}
 							}
 						})
 					},
@@ -37,7 +67,8 @@ export default function inview({ register, node }) {
 						...this.settings
 					}
 				)
-				if (target.length) {
+
+				if (typeof target.length === 'number') {
 					;[...target].forEach(node => {
 						observer.observe(node)
 					})
@@ -46,6 +77,11 @@ export default function inview({ register, node }) {
 				}
 			},
 
+			/**
+			 * @memberof inview
+			 * @method disconnect
+			 * @return {void}
+			 */
 			disconnect: () => {
 				observer.disconnect()
 			}

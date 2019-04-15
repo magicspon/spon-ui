@@ -73,7 +73,8 @@
 	"dependencies": {
 		"@rematch/core": "^1.0.6",
 		"@rematch/persist": "^1.1.5",
-		"@spon/core": "0.0.12",
+		"@spon/core": "^1.0.0",
+		"@spon/domevents": "^1.0.0",
 		"debug": "^4.1.1",
 		"fg-loadcss": "^2.1.0",
 		"lit-html": "^1.0.0-rc.2",

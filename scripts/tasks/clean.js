@@ -1,9 +1,9 @@
 const del = require('del')
-const { getPublicPath, getCraftPath } = require('../utils/paths')
+const { getPublicPath, getCMSPath } = require('../utils/paths')
 
 const clean = () =>
 	del([
-		getCraftPath('templates/_partials/**'),
+		getCMSPath('templates/_partials/**'),
 		getPublicPath('dist/**'),
 		getPublicPath('fonts/**'),
 		getPublicPath('*.+(jpg|jpeg|png|gif|svg|css|js|json|webmanifest)'),

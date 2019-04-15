@@ -9,7 +9,7 @@ const merge = require('webpack-merge')
 const { logger } = require('../utils/logger')
 const productionConfig = require('../webpack/config.production')
 const argList = require('../utils/argv')
-const { getSrcPaths, getCraftPath } = require('../utils/paths')
+const { getSrcPaths, getCMSPath } = require('../utils/paths')
 
 const {
 	env,
@@ -37,7 +37,7 @@ const bundle = callback => {
 
 const inlineScripts = () => {
 	const dest =
-		config === 'cms' ? getCraftPath(inline.dir) : getSrcPaths(inline.dir)
+		config === 'cms' ? getCMSPath(inline.dir) : getSrcPaths(inline.dir)
 	const src =
 		config === 'cms' ? `${dest}/${inline.file}` : `${dest}/${inline.file}`
 

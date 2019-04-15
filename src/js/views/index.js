@@ -1,5 +1,5 @@
-// import { diffNodes, injectNodes } from '@/core/utils'
-import { createNode } from '@/core'
+// import { diffNodes, injectNodes } from '@spon/core/utils'
+import { createNode } from '@spon/core'
 
 export const boxes = () => {
 	return {

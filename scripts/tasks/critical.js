@@ -1,16 +1,21 @@
 const critical = require('critical')
 const del = require('del')
-const { getCraftPath, getPublicPath } = require('../utils/paths')
+const { getCMSPath, getPublicPath } = require('../utils/paths')
 
-const criticalCSS = async () => {
+const criticalCSS = async done => {
 	// require('events').EventEmitter.defaultMaxListeners = 15
+
+	// eslint-disable-next-line import/no-dynamic-require
+	const { css: cssFile } = require(getCMSPath('manifest.json'))
+
+	done()
 
 	const {
 		PATHS: { critical: paths, proxy },
 		TASK: { critical: options }
 	} = global
 
-	await del([getCraftPath('templates/inline-css')])
+	await del([getCMSPath('templates/inline-css')])
 
 	return Promise.all(
 		paths.map(
@@ -20,8 +25,8 @@ const criticalCSS = async () => {
 						.generate({
 							inline: false,
 							src: `${proxy}${url}`,
-							css: [getPublicPath(`dist/css/style.${global.TASK.stamp}.css`)],
-							dest: getCraftPath(`templates/inline-css/${css}.css`),
+							css: [getPublicPath(cssFile)],
+							dest: getCMSPath(`templates/inline-css/${css}.css`),
 							...options
 						})
 						.catch(e => {

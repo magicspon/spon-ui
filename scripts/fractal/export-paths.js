@@ -1,7 +1,7 @@
 const path = require('path')
 const gulp = require('gulp')
 const source = require('vinyl-source-stream')
-const { getCraftPath } = require('../utils/paths')
+const { getCMSPath } = require('../utils/paths')
 
 module.exports = function(fractal) {
 	const components = fractal.components.flattenDeep().toArray()
@@ -21,5 +21,5 @@ module.exports = function(fractal) {
 
 	const stream = source('components-map.json')
 	stream.end(JSON.stringify(map, null, 2))
-	stream.pipe(gulp.dest(getCraftPath()))
+	stream.pipe(gulp.dest(getCMSPath()))
 }
