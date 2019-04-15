@@ -4,8 +4,8 @@ const { getCMSPath } = require('../utils/paths')
 
 module.exports = function(done) {
 	const map = {
-		css: `/dist/css/style.${global.TASK.stamp}.css`,
-		js: `/dist/js/app.${global.TASK.stamp}.js`
+		'/dist/css/style.css': `/dist/css/style.${global.TASK.stamp}.css`,
+		'/dist/js/app.js': `/dist/js/app.${global.TASK.stamp}.js`
 	}
 
 	const stream = source('manifest.json')

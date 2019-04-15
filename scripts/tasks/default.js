@@ -41,12 +41,13 @@ const rev = require('./rev')
 const build = gulp.series(
 	clean,
 	rev,
-	criticalCSS,
 	gulp.parallel(buildComponets, syncPartials, assets, bundle),
 	scss,
 	purge,
 	sizeReport
 )
+
+gulp.task('critical', criticalCSS)
 
 const buildLibrary = gulp.series(
 	clean,

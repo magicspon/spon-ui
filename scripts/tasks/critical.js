@@ -2,13 +2,15 @@ const critical = require('critical')
 const del = require('del')
 const { getCMSPath, getPublicPath } = require('../utils/paths')
 
-const criticalCSS = async done => {
+const criticalCSS = async () => {
 	// require('events').EventEmitter.defaultMaxListeners = 15
 
 	// eslint-disable-next-line import/no-dynamic-require
-	const { css: cssFile } = require(getCMSPath('manifest.json'))
+	const source = require(getCMSPath('manifest.json'))
 
-	done()
+	const [, cssFile] = Object.entries(source).find(([key]) =>
+		key.includes('.css')
+	)
 
 	const {
 		PATHS: { critical: paths, proxy },
