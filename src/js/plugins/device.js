@@ -1,7 +1,6 @@
 // @ts-check
 import throttle from 'raf-throttle'
 
-
 /**
  * @module plugin/device
  */
@@ -73,6 +72,7 @@ function removeWindowResizeEvent(fns) {
  * @typedef {Object} deviceType
  * @property {Object} device - plugin namespace
  * @property {Function} device.resize - The resize funciton
+ * @property {Function} device.cancel - Cancel a resize event
  * @property {function} device.at - The resize funciton
  * @property {Number} device.width - The resize funciton
  * @property {Number} device.height - The resize funciton
@@ -80,7 +80,7 @@ function removeWindowResizeEvent(fns) {
 
 export default function device({ register, name }) {
 	const atCache = {}
-	const localList = []
+	let localList = []
 
 	register(() => {
 		removeWindowResizeEvent(localList)
@@ -104,6 +104,20 @@ export default function device({ register, name }) {
 
 			/**
 			 * @memberOf device
+			 * @method cancel
+			 * @return {Object}
+			 */
+			cancel() {
+				const key = `${name}-r`
+				localList = localList.filter(item => item !== key)
+
+				delete handles[key]
+
+				return this
+			},
+
+			/**
+			 * @memberOf device
 			 * @method at
 			 * @param {string} query
 			 * @param {object} actions
@@ -117,7 +131,7 @@ export default function device({ register, name }) {
 					localList.push(key)
 				}
 
-				const match = () => {
+				const findMatch = () => {
 					const match = window.matchMedia(query).matches
 					atCache[query] = atCache[query] || {
 						match,
@@ -138,9 +152,9 @@ export default function device({ register, name }) {
 					}
 				}
 
-				match()
+				findMatch()
 
-				addWindowResizeEvent(match, key)
+				addWindowResizeEvent(findMatch, key)
 
 				return this
 			},
