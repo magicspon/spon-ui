@@ -36,7 +36,7 @@ module.exports = {
 	 * @return {String}
 	 *
 	 */
-	getPublicPath: (src = '') => path.join(basePath, global.PATHS.public, src),
+	getPublicPath: (src = '') => path.join(basePath, global.PATHS.webroot, src),
 
 	/**
 	 * @function getLibraryPath

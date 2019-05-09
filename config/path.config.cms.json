@@ -1,5 +1,5 @@
 {
-	"public": "./deploy/public/",
+	"webroot": "./deploy/public/",
 	"proxy": "http://craft-demo.spon",
 
 	"critical": [{ "url": "/", "css": "home-page" }],

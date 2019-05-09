@@ -19,9 +19,9 @@ module.exports = {
 		}),
 		new webpack.NoEmitOnErrorsPlugin()
 		// new InjectManifest({
-		// 	globDirectory: path.resolve(process.env.PWD, global.PATHS.public, 'dist'),
+		// 	globDirectory: path.resolve(process.env.PWD, global.PATHS.webroot, 'dist'),
 		// 	globPatterns: ['**/*.{html,js,css,svg,png}'],
-		// 	swDest: path.resolve(process.env.PWD, global.PATHS.public, 'sw.js'),
+		// 	swDest: path.resolve(process.env.PWD, global.PATHS.webroot, 'sw.js'),
 		// 	swSrc: path.resolve(
 		// 		process.env.PWD,
 		// 		global.PATHS.src,

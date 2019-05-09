@@ -1,7 +1,7 @@
 {
 	"src": "./src/",
 	"static": "./static/",
-	"public": "./tmp/public/",
+	"webroot": "./tmp/public/",
 	"library": "./deploy/library",
 	"cms": "./deploy/",
 
