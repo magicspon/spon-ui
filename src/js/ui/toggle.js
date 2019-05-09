@@ -177,7 +177,7 @@ function toggle({
 	 * @return {void}
 	 */
 	function destroy() {
-		close()
+		// close()
 		button.removeEventListener('click', clickHandle)
 		button.classList.remove(activeClass)
 
