@@ -1,18 +1,18 @@
 ---
-title: 'Fonts'
+title: 'Font Family'
 ---
 
-font-{ key }
-
-<table>
-<thead>
-  <th>key</th>
-  <th>ems</th>
-</thead>
-{% for key, value in fonts -%}
-  <tr class="font-{{ key }}">
-    <td>{{ key }}</td>
-    <td>{{ value }}</td>
-  </tr>
-{% endfor -%}
+<table style="table-layout: fixed">
+  <thead>
+    <th>key</th>
+    <th>example</th>
+  </thead>
+	{%- for key, value in fonts -%}
+		<tr>
+			<td class="font-{{ key }}">
+				{{ key }}
+			</td>
+			<td style="font-size: 20px" class="font-{{ key }}">abcdefghijklmnopqrstuvwxyz</td>
+		</tr>
+	{%- endfor -%}
 </table>

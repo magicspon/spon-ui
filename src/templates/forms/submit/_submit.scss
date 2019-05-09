@@ -14,10 +14,10 @@
 	}
 
 	&[data-loading] {
-		@apply relative;
+		// @apply  relative;
 
 		&::after {
-			@apply absolute my-auto mr-0-5 pin-y pin-r block rounded-full border-2;
+			// @apply  absolute my-auto mr-0-5 pin-y pin-r block rounded-full border-2;
 
 			animation: spinAround 0.5s infinite linear;
 			border-right-color: transparent;

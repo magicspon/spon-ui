@@ -3,7 +3,7 @@
 }
 
 #nprogress .bar {
-	@apply bg-teal perf-fixed;
+	// @apply bg-teal perf-fixed;
 
 	position: fixed;
 	z-index: 1031;
@@ -19,7 +19,7 @@
 	right: 0;
 	width: 100px;
 	height: 100%;
-	box-shadow: 0 0 10px config('colors.teal'), 0 0 5px config('colors.teal');
+	box-shadow: 0 0 10px theme('colors.teal'), 0 0 5px theme('colors.teal');
 	opacity: 1;
 	transform: rotate(3deg) translate(0, -4px);
 }
@@ -33,7 +33,7 @@
 }
 
 #nprogress .spinner-icon {
-	@apply border-teal border-r-2 border-t-2;
+	// @apply border-teal border-r-2 border-t-2;
 
 	width: 18px;
 	height: 18px;

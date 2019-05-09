@@ -1,8 +1,8 @@
 .c-rich-text {
-	@apply text-ms-0;
+	// @apply  text-ms-0;
 
 	*:not(:last-child) {
-		@apply mb-1;
+		// @apply  mb-1;
 	}
 
 	h1,
@@ -15,46 +15,46 @@
 	}
 
 	h1 {
-		@apply text-ms-6;
+		// @apply  text-ms-6;
 	}
 
 	h2 {
-		@apply text-ms-5;
+		// @apply  text-ms-5;
 	}
 
 	h3 {
-		@apply text-ms-4;
+		// @apply  text-ms-4;
 	}
 
 	h4 {
-		@apply text-ms-3;
+		// @apply  text-ms-3;
 	}
 
 	h5 {
-		@apply text-ms-2;
+		// @apply  text-ms-2;
 	}
 
 	h6 {
-		@apply text-ms-1;
+		// @apply  text-ms-1;
 	}
 
 	blockquote {
-		@apply bg-grey border-l-5 border-grey p-1;
+		// @apply  bg-grey border-l-5 border-grey p-1;
 	}
 
 	ol {
-		@apply mt-0-5 ml-0-5;
+		// @apply  mt-0-5 ml-0-5;
 
 		list-style: decimal outside;
 	}
 
 	ul {
-		@apply mt-0-5 ml-0-5;
+		// @apply  mt-0-5 ml-0-5;
 
 		list-style: disc outside;
 
 		ul {
-			@apply mt-0-25;
+			// @apply  mt-0-25;
 
 			list-style-type: circle;
 
@@ -70,30 +70,30 @@
 	}
 
 	table {
-		@apply w-full text-left;
+		// @apply  w-full text-left;
 
 		td,
 		th {
-			@apply p-0-5 align-top;
+			// @apply  p-0-5 align-top;
 		}
 
 		tr:nth-child(odd) {
 			td {
-				@apply bg-grey-lighter;
+				// @apply  bg-grey-lighter;
 			}
 		}
 
 		thead {
 			td,
 			th {
-				@apply border-b-2;
+				// @apply  border-b-2;
 			}
 		}
 
 		tfoot {
 			td,
 			th {
-				@apply border-t-2;
+				// @apply  border-t-2;
 			}
 		}
 	}

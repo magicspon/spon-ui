@@ -29,16 +29,16 @@
 }
 
 .c-slide__pagination {
-	@apply flex items-center justify-center py-1;
+	// @apply  flex items-center justify-center py-1;
 }
 
 [data-slide-pager] {
-	@apply mx-0-25 rounded-full bg-grey;
+	// @apply  mx-0-25 rounded-full bg-grey;
 
 	width: rem(10px);
 	height: rem(10px);
 }
 
 [data-slide-pager='active'] {
-	@apply bg-black;
+	// @apply  bg-black;
 }

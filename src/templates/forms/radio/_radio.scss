@@ -2,7 +2,7 @@
 	&:checked {
 		& ~ label {
 			.o-radio__button {
-				@apply shadow-inset-5px;
+				// @apply  shadow-inset-5px;
 			}
 		}
 	}
@@ -10,7 +10,7 @@
 	&:focus {
 		& ~ label {
 			.o-radio__button {
-				@apply border-grey;
+				// @apply  border-grey;
 			}
 		}
 	}

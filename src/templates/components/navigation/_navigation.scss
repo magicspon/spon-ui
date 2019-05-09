@@ -2,7 +2,7 @@
 
 // .c-nav__dropdown {
 // 	&::before {
-// 		@apply .absolute .pin-t .block;
+// 		// @apply  .absolute .pin-t .block;
 
 // 		left: rem(-20px);
 // 		right: rem(-20px);
@@ -47,7 +47,7 @@
 // 		}
 
 // 		:target {
-// 			@apply .opacity-100 .pointer-events-auto .block;
+// 			// @apply  .opacity-100 .pointer-events-auto .block;
 
 // 			transform: translate3d(0, 0, 0);
 // 		}
@@ -77,7 +77,7 @@
 // 	}
 
 // 	[data-menu-mask] {
-// 		@apply .bg-blue-darker .pin-t .absolute;
+// 		// @apply  .bg-blue-darker .pin-t .absolute;
 
 // 		top: calc(100% - #{rem(4px)});
 // 		width: 100%;

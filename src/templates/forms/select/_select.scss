@@ -11,17 +11,17 @@
 	/* stylelint-disable no-eol-whitespace */
 
 	&::after {
-		@apply border-l 
-			rotate--45 
-			border-b 
-			border-blue-dark 
-			absolute 
-			pin-y 
-			pin-r 
-			mr-1 
-			my-auto 
-			z-10 
-			pointer-events-none;
+		// @apply  border-l
+		// rotate--45
+		// border-b
+		// border-blue-dark
+		// absolute
+		// pin-y
+		// pin-r
+		// mr-1
+		// my-auto
+		// z-10
+		// pointer-events-none;
 
 		cursor: pointer;
 		content: ' ';

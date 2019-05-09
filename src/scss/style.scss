@@ -12,7 +12,7 @@
 /*
   Resets, and globals
 */
-@tailwind preflight;
+@tailwind base;
 
 @import 'framework/base';
 
@@ -47,4 +47,3 @@
   Print styles
 */
 @import 'framework/print';
-

@@ -187,7 +187,7 @@
 		"stylelint-config-standard": "^18.2.0",
 		"stylelint-scss": "^3.3.0",
 		"susy": "^3.0.5",
-		"tailwindcss": "^0.7.4",
+		"tailwindcss": "^1.0.0-beta.8",
 		"tailwindcss-alpha": "^0.1.2",
 		"tailwindcss-aspect-ratio": "^1.0.1",
 		"tailwindcss-blend-mode": "^0.1.2",
