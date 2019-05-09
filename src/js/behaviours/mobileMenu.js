@@ -5,24 +5,25 @@ import toggle from '@/ui/toggle'
  * @module behaviour/mobileMenu
  */
 
-function mobileMenu({ node }) {
+function mobileMenu({ node, name }) {
 	const nav = toggle({
 		button: node,
-		name: 'mobile-menu',
+		name,
 		activeClass: 'is-active'
 	})
 
 	nav.init()
 
-	nav.on('open:mobile-menu', ({ target }) => {
+	nav.on(`open:${name}`, ({ target }) => {
 		target.classList.add('is-open')
 	})
 
-	nav.on('close:mobile-menu', ({ target }) => {
+	nav.on(`close:${name}`, ({ target }) => {
 		target.classList.remove('is-open')
 	})
 
 	return () => {
+		nav.close()
 		nav.destroy()
 	}
 }
