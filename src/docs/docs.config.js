@@ -30,9 +30,6 @@ const colors = R.compose(
 	Object.entries
 )(theme.colors)
 
-
-console.log(JSON.stringify(theme.fontSize, null, 2))
-
 module.exports = {
 	context: {
 		colors,
@@ -42,6 +39,6 @@ module.exports = {
 		fontSize: theme.fontSize,
 		width: theme.width,
 		maxWidth: theme.maxWidth,
-		height: theme.height,
+		height: theme.height
 	}
 }
