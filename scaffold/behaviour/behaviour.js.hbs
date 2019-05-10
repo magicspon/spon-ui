@@ -1,0 +1,19 @@
+{{#if domEvents }}
+import { withPlugins } from '@spon/core'
+import withDomEvents from '@/plugins/withDomEvents'
+{{/if}}
+
+function {{ name }} ({node}) {
+	console.log('mounted {{ name }}')
+
+
+	return () => {
+	// clean up
+	}
+}
+
+{{#if domEvents }}
+export default withPlugins(withDomEvents)({{ name }})
+{{else}}
+export default {{ name }}
+{{/if}}
