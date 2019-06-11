@@ -1,174 +1,190 @@
-Working in progress
+## @spon/core
 
-This has not been used in production...
+`@spon/core` is a little framework used to asynchronous load javascript modules based on dom attributes.
 
-There are some tests, could do with more.
+## Getting started
 
-# spon.js
-
-spon.js is a little framework for loading javascript modules on traditional server rendered websites. It provides fluid page transitions, a delegated event system and a simple plugin system for extending behaviours. At its root, spon.js takes a DOM node with a `data-spon="example"` attribute, and loads a corresponding javascript module. All modules are single chunks that are asynchronous loaded.
-
-## Getting Started
-
-Write some html.
-
-```html
-<div data-spon="example">hello</div>
-```
-
-Import `loadApp` into your main javascript file
+Add the following code to your main javascript entry point (app.js)
 
 ```javascript
-import { loadApp } from '@/core'
-```
+import { loadApp } from '@spon/core'
 
-Now call the function, passing in the root node, typically this would be `document.body`
-
-```javascript
-import { loadApp } from '@/core'
-
-const app = loadApp(document.body)
-```
-
-Add a new file to your `/behaviours/`directory called ‘example.js’
-
-example.js
-
-```javascript
-export default function() {}
-```
-
-With that all setup, you can now start using spon.js
-
-Each module receives a props object. Without any additional code, each module will have one props property, the dom node that it was mounted against.
-
-```javascript
-export default function(props) {
-	const node = props.node
-}
-```
-
-It’s 2019… let’s write modern js.
-
-Better!
-
-```javascript
-export default function({ node }) {
-	node.classList.add('is-hugh-honme')
-}
-```
-
-## Dom Events
-
-```html
-<div data-spon="example">
-	<button type="button" data-toggle-button>Toggle</button>
-</div>
-```
-
-```javascript
-import { connect } from '@/store'
-import { withDomEvents } from '@/core'
-
-function example({ node, addEvents }) {
-	node.classList.add('is-hugh-honme')
-
-	addEvents({
-		'click [data-toggle-button]': (e, elm) => {
-			e.preventDefault()
-			elm.classList.toggle('is-active')
-		}
-	})
-}
-
-export default connect({
-	plugins: [withDomEvents]
-})(example)
-```
-
-`withDomEvents` adds event delegation to the module.
-
-‘event selector`: function
-
-All events, by default are delegated to the node element. If you want to delegate to a different element, you can pass in a Dom node as the first argument , eg
-
-```javascript
-addEvents(document.body, {
-	'click [data-toggle-button]': (e, elm) => {
-		e.preventDefault()
-		elm.classList.toggle('is-active')
-	}
+loadApp(document.body, {
+	fetch: name => import(`@/behaviours/${name}`)
 })
 ```
 
-## Refs
-
-No… not react… I just like the name, seemed suitable
+Create a html file with the following snippet
 
 ```html
-<div data-spon="example">
-	<button type="button" data-toggle-button>Toggle</button>
-	<!-- add a couple of nodes with unique data-ref props -->
-	<p class="item" data-ref="product" data-id="10">Woffles</p>
-	<div data-ref="price" data-cost="2">Woffles</div>
+<div data-behaviour="example" id="required-id">...</div>
+```
+
+`js/behaviours/example`
+
+```javascript
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @return {Function} a function to unmount
+ */
+function example({ node }) {
+	return () => {
+		console.log('i am called when the module is destroyed')
+	}
+}
+
+export default example
+```
+
+You can also set the module to only load at certain breakpoints:
+
+```html
+<div data-behaviour="example" id="required-id" data-query="(max-width: 1024px)">
+	...
 </div>
 ```
 
+`example()` will only be called when the viewport is smaller than 1024px. Once the module is mounted and the viewport increases to greater than 1024 the returned function will be called. Use this to remove any event listeners or destroy any custom modules
+
 ```javascript
-import { connect } from '@/store'
-import { withDomEvents, withRefs } from '@/core'
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @return {Function} a function to unmount
+ */
+function example({ node }) {
+	const slide = new SomeSlideLibrary(node)
 
-function example({ node, addEvents, refs }) {
-	node.classList.add('is-hugh-honme')
-
-	const { product, price } = refs
-	// get values
-	const id = product.data.id
-	const cost = price.data.cost
-
-	if (window._DANGER_MODE_) {
-		// set values
-		price.data.cost += 10
+	return () => {
+		slide.destroy()
 	}
-
-	// performantly set styles to avoid layout thrashing
-	product.style.set({ x: 100, color: 'green' })
-
-	// update the className... this doesn't remove any existing
-	// classes, it only adds/removes new classes
-	product.className = 'waffle'
-	// className === 'item waffle'
-
-	// remove waffle
-	product.className = ''
-	// className === 'item'
-
-	// access the dom node
-	product.node.textContent = 'Word'
-
-	addEvents({
-		'click [data-toggle-button]': (e, elm) => {
-			e.preventDefault()
-			elm.classList.toggle('is-active')
-		}
-	})
 }
 
-export default connect({
-	plugins: [withDomEvents, withRefs]
-})(example)
+export default example
 ```
 
-## Rematch (redux)
+Behaviours with the 'data-keep-alive' attribute will not be destroyed when navigating betweeen pages. This is only valid if you are using ajax pagaination.
+
+## @spon/domevents
+
+`@spon/domevents` is a tiny wrapper around dom-delegate. It let's you write backbone styled event objects with event delegation.
+
+Using the library directly:
+
+```javascript
+import domEvents from '@spon/domevents'
+
+const { addEvents, removeEvents } = domEvents(document.body)
+
+addEvents({
+	'click [data-toggle-button]': (e, elm) => {
+		e.preventDefault()
+		elm.classList.toggle('is-active')
+	},
+	'mouseenter [data-toggle-button]': [
+		(e, elm) => {
+			e.preventDefault()
+			elm.classList.toggle('is-active')
+		},
+		true // capture value
+	]
+})
+```
+
+If you are using `@spon/core` i suggest you use @spon/domevents via the `withDomEvents` plugin (plugins/withDomEvents). The plugin will automatically handle removing events on module destruction
+
+```javascript
+import { withPlugins } from '@spon/core'
+import withDomEvents from '@/lib/withDomEvents'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Function} props.plugins.addEvents
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { addEvents } }) {
+	const slide = new SomeSlideLibrary(node)
+
+	return () => {
+		slide.destroy()
+	}
+}
+
+export default withPlugins(withDomEvents)(example)
+```
+
+You can use as many plugins as you like with withPlugins high order function. ie `withPlugins(withDomEvents, device, inview)`
+
+## Writing your own plugins
+
+A plugin is a plain javascript function that receives a single object, and returns an object with various methods and values attached to it.
+
+```javascript
+import domEvents from '@spon/domevents'
+
+/**
+ * @function withDomEvents
+ * @property {object} props
+ * @property {HTMLElement} props.node the root node to attach events to
+ * @property {function} props.register a function used to store the destroy method
+ * @return {object}
+ */
+export default function withDomEvents({ node, register }) {
+	const events = domEvents(node)
+	// the function passed to the register function will be called when the module the plugin is attached to is destroyed
+	register(events.removeEvents)
+	return events
+}
+```
+
+## Events
+
+`@spon/core` comes with a global event emitter (it uses mitt internally)
+
+```javascript
+import { eventBus } from '@spon/core'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @return {Function} a function to unmount
+ */
+function example({ node }) {
+	const slide = new SomeSlideLibrary(node)
+
+	eventBus.on('some:event', (...args) => {
+		console.log('args')
+	})
+
+	return () => {
+		slide.destroy()
+
+		eventBus.off('some:event')
+	}
+}
+
+export default example
+```
+
+see [here](https://github.com/developit/mitt) for more documentation.
+
+## Advanced usage: Rematch integration
 
 You’ll need to know how to use rematch to use this feature. Spon.js exposes a hook for subscribing to store updates. It uses the connect function to bind the store state and reducers to the module
 
-store/index.js
+/store/index.js
 
 ```javascript
 import { init } from '@rematch/core'
 import createRematchPersist from '@rematch/persist'
-import { connect as bindConnect, registerPlugin } from '@/core'
+import { connectStore } from '@/core'
 import * as models from './models/index'
 
 const persistPlugin = createRematchPersist({
@@ -184,22 +200,27 @@ const store = init({
 	plugins: [persistPlugin]
 })
 
-export const connect = bindConnect(store, registerPlugin)
+// this creates a function that is used to bind modules to the store
+export const connect = connectStore(store)
 
 export default store
 ```
 
-Standard rematch code…. Back to our module.
+/behaviours/example
 
 ```javascript
+import { withPlugins } from '@spon/core'
 import { connect } from '@/store'
-import { withDomEvents, withRefs } from '@/core'
+import { withDomEvents } from '@/plugins/withDomEvents'
 
 // removed other code for brevity
 function example({ node, addEvents, refs, store, render }) {
 	// this function will be called every time
 	// the objects returned from the mapState
 	// function change
+
+	store.deleteItemFromCart(node.id)
+
 	render(({ prevState, currentState }) => {
 		// code written here should only
 		// react to changes
@@ -219,80 +240,270 @@ const mapState = store => {
 // note: I could have written the function above like this
 const mapDispatch = ({ cart }) => ({ ...cart })
 
-export default connect({
-	store: [mapState, mapDispatch],
-	plugins: [withDomEvents, withRefs]
-})(Cart)
+export default withPlugins(withDomEvents)(
+	connect({
+		mapState,
+		mapDispatch
+	})(basket)
+)
 ```
 
-So… we could make a little basket app
-All of the logic is handed via the rematch cart model
-The module only needs to respond to changes
+## Available Plugins
 
-In this example I’m using `lit-html` to handle dom updates.
+### Device (window resize)
 
 ```javascript
-import { render as h, html } from 'lit-html'
-import { withRefs, withDomEvents } from '@/core'
-import { connect } from '@/store'
+import { withPlugins } from '@spon/core'
+import device from '@/plugins/device'
 
-function basket(props) {
-	const {
-		plugins: { addEvents, refs },
-		store: { deleteItemFromCart },
-		render
-	} = props
-	const { list } = refs
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Object} props.plugins.device
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { device } }) {
+	device.width // the current viewport width
+	device.height // the current viewport height
 
-	addEvents({
-		'click [data-basket-item]': (e, elm) => {
-			e.preventDefault()
-			const { id } = elm.dataset
-			deleteItemFromCart(id)
+	device.resize(() => {
+		// called when the window resizes
+	})
+
+	device.at('(min-width="1024px")', {
+		on: () => {
+			// called when the media query matches the current viewport
+		},
+
+		off: () => {
+			// called when the media query does not match the current viewport
 		}
 	})
 
-	render(({ current }) => {
-		const { cart } = current
-		const { basket } = cart
-		const items = Object.values(basket)
-		const total = items.reduce((acc, { quantity }) => acc + quantity, 0)
-
-		const basketList = items.map(
-			item => html`
-				<div
-					style="transition-duration: 1000ms"
-					class="flex trans"
-					data-flip-key="${item.id}"
-				>
-					<div class="mr-2" data-basket-item data-id="${item.id}">
-						${item.title} x${item.quantity}
-					</div>
-					<button data-basket-item data-id="${item.id}">
-						Remove
-					</button>
-				</div>
-			`
-		)
-
-		h(
-			html`
-				<h1>${items.length} - ${total}</h1>
-				<div>${basketList}</div>
-			`,
-			list.node
-		)
-	})
+	device.cancel() // stop listening to resize events
 }
 
-// // get the cart state
-const mapState = ({ cart }) => ({ cart })
-// get all of the cart actions
-const mapDispatch = ({ cart }) => ({ ...cart })
-// export the component wrapped with store values
-// and any custom plugins
-export default connect({
-	store: [mapState, mapDispatch],
-	plugins: [withDomEvents, withRefs]
-})(basket)
+export default withPlugins(device)(example)
+```
+
+### Inview (IntersectionObserver)
+
+```javascript
+import { withPlugins } from '@spon/core'
+import inview from '@/plugins/inview'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Object} props.plugins.inview
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { inview } }) {
+	// watch the node
+	inview.observe({
+		enter: (entry, observer) => {
+			// called when the node enters the viewport
+		},
+		exit: (entry, observer) => {
+			// called when the node exits the viewport
+		}
+	})
+
+	// watch some other nodes
+	inview.observe(document.querySelectorAll('[data-inview]'), {
+		enter: (entry, observer) => {
+			// called when the node enters the viewport
+		},
+		exit: (entry, observer) => {
+			// called when the node exits the viewport
+		}
+	})
+
+	inview.disconnect() // remove any intersection observers
+}
+
+export default withPlugins(inview)(example)
+```
+
+### Mutation (MutationObserver)
+
+```javascript
+import { withPlugins } from '@spon/core'
+import mutation from '@/plugins/mutation'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Function} props.plugins.mutation
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { mutation } }) {
+	// watch the node
+	const { observe, disconnect } = mutation(node, {
+		attributes: true,
+		childList: false,
+		subtree: false
+	})
+
+	observe(() => {
+		// called when a mutation happens on the node
+	})
+
+	disconnect() // remove any mutation observers
+}
+
+export default withPlugins(mutation)(example)
+```
+
+### Resize (resize observer)
+
+```javascript
+import { withPlugins } from '@spon/core'
+import resize from '@/plugins/resize'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Function} props.plugins.resize
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { resize } }) {
+	// watch the node
+	const { observe, disconnect } = resize(node)
+
+	observe(() => {
+		// called when a the element changes size
+	})
+
+	disconnect() // remove any  resize observers
+}
+
+export default withPlugins(resize)(example)
+```
+
+### Scroll (window scroll)
+
+```javascript
+import { withPlugins } from '@spon/core'
+import scroll from '@/plugins/scroll'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Object} props.plugins.scroll
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { scroll } }) {
+	// watch the node
+	scroll.progress(() => {
+		// called as the user scrolls
+	})
+
+	scroll.start(() => {
+		// called when the user starts scrolling
+	})
+
+	scroll.stop(() => {
+		// called when the user stops scrolling
+	})
+
+	scroll.destroy() // remove the scroll event
+}
+
+export default withPlugins(resize)(example)
+```
+
+### Dom Events (event delegation)
+
+```javascript
+import { withPlugins } from '@spon/core'
+import withDomEvents from '@/plugins/withDomEvents'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Function} props.plugins.addEvents
+ * @return {Function} a function to unmount
+ */
+function example({ node, plugins: { addEvents, removeEvents, removeEvent } }) {
+	// watch the node
+
+	// add events, delegated to the node
+	addEvents({
+		'click [data-toggle-button]': (e, elm) => {
+			e.preventDefault()
+			elm.classList.toggle('is-active')
+		},
+		'mouseenter [data-toggle-button]': [
+			(e, elm) => {
+				e.preventDefault()
+				elm.classList.toggle('is-active')
+			},
+			true // capture value
+		]
+	})
+
+	// delegate events to the body
+	addEvents(document.body, {
+		'click [data-toggle-button]': (e, elm) => {
+			e.preventDefault()
+			elm.classList.toggle('is-active')
+		}
+	})
+
+	removeEvents() // remove all events
+
+	removeEvent('click [data-toggle-button]') // remove event by 'event selector'
+}
+
+export default withPlugins(withDomEvents)(example)
+```
+
+### All together
+
+```javascript
+import { withPlugins } from '@spon/core'
+import withDomEvents from '@/plugins/withDomEvents'
+import scroll from '@/plugins/scroll'
+import inview from '@/plugins/inview'
+import mutation from '@/plugins/mutation'
+import device from '@/plugins/device'
+import device from '@/plugins/device'
+import resize from '@/plugins/resize'
+
+/**
+ * @function example
+ * @param {Object} props
+ * @property {HTMLElement} props.node
+ * @property {Object} props.plugins
+ * @property {Function} props.plugins.addEvents
+ * @return {Function} a function to unmount
+ */
+function example({
+	node,
+	plugins: { addEvents, inview, mutation, device, resize, scroll }
+}) {
+	// do stuff
+}
+
+export default withPlugins(
+	withDomEvents,
+	inview,
+	mutation,
+	device,
+	resize,
+	scroll
+)(example)
 ```

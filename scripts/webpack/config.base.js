@@ -13,6 +13,8 @@ const {
 
 const context = getSrcPaths(src)
 
+console.log(context)
+
 module.exports = {
 	entry,
 	context,
