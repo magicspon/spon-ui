@@ -1,12 +1,9 @@
-import { withPlugins } from '@spon/core'
-import withDomEvents from '@/plugins/withDomEvents'
+import { domEvents, withPlugins } from '@spon/plugins'
 
 function scrollTo({ plugins: { addEvents } }) {
 	function onClick(e, elm) {
 		e.preventDefault()
 		const { href } = elm
-		// something
-		console.log(href)
 	}
 
 	addEvents(document, {
@@ -14,4 +11,4 @@ function scrollTo({ plugins: { addEvents } }) {
 	})
 }
 
-export default withPlugins(withDomEvents)(scrollTo)
+export default withPlugins(domEvents)(scrollTo)

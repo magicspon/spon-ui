@@ -73,9 +73,10 @@
 	"dependencies": {
 		"@rematch/core": "^1.0.6",
 		"@rematch/persist": "^1.1.5",
-		"@spon/core": "^1.0.0",
-		"@spon/domevents": "^1.0.0",
-		"debug": "^4.1.1",
+		"@spon/connect": "0.0.2",
+		"@spon/core": "^2.0.1",
+		"@spon/domevents": "^1.0.2",
+		"@spon/plugins": "0.0.7",
 		"fg-loadcss": "^2.1.0",
 		"headroom.js": "^0.9.4",
 		"lit-html": "^1.0.0-rc.2",
