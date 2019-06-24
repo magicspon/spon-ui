@@ -2,10 +2,10 @@ import { connect } from '@/store'
 import { domEvents, withPlugins } from '@spon/plugins'
 
 /* eslint-disable no-console */
-function counter({ plugins: { addEvents }, store, render }) {
+function counter({ name, plugins: { addEvents }, store, render }) {
 	const node = document.getElementById('value')
 
-	console.log(store.count)
+	console.log(`load: ${name}`)
 
 	addEvents({
 		'click button': () => {
@@ -22,7 +22,7 @@ function counter({ plugins: { addEvents }, store, render }) {
 	)
 
 	return () => {
-		console.log('destroy')
+		console.log(`destroy: ${name}`)
 	}
 }
 

@@ -1,6 +1,6 @@
 // @ts-check
 
-import { eventBus } from '@spon/core'
+import { eventBus } from '@spon/plugins'
 import domEvents from '@spon/domevents'
 import keycodes from '@/utils/keycodes'
 import { getIdFromHref } from '@/utils'

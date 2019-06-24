@@ -1,11 +1,17 @@
 /* eslint-disable no-console */
 
-import { loadApp } from '@spon/core'
+import { loadApp, loadModule } from '@spon/core'
 import barba from '@barba/core'
+import logger from '@/behaviours/logger'
 
-const app = loadApp(document.body, {
-	fetch: name => import(`@/behaviours/${name}`)
+loadModule({
+	module: logger,
+	id: 'hello',
+	node: document.getElementById('logger'),
+	keepAlive: true
 })
+
+const app = loadApp(name => import(`@/behaviours/${name}`), document.body)
 
 // crude!
 let box

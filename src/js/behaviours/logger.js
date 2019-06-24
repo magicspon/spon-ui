@@ -1,14 +1,16 @@
 import { connect } from '@/store'
-import barba from '@barba/core'
+// import barba from '@barba/core'
 
 /* eslint-disable no-console */
 function logger({ node, store, render }) {
-	// console.log(store.count)
-	node.textContent = store.count
+	console.log('logger', store.count)
+	// node.textContent = store.count
 
-	barba.hooks.after(() => {
-		console.log('after logger')
-	})
+	// console.log('LOGGER')
+
+	// barba.hooks.after(() => {
+	// 	console.log('after logger')
+	// })
 
 	render(
 		({ current }) => {

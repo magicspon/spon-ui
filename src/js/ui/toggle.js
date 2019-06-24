@@ -1,6 +1,6 @@
 // @ts-check
 
-import { eventBus } from '@spon/core'
+import { eventBus } from '@spon/plugins'
 /**
  * @module ui/toggle
  */

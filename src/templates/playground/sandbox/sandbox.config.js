@@ -5,7 +5,7 @@ module.exports = {
 		title: 'Page 1',
 		className: 'pin-t pin-l',
 		className2: 'pin m-auto',
-		style: 'width: 500px; transition: all 300ms ease; height: 300px;',
+		style: 'width: 500px; transition: all 300ms ease; height: 100px;',
 		color: 'blue-300'
 	},
 
@@ -16,7 +16,7 @@ module.exports = {
 				title: 'Page 2',
 				className: 'pin-t pin-r',
 				style:
-					'width: 500px; transition: all 300ms ease; height: 300px; right: 0; top: 0;',
+					'width: 500px; transition: all 300ms ease; height: 100px; right: 0; top: 0;',
 				color: 'red-400'
 			}
 		},
@@ -26,7 +26,7 @@ module.exports = {
 				title: 'Page 3',
 				className: 'pin-b pin-l',
 				style:
-					'width: 500px; transition: all 300ms ease; height: 300px; right: 0; bottom: 0;',
+					'width: 500px; transition: all 300ms ease; height: 100px; right: 0; bottom: 0;',
 				color: 'green-600'
 			}
 		},
@@ -36,7 +36,7 @@ module.exports = {
 				title: 'Page 4',
 				className: 'pin-b pin-r',
 				style:
-					'width: 500px; transition: all 300ms ease; height: 300px; left: 0; bottom: 0;',
+					'width: 500px; transition: all 300ms ease; height: 100px; left: 0; bottom: 0;',
 				color: 'yellow-200'
 			}
 		}

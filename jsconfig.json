@@ -9,7 +9,7 @@
 		"paths": {
 			"@/*": ["./*"]
 		},
-		"lib": ["es2015", "es2017", "dom", "dom.iterable"],
+		"lib": ["es2015", "es2018", "dom", "dom.iterable"],
 		"noImplicitAny": false
 	},
 	"exclude": ["node_modules"],
