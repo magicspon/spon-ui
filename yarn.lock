@@ -781,6 +781,14 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@barba/core@^2.3.10":
+  version "2.3.10"
+  resolved "https://registry.yarnpkg.com/@barba/core/-/core-2.3.10.tgz#601650a5f4f0045361d6be59b92d47d03ec8b1ec"
+  integrity sha512-zhfSHs1g87R1TP7G7oqM31WbfFf/Ex7GJ5TUuk9FPodyUgSLVhysd3i1TDHUPBE6NojbArPiIx2rKr0ixj5zoQ==
+  dependencies:
+    path-to-regexp "^3.0.0"
+    run-async "^2.3.0"
+
 "@cypress/listr-verbose-renderer@0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@cypress/listr-verbose-renderer/-/listr-verbose-renderer-0.4.1.tgz#a77492f4b11dcc7c446a34b3e28721afd33c642a"
@@ -13994,7 +14002,7 @@ run-async@^0.1.0:
   dependencies:
     once "^1.3.0"
 
-run-async@^2.2.0:
+run-async@^2.2.0, run-async@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
   integrity sha1-A3GrSuC91yDUFm19/aZP96RFpsA=

@@ -7,11 +7,14 @@
 {% block route %}data-route{% endblock %}	
 
 {% block content %}
-
-	<div id="counter" data-behaviour="counter">
-		<button>Add</button>
-		<div id="value">value</div>
+<div data-barba="container" class="trans page-child" data-barba-namespace="{{ title }}">
+	<div class="relative h-screen">
+		<div style="{{ style }}" class="bg-{{ color }} absolute" id="counter" data-behaviour="counter">
+			<button>Add</button>
+			<div id="value">value</div>
+			<h1>{{ title }}</h1>
+		</div>
 	</div>
-	
+</div>
 
 {% endblock %}

@@ -71,6 +71,7 @@
 		"cy:run": "cypress run"
 	},
 	"dependencies": {
+		"@barba/core": "^2.3.10",
 		"@rematch/core": "^1.0.6",
 		"@rematch/persist": "^1.1.5",
 		"@spon/connect": "0.0.2",
