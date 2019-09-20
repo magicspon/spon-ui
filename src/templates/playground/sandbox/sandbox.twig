@@ -8,27 +8,15 @@
 
 {% block content %}
 <div data-barba="container" class="trans page-child" data-barba-namespace="{{ title }}">
-	<div class="relative h-screen">
-		<div style="{{ style }}" class="bg-{{ color }} " id="counter-a" data-behaviour="counter">
+	<div class="relative h-screen"
+
+		<div style="{{ style }}" class="bg-{{ color }} " id="counter-a" {% if title == 'Page 1' %} data-behaviour="counter" {% endif %}>
 			<button>Add</button>
 			<div id="value">value</div>
 			<h1>{{ title }}</h1>
 		</div>
-		<div style="{{ style }}" class="bg-{{ color }} " id="counter-b" data-behaviour="counter">
-			<button>Add</button>
-			<div id="value">value</div>
-			<h1>{{ title }}</h1>
-		</div>
-		<div style="{{ style }}" class="bg-{{ color }} " id="counter-c" data-query="(min-width: 600px)" data-behaviour="counter">
-			<button>Add</button>
-			<div id="value">value</div>
-			<h1>{{ title }}</h1>
-		</div>
-		<div style="{{ style }}" class="bg-{{ color }} " id="counter-d" data-query="(min-width: 800px)" data-behaviour="counter">
-			<button>Add</button>
-			<div id="value">value</div>
-			<h1>{{ title }}</h1>
-		</div>
+
+
 	</div>
 </div>
 

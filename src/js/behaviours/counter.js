@@ -1,16 +1,34 @@
 import { connect } from '@/store'
-import { domEvents, withPlugins } from '@spon/plugins'
+import { domEvents, withPlugins, device } from '@spon/plugins'
 
 /* eslint-disable no-console */
-function counter({ name, plugins: { addEvents }, store, render }) {
-	const node = document.getElementById('value')
-
-	console.log(`load: ${name}`)
-
+function counter({
+	node,
+	name,
+	plugins: { addEvents, device },
+	store,
+	render
+}) {
 	addEvents({
 		'click button': () => {
-			console.log('click')
 			store.increment(1)
+		}
+	})
+
+	// device.resize(() => {
+	// 	// called when the window resizes
+	// 	console.log('window resized', device.width, device.height)
+	// })
+
+	device.at('(min-width: 1024px)', {
+		on: () => {
+			// called when the media query matches the current viewport
+			console.log('min width is 1024px')
+		},
+
+		off: () => {
+			// called when the media query does not match the current viewport
+			console.log('max width is 1024px')
 		}
 	})
 
@@ -33,48 +51,6 @@ const mapState = store => {
 }
 const mapDispatch = ({ count }) => ({ ...count })
 
-export default withPlugins(domEvents)(
+export default withPlugins(domEvents, device)(
 	connect({ mapState, mapDispatch })(counter)
 )
-
-/**
- *
- * refs html
- *
- * single items
- * data-ref="thing"
- *
- * arrays
- * data-ref="other[]"
- *
- * function({refs}) {
- *
- *  const { thing, other } = refs
- *
- *  thing === ref items
- * 	other === Array of ref items
- *
- * }
- *
- * thing.data === any data props. these are getters and setters so a little reactive
- * i.e.
- *
- * <div data-ted="9">
- * thing.data.ted = 10
- * would update to <div data-ted="10">
- *
- * thing.data.on('change', () => {
- *  // do shit
- * })
- *
- * thing.classes = 'the default classes'
- * thing.setClass = classNames(thing.classes, { isOpen: thing.data.ted === 10 })
- *
- * thing.addEventPromise('transitionEnd' () => {})
- *
- * thing.style.set({
- * 	display: 'flex'
- * })
- *
- *
- */
