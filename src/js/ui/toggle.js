@@ -1,6 +1,7 @@
 // @ts-check
 
 import { eventBus } from '@spon/plugins'
+import { expander } from '@/utils/a11y'
 /**
  * @module ui/toggle
  */
@@ -29,7 +30,6 @@ import { eventBus } from '@spon/plugins'
  * <a id="mobile-nav-button" href="#site-nav">button</a>
  * <div id="site-nav">target</div>
  *
- * @param {Object} options
  * @property {HTMLElement} options.button selector
  * @property {String} options.name selector
  * @property {String} options.activeClass active class name
@@ -96,8 +96,7 @@ function toggle({
 	function open() {
 		state = true
 		button.classList.add(activeClass)
-		button.setAttribute('aria-expanded', 'true')
-		target.setAttribute('aria-hidden', 'false')
+		expander.open({ button, target })
 		target.focus()
 		eventBus.emit(`open:${name}`, { button, target })
 	}
@@ -110,8 +109,7 @@ function toggle({
 	function close() {
 		state = false
 		button.classList.remove(activeClass)
-		button.setAttribute('aria-expanded', 'false')
-		target.setAttribute('aria-hidden', 'true')
+		expander.close({ button, target })
 		eventBus.emit(`close:${name}`, { button, target })
 	}
 
@@ -158,11 +156,7 @@ function toggle({
 	 * @return {void}
 	 */
 	function init() {
-		target.setAttribute('tabindex', '-1')
-		target.setAttribute('aria-hidden', 'true')
-		target.setAttribute('role', 'dialog')
-		button.setAttribute('aria-controls', targetId)
-		button.setAttribute('aria-expanded', 'false')
+		expander.init({ button, target, id: targetId })
 
 		button.addEventListener('click', clickHandle)
 		if (closeOnBlur) {
@@ -184,13 +178,7 @@ function toggle({
 		if (closeOnBlur) {
 			target.removeEventListener('blur', onBlur, true)
 		}
-		target.removeAttribute('tabindex')
-		target.removeAttribute('aria-hidden')
-		target.removeAttribute('role')
-		target.removeAttribute('style')
-
-		button.removeAttribute('aria-controls')
-		button.removeAttribute('aria-expanded')
+		expander.reset({ button, target })
 		eventBus.off(`open:${name}`)
 		eventBus.off(`close:${name}`)
 

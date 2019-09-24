@@ -1,6 +1,6 @@
 {
 	"extends": ["airbnb", "prettier", "plugin:jest/recommended"],
-	"plugins": ["react", "jsx-a11y", "import", "cypress"],
+	"plugins": ["import", "cypress"],
 	"rules": {
 		"consistent-return": "off",
 		"func-names": "off",
@@ -13,10 +13,6 @@
 		"import/no-unresolved": "off",
 		"import/prefer-default-export": "off",
 		"indent": ["warn", "tab"],
-		"jsx-a11y/anchor-is-valid": "off",
-		"jsx-a11y/click-events-have-key-events": "off",
-		"jsx-a11y/interactive-supports-focus": "off",
-		"jsx-a11y/mouse-events-have-key-events": "off",
 		"no-lonely-if": "off",
 		"no-nested-ternary": "off",
 		"no-param-reassign": "off",
@@ -28,16 +24,6 @@
 		"no-useless-escape": "off",
 		"prefer-destructuring": "off",
 		"quotes": ["warn", "single"],
-		"react/forbid-prop-types": "off",
-		"react/jsx-filename-extension": "off",
-		"react/jsx-indent": "off",
-		"react/jsx-indent-props": "off",
-		"react/jsx-uses-vars": [2],
-		"react/no-array-index-key": "warn",
-		"react/no-danger": "off",
-		"react/no-unused-state": "warn",
-		"react/prefer-stateless-function": "off",
-		"react/prop-types": "off",
 		"semi": ["warn", "never"]
 	},
 	"parser": "babel-eslint",
@@ -64,12 +50,12 @@
 		"google": true
 	},
 	"parserOptions": {
-		"ecmaFeatures": {
-			"experimentalObjectRestSpread": true,
-			"jsx": true,
-			"sourceType": "module",
-			"allowImportExportEverywhere": false
-		},
+		// "ecmaFeatures": {
+		// 	"experimentalObjectRestSpread": true,
+		// 	"jsx": true,
+		// 	"sourceType": "module",
+		// 	"allowImportExportEverywhere": false
+		// },
 		"sourceType": "module"
 	}
 }

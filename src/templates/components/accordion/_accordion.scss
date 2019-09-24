@@ -3,7 +3,15 @@
 body :target[data-accordion] {
 	// @apply  bg-grey;
 
-	[data-accordion-content] {
+	[data-accordion-panel] {
 		display: block !important;
+	}
+}
+
+[data-accordion-panel] {
+	transition: height 300ms ease;
+
+	&:focus {
+		outline: 2px solid green;
 	}
 }

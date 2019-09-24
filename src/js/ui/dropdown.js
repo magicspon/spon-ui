@@ -4,6 +4,7 @@ import { eventBus } from '@spon/plugins'
 import domEvents from '@spon/domevents'
 import keycodes from '@/utils/keycodes'
 import { getIdFromHref } from '@/utils'
+import { expander } from '@/utils/a11y'
 
 /**
  * @module ui/dropdown
@@ -28,7 +29,6 @@ import { getIdFromHref } from '@/utils'
  *	 <div id="user-menu" data-dropdown-menu>...stuff</div>
  * </div>
  *
- * @param {Object} options
  * @property {HTMLElement} options.node - the root node, events are bound to this element
  * @property {String} options.name - a name to to use for events
  * @return {dropdownType}
@@ -47,6 +47,7 @@ import { getIdFromHref } from '@/utils'
  */
 
 function dropdown({ node, name }) {
+	let onHandles = []
 	/**
 	 * get the button
 	 *
@@ -106,8 +107,7 @@ function dropdown({ node, name }) {
 	function open() {
 		target.classList.add('is-open')
 		target.focus()
-		button.setAttribute('aria-expanded', 'true')
-		target.setAttribute('aria-hidden', 'false')
+		expander.open({ button, target })
 		eventBus.emit(`${name}:open`, { target, button })
 	}
 
@@ -120,8 +120,7 @@ function dropdown({ node, name }) {
 	function close() {
 		tabIndex = 0
 		target.classList.remove('is-open')
-		button.setAttribute('aria-expanded', 'false')
-		target.setAttribute('aria-hidden', 'true')
+		expander.close({ button, target })
 		eventBus.emit(`${name}:close`, { target, button })
 	}
 
@@ -201,18 +200,17 @@ function dropdown({ node, name }) {
 	 */
 	function init() {
 		events = events || domEvents(node)
-		target.setAttribute('tabindex', '-1')
-		target.setAttribute('aria-hidden', 'true')
-		target.setAttribute('role', 'dialog')
-		button.setAttribute('aria-controls', targetId)
-		button.setAttribute('aria-expanded', 'false')
+		expander.init({ button, target, id: targetId })
 
 		events.addEvents({
 			'click [data-dropdown-button]': clickHandle,
+
 			'click [data-dropdown-item]': (e, elm) => {
 				eventBus.emit(`${name}:click`, { e, elm })
 			},
+
 			'blur [data-dropdown-menu]': [onBlur, true],
+
 			keydown: e => {
 				const action = keyCodeAction(e.keyCode)
 				if (action) action()
@@ -228,12 +226,9 @@ function dropdown({ node, name }) {
 	 */
 	function destroy() {
 		events.removeEvents()
-		eventBus.off(`${name}:click`)
-		target.removeAttribute('tabindex')
-		target.removeAttribute('aria-hidden')
-		target.removeAttribute('role')
-		button.removeAttribute('aria-controls')
-		button.removeAttribute('aria-expanded')
+		onHandles.forEach(([event, fn]) => eventBus.off(event, fn))
+		onHandles = []
+		expander.reset({ button, target })
 	}
 
 	return {
@@ -241,7 +236,10 @@ function dropdown({ node, name }) {
 		destroy,
 		open,
 		close,
-		...eventBus
+		on(event, fn) {
+			eventBus.on(`${name}:${event}`, fn)
+			onHandles.push([`${name}:${event}`, fn])
+		}
 	}
 }
 

@@ -26,23 +26,10 @@ export function renderInTheLoop(callback) {
  * @return {string}
  */
 export function getIdFromHref(node) {
-	/**
-	 * get the href from the button
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	const targetSelector = node.getAttribute('href')
-
-	/**
-	 * remove the hash
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	const id = targetSelector.split('#').pop()
-
-	return id
+	return node
+		.getAttribute('href')
+		.split('#')
+		.pop()
 }
 
 const eventCache = {}
@@ -79,26 +66,21 @@ export function getEventName(event) {
 	return name
 }
 
-// export default R.memoizeWith(R.identity, (type = 'transition') => {
-// const types =
-// 	type === 'transition'
-// 		? {
-// 			OTransition: 'oTransitionEnd',
-// 			WebkitTransition: 'webkitTransitionEnd',
-// 			MozTransition: 'transitionend',
-// 			transition: 'transitionend'
-// 		}
-// 		: {
-// 			OAnimation: 'oAnimationEnd',
-// 			WebkitAnimation: 'webkitAnimationEnd',
-// 			MozAnimation: 'animationend',
-// 			animation: 'animationend'
-// 		}
+/**
+ * @function addEventPromise
+ * @param {string} event
+ * @param {HTMLElement} element
+ * @param {function} callback
+ * @return {Promise}
+ */
+export function addEventPromise(event, element, callback) {
+	return new Promise(resolve => {
+		function done() {
+			element.removeEventListener(event, done)
+			resolve()
+		}
 
-// 	const elem = document.createElement('div')
-
-// return Object.keys(types).reduce(
-// 	(prev, trans) => (undefined !== elem.style[trans] ? types[trans] : prev),
-// 	''
-// )
-// })
+		element.addEventListener(event, done)
+		callback()
+	})
+}

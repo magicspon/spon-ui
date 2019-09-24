@@ -1,7 +1,7 @@
 // @ts-check
-import { eventBus } from '@spon/core'
-import domEvents from '@spon/domevents'
 import validate from 'validate.js'
+import { eventBus } from '@spon/plugins'
+import domEvents from '@spon/domevents'
 import debounce from '@/utils/debounce'
 
 /**
@@ -9,7 +9,6 @@ import debounce from '@/utils/debounce'
  */
 
 /**
- * @param {Object} props
  * @property {HTMLElement} props.form
  * @property {Object} props.rules
  * @property {String} props.namespace
@@ -77,7 +76,7 @@ function validator({ form, rules = {}, namespace }) {
 		}
 
 		const errors = Object.entries(fails).map(([key, error]) => {
-			const item = Object.assign({}, required[key], { error })
+			const item = { ...required[key], error }
 
 			eventBus.emit(`@${namespace}:input/error`, item)
 

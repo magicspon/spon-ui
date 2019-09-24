@@ -6,7 +6,8 @@ module.exports = {
 		className: 'pin-t pin-l',
 		className2: 'pin m-auto',
 		style: 'width: 500px; transition: all 300ms ease; height: 100px;',
-		color: 'blue-300'
+		color: 'blue-300',
+		behaviour: 'a'
 	},
 
 	variants: [
@@ -17,7 +18,8 @@ module.exports = {
 				className: 'pin-t pin-r',
 				style:
 					'width: 500px; transition: all 300ms ease; height: 100px; right: 0; top: 0;',
-				color: 'red-400'
+				color: 'red-400',
+				behaviour: 'b'
 			}
 		},
 		{
@@ -27,7 +29,8 @@ module.exports = {
 				className: 'pin-b pin-l',
 				style:
 					'width: 500px; transition: all 300ms ease; height: 100px; right: 0; bottom: 0;',
-				color: 'green-600'
+				color: 'green-600',
+				behaviour: 'c'
 			}
 		},
 		{
@@ -37,7 +40,8 @@ module.exports = {
 				className: 'pin-b pin-r',
 				style:
 					'width: 500px; transition: all 300ms ease; height: 100px; left: 0; bottom: 0;',
-				color: 'yellow-200'
+				color: 'yellow-200',
+				behaviour: 'd'
 			}
 		}
 	]

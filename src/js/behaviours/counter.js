@@ -1,5 +1,6 @@
-import { connect } from '@/store'
 import { domEvents, withPlugins, device } from '@spon/plugins'
+import withBarba from '@/plugins/withBarba'
+import { connect } from '@/store'
 
 /* eslint-disable no-console */
 function counter({
@@ -51,6 +52,6 @@ const mapState = store => {
 }
 const mapDispatch = ({ count }) => ({ ...count })
 
-export default withPlugins(domEvents, device)(
+export default withPlugins(domEvents, device, withBarba)(
 	connect({ mapState, mapDispatch })(counter)
 )

@@ -1,18 +1,38 @@
 {% import '@helpers' as h %}
-<ul class="c-accordion list-reset" aria-multiselectable="true" role="tablist" data-ui="Accordion" data-key="accordion" data-ui-options='{{ options|json_encode|raw }}'>
-  {% for i in range(0, 5) %}
-    <li data-accordion class="relative overflow-hidden bg-grey-lighter mb-0-25">
-      <a role="tab" href="#item-{{ i }}-{{ key }}" data-accordion-button class="appearance-none p-0-5 w-full py-0-5 text-left font-bold no-underline text-grey flex justify-content items-center">
-        Panel {{ loop.index }}
-      </a>
-      <div id="item-{{ i }}-{{ key }}" data-accordion-content class="hidden border-b-2 border-blue p-0-5">
-        <div class="py-1 ">
-          <h2 class="mb-1">Title {{ loop.index }}</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus natus quia numquam fugit dolore, non distinctio deserunt dignissimos minus! Et.
-          </p>
-        </div>
-      </div>
-    </li>
-  {% endfor %}
-</ul> 
+
+<ul id="steps" data-behaviour="accordionExample">
+  <li>
+		<a data-accordion-button href="#step-1">button</a>
+		<div id="step-1" class="hidden bg-white overflow-hidden" data-accordion-panel>
+			<div>
+				this is some content
+			</div>
+			<div>
+				this is some content
+			</div>
+			<div>
+				this is some content
+			</div>
+			<div>
+				this is some content
+			</div>
+		</div>
+	</li>
+	<li>
+		<a data-accordion-button href="#step-2">button</a>
+		<div id="step-2" class="hidden bg-white overflow-hidden"data-accordion-panel>
+			<div>
+				this is some content
+			</div>
+			<div>
+				this is some content
+			</div>
+			<div>
+				this is some content
+			</div>
+			<div>
+				this is some content
+			</div>
+		</div>
+	</li>
+</ul>
