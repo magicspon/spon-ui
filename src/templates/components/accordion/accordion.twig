@@ -1,38 +1,33 @@
 {% import '@helpers' as h %}
 
 <ul id="steps" data-behaviour="accordionExample">
-  <li>
-		<a data-accordion-button href="#step-1">button</a>
-		<div id="step-1" class="hidden bg-white overflow-hidden" data-accordion-panel>
-			<div>
-				this is some content
+	{% for i in [1,2,3,4,5] %}
+		<li class="py-3 bg-gray-800 text-white">
+			<a data-accordion-button href="#l1-{{ i }}">button</a>
+			<div id="l1-{{ i }}" class="hidden bg-white overflow-hidden"data-accordion-panel>
+				<ul>
+					{% for k in [1,2,3,4,5] %}
+						<li class="py-2 bg-gray-500">
+							<a data-accordion-button href="#l2-{{ k }}--{{ i }}">button</a>
+							<div id="l2-{{ k }}--{{ i }}" class="hidden bg-white overflow-hidden"data-accordion-panel>
+								<ul>
+									{% for j in [1,2,3,4,5] %}
+										<li class="py-1 bg-gray-400">
+											<a data-accordion-button href="#l3-{{ j }}-{{ k }}-{{ i }}">button</a>
+											<div id="l3-{{ j }}-{{ k }}-{{ i }}" class="hidden bg-white overflow-hidden"data-accordion-panel>
+												<div class="text-black">
+													this is some content
+												</div>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
 			</div>
-			<div>
-				this is some content
-			</div>
-			<div>
-				this is some content
-			</div>
-			<div>
-				this is some content
-			</div>
-		</div>
-	</li>
-	<li>
-		<a data-accordion-button href="#step-2">button</a>
-		<div id="step-2" class="hidden bg-white overflow-hidden"data-accordion-panel>
-			<div>
-				this is some content
-			</div>
-			<div>
-				this is some content
-			</div>
-			<div>
-				this is some content
-			</div>
-			<div>
-				this is some content
-			</div>
-		</div>
-	</li>
+		</li>
+	{% endfor %}
+
 </ul>

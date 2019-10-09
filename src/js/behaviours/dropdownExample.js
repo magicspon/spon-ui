@@ -21,7 +21,7 @@ function dropdownExample({ node }) {
 
 	dd.init()
 
-	dd.on(`example/dropdown:click`, ({ e, elm }) => {
+	dd.on('click', ({ e, elm }) => {
 		e.preventDefault()
 	})
 

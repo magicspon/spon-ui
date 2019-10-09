@@ -13,13 +13,13 @@ import accordion from '@/ui/accordion'
  */
 function accordionExample({ node, name }) {
 	// create a new accordion
-	const expand = accordion({ node, closeOthers: false, name })
+	const expand = accordion({ node, closeOthers: true, name })
 	// initalize it
 	expand.init()
 
-	expand.on('close', props => {
-		console.log(props)
-	})
+	// expand.on('close', props => {
+	// 	console.log(props)
+	// })
 
 	// when this module is unmounted...
 	return () => {

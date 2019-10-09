@@ -8,6 +8,22 @@ const store = init({
 			reducers: {
 				increment(state, payload) {
 					return state + payload
+				},
+
+				decrement(state, payload) {
+					return state - payload
+				}
+			}
+		},
+
+		trout: {
+			state: 0, // initial state
+			reducers: {
+				increment(state, payload) {
+					return state + payload
+				},
+				decrement(state, payload) {
+					return state - payload
 				}
 			}
 		}

@@ -10,8 +10,11 @@
 <div data-barba="container" class="trans page-child" data-barba-namespace="{{ title }}">
 	<div class="relative h-screen">
 
-		<div data-behaviour="{{ behaviour }}" id="{{ behaviour }}">
-			<h1>{{ title }}</h1>
+		<div data-behaviour="counter" id="counter">
+      <button data-up type="button">Increment</button>
+      <code class="mx-4" data-value></code>
+      <button data-down type="button">Decrement</button>
+      <pre data-debug></pre>
 		</div>
 
 

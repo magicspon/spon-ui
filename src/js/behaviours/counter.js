@@ -1,57 +1,41 @@
 import { domEvents, withPlugins, device } from '@spon/plugins'
-import withBarba from '@/plugins/withBarba'
 import { connect } from '@/store'
 
 /* eslint-disable no-console */
-function counter({
-	node,
-	name,
-	plugins: { addEvents, device },
-	store,
-	render
-}) {
-	addEvents({
-		'click button': () => {
-			store.increment(1)
-		}
+function counter({ node, plugins: { addEvents, device }, store, subscribe }) {
+	const $value = node.querySelector('[data-value]')
+	const { dispatch } = store
+
+	device.resize(() => {
+		console.log('hello')
 	})
 
-	// device.resize(() => {
-	// 	// called when the window resizes
-	// 	console.log('window resized', device.width, device.height)
-	// })
-
-	device.at('(min-width: 1024px)', {
-		on: () => {
-			// called when the media query matches the current viewport
-			console.log('min width is 1024px')
+	addEvents({
+		'click [data-up]': () => {
+			dispatch.count.increment(1)
 		},
 
-		off: () => {
-			// called when the media query does not match the current viewport
-			console.log('max width is 1024px')
+		'click [data-down]': () => {
+			dispatch.count.decrement(1)
 		}
 	})
 
-	render(
-		({ current }) => {
-			node.textContent = current.count
+	setTimeout(() => {
+		console.log(store.state)
+	}, 3000)
+
+	subscribe(
+		state => {
+			$value.textContent = state.current.count
 		},
 		['count']
 	)
-
-	return () => {
-		console.log(`destroy: ${name}`)
-	}
 }
 
-const mapState = store => {
-	return {
-		count: store.count
-	}
-}
-const mapDispatch = ({ count }) => ({ ...count })
+const mapState = ({ count, trout }) => ({ count, trout })
 
-export default withPlugins(domEvents, device, withBarba)(
+const mapDispatch = ({ count, trout }) => ({ count, trout })
+
+export default withPlugins(domEvents, device)(
 	connect({ mapState, mapDispatch })(counter)
 )
